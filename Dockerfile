@@ -14,8 +14,9 @@ RUN apt-get update \
   libsqlite3-dev \
   && rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL https://get.pnpm.io/install.sh | sh -
-
+RUN npm install --global corepack@latest
+RUN corepack enable pnpm
+  
 RUN pnpm install
 
 COPY . .
