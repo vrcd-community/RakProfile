@@ -1,6 +1,6 @@
 @font-face {
   font-family: Outfit;
-  src: url("@/assets/Outfit-VariableFont_wght.ttf") format("truetype");
+  src: url("../../assets/Outfit-VariableFont_wght.ttf") format("truetype");
 }
 
 .OutfitBold {
