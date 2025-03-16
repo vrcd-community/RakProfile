@@ -11,23 +11,31 @@ import { notFound } from 'next/navigation';
 
 export default async function UserProfilePage({ id }: { id: string }) {
   let LogtoUser, BookStackUser, BookStackBooks;
+  let logtoUserError: any = null;
+  let bookStackUserError: any = null;
+  let bookStackBooksError: any = null;
+
   try {
     LogtoUser = await Logto.getUser(id);
   } catch (error) {
     console.error("Failed to fetch Logto user:", error);
-    return <div>Failed to load user information.</div>;
+    logtoUserError = error;
   }
 
   try {
     const bookStackUsersResponse = await BookStack.userList();
     if (!bookStackUsersResponse.data) {
       console.error("Failed to fetch BookStack user list:", bookStackUsersResponse);
-      return <div>加载用户信息失败</div>;
+      bookStackUserError = bookStackUsersResponse;
+    } else {
+      BookStackUser = bookStackUsersResponse.data.find(u => u.external_auth_id === id);
+      if (!BookStackUser) {
+        bookStackUserError = new Error("BookStack user not found for given Logto ID");
+      }
     }
-    BookStackUser = bookStackUsersResponse.data.find(u => u.external_auth_id === id);
   } catch (error) {
     console.error("Failed to fetch BookStack user:", error);
-    return <div>Failed to load user information.</div>;
+    bookStackUserError = error;
   }
 
   try {
@@ -35,19 +43,81 @@ export default async function UserProfilePage({ id }: { id: string }) {
       const bookStackBooksResponse = await BookStack.booksList();
       if (!bookStackBooksResponse.data) {
         console.error("Failed to fetch BookStack book list:", bookStackBooksResponse);
-        return <div>Failed to load user information.</div>;
+        bookStackBooksError = bookStackBooksResponse;
+      } else {
+        BookStackBooks = bookStackBooksResponse.data.filter(b => b.owned_by === BookStackUser.id)!;
       }
-      BookStackBooks = bookStackBooksResponse.data.filter(b => b.owned_by === BookStackUser.id)!;
     }
   } catch (error) {
     console.error("Failed to fetch BookStack books:", error);
-    return <div>Failed to load user information.</div>;
+    bookStackBooksError = error;
   }
 
 
   if (!LogtoUser || !BookStackUser) {
-    return notFound();
+    if (!LogtoUser && !BookStackUser) {
+      return (
+        <div className="container max-w-4xl mx-auto py-10">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>加载用户数据失败</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>无法找到与ID {id} 相关的 Logto 用户和 BookStack 用户信息。</CardDescription>
+            </CardContent>
+          </Card>
+        </div>
+      );
+    }
+    if (!LogtoUser) {
+      return (
+        <div className="container max-w-4xl mx-auto py-10">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>加载 Logto 用户信息失败</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>无法加载 Logto 用户信息，请稍后重试。</CardDescription>
+              {logtoUserError && <CardDescription className="text-sm text-gray-500">错误详情: {logtoUserError.message}</CardDescription>}
+            </CardContent>
+          </Card>
+        </div>
+      );
+    }
+    if (!BookStackUser) {
+      return (
+        <div className="container max-w-4xl mx-auto py-10">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>加载文档库用户信息失败</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>无法加载文档库用户信息，请稍后重试。</CardDescription>
+              {bookStackUserError && <CardDescription className="text-sm text-gray-500">错误详情: {bookStackUserError.message ? bookStackUserError.message : JSON.stringify(bookStackUserError)}</CardDescription>}
+            </CardContent>
+          </Card>
+        </div>
+      );
+    }
+    return notFound(); // Fallback to notFound if logic somehow misses cases above
   }
+
+  if (bookStackBooksError) {
+    return (
+      <div className="container max-w-4xl mx-auto py-10">
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>加载文档库书籍信息失败</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription>无法加载文档库书籍信息，书籍列表可能无法显示。</CardDescription>
+            {bookStackBooksError && <CardDescription className="text-sm text-gray-500">错误详情: {bookStackBooksError.message ? bookStackBooksError.message : JSON.stringify(bookStackBooksError)}</CardDescription>}
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
 
   return (
     <div className="container max-w-4xl mx-auto py-10">

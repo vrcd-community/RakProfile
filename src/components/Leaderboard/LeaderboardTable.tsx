@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import {
   Table,
   TableHeader,
@@ -7,13 +9,20 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table"
-import Link from 'next/link'; // 假设你使用 Next.js，如果不是，请替换为你的路由库
+import Link from 'next/link';
+import FullScreenLoading from '../FullScreenLoading';
 
 import font from "./fonts.module.css"
 
 const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleLinkClick = () => {
+    setLoading(true);
+  };
+
   return (
-    <div className="mt-4">
+    <div className="mt-4 relative">
       <h2 className="text-2xl font-semibold mb-2">{title}</h2>
       <div className="border rounded-md">
         <Table>
@@ -36,7 +45,12 @@ const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
                       className="rounded-full w-8 h-8"
                     />
                     <Link href={`/profile/${item.uid}`}>
-                      <span className="hover:underline cursor-pointer">{item.name}</span>
+                      <span
+                        className="hover:underline cursor-pointer"
+                        onClick={handleLinkClick} // 添加 onClick 事件
+                      >
+                        {item.name}
+                      </span>
                     </Link>
                   </div>
                 </TableCell>
@@ -46,6 +60,7 @@ const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
           </TableBody>
         </Table>
       </div>
+      {loading && <FullScreenLoading />}
     </div>
   );
 };
