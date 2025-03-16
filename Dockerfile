@@ -1,9 +1,10 @@
-FROM node:23-slim
+FROM node:23-slim AS builder
 
 WORKDIR /app
 ENV NODE_ENV production
 
 COPY package*.json ./
+COPY pnpm-lock.yaml ./
 
 RUN apt-get update \
   && apt-get install -y \
@@ -16,12 +17,23 @@ RUN apt-get update \
 
 RUN npm install --global corepack@latest
 RUN corepack enable pnpm
-  
+
 RUN pnpm install
+RUN pnpm approve-builds --all
 
 COPY . .
 
 RUN pnpm run build
+
+FROM node:23-slim
+
+WORKDIR /app
+ENV NODE_ENV production
+
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/pnpm-lock.yaml ./
+COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3000
 
