@@ -30,7 +30,7 @@ FROM node:23-slim
 WORKDIR /app
 ENV NODE_ENV production
 
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/.next ./
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/pnpm-lock.yaml ./
 COPY --from=builder /app/node_modules ./node_modules
