@@ -19,7 +19,7 @@ RUN npm install --global corepack@latest
 RUN corepack enable pnpm
 
 RUN pnpm install
-RUN pnpm approve-builds --all
+RUN pnpm approve-builds -g
 
 COPY . .
 
