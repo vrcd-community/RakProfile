@@ -36,6 +36,7 @@ jobs:
       - name: Update Deployment Image Tag in Kubernetes (Kuboard)
         run: |
           curl -X PUT \
+            -k \
             -H "content-type: application/json" \
             -H "Cookie: KuboardUsername=${{ secrets.KUBOARD_USERNAME }}; KuboardAccessKey=${{ secrets.KUBOARD_ACCESS_KEY }}" \
             -d '{"kind":"deployments","namespace":"dev","name":"vrcd-rak-profile","images":{"${{ secrets.DOCKER_REGISTRY }}/dockerhub/build/vrcd-rak-profile":"${{ secrets.DOCKER_REGISTRY }}/dockerhub/build/vrcd-rak-profile:${{ github.sha }}"}}' \

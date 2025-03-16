@@ -6,7 +6,8 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from "@/components/ui/table" // 假设你的 table 组件路径
+} from "@/components/ui/table"
+import Link from 'next/link'; // 假设你使用 Next.js，如果不是，请替换为你的路由库
 
 const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
   return (
@@ -24,9 +25,20 @@ const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
           <TableBody>
             {data.map((item: any, index: number) => (
               <TableRow key={index}>
-                <TableCell className="font-medium">{item.rank}</TableCell>
-                <TableCell>{item.username}</TableCell>
-                <TableCell className="text-right">{item.score}</TableCell>
+                <TableCell className="font-medium">{index + 1}</TableCell>
+                <TableCell>
+                  <div className="flex items-center space-x-2">
+                    <img
+                      src={item.avatar}
+                      alt={`${item.name} 头像`}
+                      className="rounded-full w-8 h-8"
+                    />
+                    <Link href={`/profile/${item.uid}`}>
+                      <span className="hover:underline cursor-pointer">{item.name}</span>
+                    </Link>
+                  </div>
+                </TableCell>
+                <TableCell className="text-right">{item.rank}</TableCell>
               </TableRow>
             ))}
           </TableBody>

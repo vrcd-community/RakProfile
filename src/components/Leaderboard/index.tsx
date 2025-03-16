@@ -3,43 +3,39 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 import LeaderboardTable from './LeaderboardTable';
 
-const LeaderboardPage = () => {
-  const dailyLeaderboardData = [
-    { rank: 1, username: 'User A', score: 1500 },
-    { rank: 2, username: 'User B', score: 1450 },
-    { rank: 3, username: 'User C', score: 1400 },
-  ];
+import { BookStack } from '@/lib/external/BookStack';
 
-  const weeklyLeaderboardData = [
-    { rank: 1, username: 'User X', score: 12000 },
-    { rank: 2, username: 'User Y', score: 11500 },
-    { rank: 3, username: 'User Z', score: 11000 },
-  ];
+const LeaderboardPage = async () => {
+  const books = (await BookStack.booksList()).data;
+  const users = (await BookStack.userList()).data;
+  const mergedBooks: any = {}
 
-  const monthlyLeaderboardData = [
-    { rank: 1, username: 'User Alpha', score: 50000 },
-    { rank: 2, username: 'User Beta', score: 48000 },
-    { rank: 3, username: 'User Gamma', score: 45000 },
-  ];
+  for (const book of books) {
+    if (!mergedBooks[book.owned_by]) mergedBooks[book.owned_by] = [];
+    mergedBooks[book.owned_by].push(book);
+  }
+
+  const BookstackRanking = (await Promise.all(Object.keys(mergedBooks).map(async (key) => {
+    const user = users.find((user) => user.id === parseInt(key))!;
+    const book = mergedBooks[key];
+    return {
+      name: user.name,
+      avatar: user.avatar_url,
+      rank: book.length,
+      uid: user.external_auth_id
+    }
+  }))).sort((a, b) => b.rank - a.rank).slice(0, 20);
 
   return (
     <div className="container mx-auto p-4 font-sans">
       <h1 className="text-3xl font-bold mb-4">排行榜</h1>
 
-      <Tabs defaultValue="daily" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="daily">每日榜</TabsTrigger>
-          <TabsTrigger value="weekly">每周榜</TabsTrigger>
-          <TabsTrigger value="monthly">每月榜</TabsTrigger>
+      <Tabs defaultValue="docs" className="w-full">
+        <TabsList>
+          <TabsTrigger value="docs">文档库排行榜</TabsTrigger>
         </TabsList>
-        <TabsContent value="daily">
-          <LeaderboardTable data={dailyLeaderboardData} title="每日排行榜" />
-        </TabsContent>
-        <TabsContent value="weekly">
-          <LeaderboardTable data={weeklyLeaderboardData} title="每周排行榜" />
-        </TabsContent>
-        <TabsContent value="monthly">
-          <LeaderboardTable data={monthlyLeaderboardData} title="每月排行榜" />
+        <TabsContent value="docs">
+          <LeaderboardTable data={BookstackRanking} title="文档库排行榜" />
         </TabsContent>
       </Tabs>
     </div>
