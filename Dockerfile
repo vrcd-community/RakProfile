@@ -23,8 +23,6 @@ RUN pnpm approve-builds -g
 COPY . .
 
 ENV NODE_ENV=production
-ENV BOOKSTACK_BASEURL=https://example.com
-ENV LOGTO_BASEURL=https://example.com
 
 RUN pnpm run build
 

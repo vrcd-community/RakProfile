@@ -32,6 +32,12 @@ jobs:
             ${{ secrets.DOCKER_REGISTRY }}/dockerhub/build/vrcd-rak-profile:${{ github.sha }}
           build-args: |
             NODE_ENV=production
+            BOOKSTACK_BASEURL=${{ secrets.BOOKSTACK_BASEURL }}
+            LOGTO_BASEURL=${{ secrets.LOGTO_BASEURL }}
+            BOOKSTACK_API_ID=${{ secrets.BOOKSTACK_API_ID }}
+            BOOKSTACK_API_SECRET=${{ secrets.BOOKSTACK_API_SECRET }}
+            LOGTO_APP_ID=${{ secrets.LOGTO_APP_ID }}
+            LOGTO_APP_SECRET=${{ secrets.LOGTO_APP_SECRET }}
 
       - name: Update Deployment Image Tag in Kubernetes (Kuboard)
         run: |
