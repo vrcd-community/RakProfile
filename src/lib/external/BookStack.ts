@@ -73,6 +73,28 @@ interface BookStackBooksListResponse {
   data: BookStackBook[];
 }
 
+interface BookStackPage {
+  name: string;
+  id: number;
+  slug: string;
+  book_id: number;
+  chapter_id: number;
+  draft: boolean;
+  template: boolean;
+  created_at: string;
+  updated_at: string;
+  priority: number;
+  owned_by: number;
+  book_slug: string;
+  created_by: number;
+  updated_by: number;
+  revision_count: number;
+  editor: string;
+}
+
+interface BookStackPageListResponse {
+  data: BookStackPage[];
+}
 
 export class BookStack {
   static async userList(): Promise<BookStackUserListResponse> {
@@ -88,5 +110,10 @@ export class BookStack {
   static async booksList(): Promise<BookStackBooksListResponse> {
     const client = await getBookStackClient();
     return await client.cachedGet<BookStackBooksListResponse>('/books');
+  }
+
+  static async pageList(): Promise<BookStackPageListResponse> {
+    const client = await getBookStackClient();
+    return await client.cachedGet<BookStackPageListResponse>('/pages');
   }
 }

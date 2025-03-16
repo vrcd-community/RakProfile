@@ -1,3 +1,5 @@
+"use server";
+
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
@@ -24,7 +26,7 @@ const LeaderboardPage = async () => {
       rank: book.length,
       uid: user.external_auth_id
     }
-  }))).sort((a, b) => b.rank - a.rank).slice(0, 20);
+  }))).sort((a, b) => b.rank - a.rank)
 
   return (
     <div className="container mx-auto p-4 font-sans">

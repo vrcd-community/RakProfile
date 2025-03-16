@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/table"
 import Link from 'next/link'; // 假设你使用 Next.js，如果不是，请替换为你的路由库
 
+import font from "./fonts.module.css"
+
 const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
   return (
     <div className="mt-4">
@@ -25,7 +27,7 @@ const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
           <TableBody>
             {data.map((item: any, index: number) => (
               <TableRow key={index}>
-                <TableCell className="font-medium">{index + 1}</TableCell>
+                <TableCell className={`${font.OutfitBold} text-2xl`}>No. {index + 1}</TableCell>
                 <TableCell>
                   <div className="flex items-center space-x-2">
                     <img
@@ -38,7 +40,7 @@ const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
                     </Link>
                   </div>
                 </TableCell>
-                <TableCell className="text-right">{item.rank}</TableCell>
+                <TableCell className={`text-right ${font.OutfitBold} text-2xl`}>{item.rank}</TableCell>
               </TableRow>
             ))}
           </TableBody>
