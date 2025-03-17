@@ -2,23 +2,11 @@
 
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-
 import LeaderboardTable from './LeaderboardTable';
-
 import { getBookStackRank } from './rank/bookstack';
 
-export async function getServerSideProps() {
-  // 从数据库获取数据
+const LeaderboardPage = async () => {
   const BookstackRanking = await getBookStackRank();
-
-  return {
-    props: {
-      BookstackRanking,
-    },
-  };
-}
-
-const LeaderboardPage = async ({ BookstackRanking }: any) => {
 
   return (
     <div className="container mx-auto p-4 font-sans">

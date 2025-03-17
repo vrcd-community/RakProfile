@@ -11,12 +11,9 @@ import {
 } from "@/components/ui/table"
 import Link from 'next/link';
 import FullScreenLoading from '../FullScreenLoading';
-import DefaultAvatar from "@/assets/默认头像.png"
-import NextImage from "next/image"
+import DefaultAvatar from "@/assets/DefaultAvatar"
 
 import font from "./fonts.module.css"
-import { Avatar, AvatarImage } from '../ui/avatar';
-import { AvatarFallback } from '@radix-ui/react-avatar';
 
 const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
   const [loading, setLoading] = useState(false);
@@ -46,7 +43,7 @@ const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
                     {
                       item.avatar ?
                       <img src={item.avatar} alt="avatar" width={32} height={32} className="rounded-full"/> :
-                      <NextImage src={DefaultAvatar} alt="avatar" width={32} height={32} className="rounded-full"/>
+                      <DefaultAvatar className="w-[32px] h-[32px] rounded-full"/>
                     }
                     <Link href={`/profile/${item.uid}`}>
                       <span
