@@ -3,22 +3,8 @@ FROM node:23-slim AS builder
 WORKDIR /app
 
 COPY package*.json ./
-COPY pnpm-lock.yaml ./
 
-RUN apt-get update \
-&& apt-get install -y \
-python3 \
-make \
-g++ \
-sqlite3 \
-libsqlite3-dev \
-&& rm -rf /var/lib/apt/lists/*
-
-RUN npm install --global corepack@latest
-RUN corepack enable pnpm
-
-RUN pnpm install
-RUN pnpm approve-builds -g
+RUN npm install
 
 COPY . .
 
@@ -57,8 +43,8 @@ ENV DB_PASSWORD=$DB_PASSWORD
 ARG DB_DATABASE
 ENV DB_DATABASE=$DB_DATABASE
 
-RUN pnpm run build
+RUN npm run build
 
 EXPOSE 3000
 
-CMD ["pnpm", "start"]
+CMD ["npm", "start"]
