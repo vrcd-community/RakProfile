@@ -17,4 +17,4 @@ ENV NODE_ENV=production
 
 EXPOSE 3000
 
-CMD ["sh -c", "pnpm run build && pnpm start"]
+CMD ["/bin/sh", "-c", "pnpm run build && pnpm start"]
