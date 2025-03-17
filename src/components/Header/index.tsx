@@ -28,7 +28,7 @@ export function Header() {
       href: "/",
     },
     {
-      title: "排行榜",
+      title: "贡献榜",
       href: "/ranking",
     },
     {
@@ -42,7 +42,7 @@ export function Header() {
       <div className="container flex h-14 items-center m-auto px-4">
         <div className="mr-8 flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-bold">VRCD排行榜</span>
+            <span className="font-bold">VRCD 贡献榜</span>
           </Link>
         </div>
 

@@ -10,11 +10,11 @@ const LeaderboardPage = async () => {
 
   return (
     <div className="container mx-auto p-4 font-sans">
-      <h1 className="text-3xl font-bold mb-4">排行榜</h1>
+      <h1 className="text-3xl font-bold mb-4">贡献榜</h1>
 
       <Tabs defaultValue="docs" className="w-full">
         <TabsList>
-          <TabsTrigger value="docs">文档库活跃分</TabsTrigger>
+          <TabsTrigger value="docs">文档库近期贡献</TabsTrigger>
         </TabsList>
         <TabsContent value="docs">
           <LeaderboardTable data={BookstackRanking} />

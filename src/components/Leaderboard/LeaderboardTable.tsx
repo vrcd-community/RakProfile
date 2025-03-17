@@ -10,27 +10,20 @@ import {
   TableCell,
 } from "@/components/ui/table"
 import Link from 'next/link';
-import FullScreenLoading from '../FullScreenLoading';
 import DefaultAvatar from "@/assets/DefaultAvatar"
 
 import font from "./fonts.module.css"
 
 const LeaderboardTable = ({ data }: { data: any }) => {
-  const [loading, setLoading] = useState(false);
-
-  const handleLinkClick = () => {
-    setLoading(true);
-  };
-
   return (
     <div className="mt-4 relative">
       <div className="border rounded-md">
         <Table>
           <TableHeader>
             <TableRow className="border-b-0">
-              <TableHead className="w-[100px] border-b-0">排名</TableHead>
+              <TableHead className="w-[100px] border-b-0">#</TableHead>
               <TableHead className="border-b-0">用户名</TableHead>
-              <TableHead className="text-right border-b-0">活跃分</TableHead>
+              <TableHead className="text-right border-b-0">操作</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -44,23 +37,17 @@ const LeaderboardTable = ({ data }: { data: any }) => {
                       <img src={item.avatar} alt="avatar" width={32} height={32} className="rounded-full"/> :
                       <DefaultAvatar className="w-[32px] h-[32px] rounded-full"/>
                     }
-                    <Link href={`/profile/${item.uid}`}>
-                      <span
-                        className="hover:underline cursor-pointer"
-                        onClick={handleLinkClick}
-                      >
-                        {item.name}
-                      </span>
-                    </Link>
+                    <span>{item.name}</span>
                   </div>
                 </TableCell>
-                <TableCell className={`text-right ${font.OutfitBold} text-2xl border-b-0`}>{item.rank}</TableCell>
+                <TableCell className={`text-right`}>
+                  <Link href={`/profile/${item.uid}`} className="text-blue-500 hover:underline">查看资料</Link>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
-      {loading && <FullScreenLoading />}
     </div>
   );
 };
