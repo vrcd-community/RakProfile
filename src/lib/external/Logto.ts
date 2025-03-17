@@ -30,6 +30,8 @@ const getLogtoClient = async () => {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     },
+    timeout: 5000,
+    validateStatus: (status) => status >= 200 && status < 500
   });
 
   // 封装一个带缓存的 get 方法
