@@ -84,7 +84,7 @@ export function Header() {
                     className="flex items-center"
                     onClick={() => setIsOpen(false)}
                   >
-                    <span className="font-bold">VRCD排行榜</span>
+                    <span className="font-bold">VRCD 贡献榜</span>
                   </Link>
                 </div>
                 <nav className="mt-6 flex flex-col gap-4 px-7">
