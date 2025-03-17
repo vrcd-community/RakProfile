@@ -27,17 +27,17 @@ const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
       <div className="border rounded-md">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">排名</TableHead>
-              <TableHead>用户名</TableHead>
-              <TableHead className="text-right">积分</TableHead>
+            <TableRow className="border-b-0">
+              <TableHead className="w-[100px] border-b-0">排名</TableHead>
+              <TableHead className="border-b-0">用户名</TableHead>
+              <TableHead className="text-right border-b-0">积分</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.map((item: any, index: number) => (
-              <TableRow key={index}>
-                <TableCell className={`${font.OutfitBold} text-2xl`}>No. {index + 1}</TableCell>
-                <TableCell>
+              <TableRow key={index} className="border-b-0">
+                <TableCell className={`${font.OutfitBold} text-2xl border-b-0`}><span className='border-1 dark:border-white border-black py-1 w-[75px] block text-center'>{index + 1}</span></TableCell>
+                <TableCell className="border-b-0">
                   <div className="flex items-center space-x-2">
                     <img
                       src={item.avatar}
@@ -47,14 +47,14 @@ const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
                     <Link href={`/profile/${item.uid}`}>
                       <span
                         className="hover:underline cursor-pointer"
-                        onClick={handleLinkClick} // 添加 onClick 事件
+                        onClick={handleLinkClick}
                       >
                         {item.name}
                       </span>
                     </Link>
                   </div>
                 </TableCell>
-                <TableCell className={`text-right ${font.OutfitBold} text-2xl`}>{item.rank}</TableCell>
+                <TableCell className={`text-right ${font.OutfitBold} text-2xl border-b-0`}>{item.rank}</TableCell>
               </TableRow>
             ))}
           </TableBody>

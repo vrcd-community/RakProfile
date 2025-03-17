@@ -6,6 +6,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import LeaderboardTable from './LeaderboardTable';
 
 import { BookStack } from '@/lib/external/BookStack';
+import { Logto } from '@/lib/external/Logto';
 
 const LeaderboardPage = async () => {
   const books = (await BookStack.booksList()).data;
@@ -20,9 +21,15 @@ const LeaderboardPage = async () => {
   const BookstackRanking = (await Promise.all(Object.keys(mergedBooks).map(async (key) => {
     const user = users.find((user) => user.id === parseInt(key))!;
     const book = mergedBooks[key];
+    let logtoUser: any = {}
+
+    try {
+      logtoUser = (await Logto.getUser(user.external_auth_id))!
+    } catch (_) {}
+
     return {
       name: user.name,
-      avatar: user.avatar_url,
+      avatar: logtoUser.avatar ?? user.avatar_url,
       rank: book.length,
       uid: user.external_auth_id
     }
