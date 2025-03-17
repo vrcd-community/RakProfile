@@ -107,6 +107,10 @@ export function Header() {
           </nav>
         </div>
       </div>
+
+      <div className="w-full py-1 bg-amber-500/60 text-white text-center font-bold backdrop-blur">
+        当前所有内容均为开发版本，不代表最终效果！
+      </div>
     </header>
   )
 }
