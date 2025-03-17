@@ -15,7 +15,7 @@ import DefaultAvatar from "@/assets/DefaultAvatar"
 
 import font from "./fonts.module.css"
 
-const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
+const LeaderboardTable = ({ data }: { data: any }) => {
   const [loading, setLoading] = useState(false);
 
   const handleLinkClick = () => {
@@ -24,7 +24,6 @@ const LeaderboardTable = ({ data, title }: { data: any; title: string }) => {
 
   return (
     <div className="mt-4 relative">
-      <h2 className="text-2xl font-semibold mb-2">{title}</h2>
       <div className="border rounded-md">
         <Table>
           <TableHeader>

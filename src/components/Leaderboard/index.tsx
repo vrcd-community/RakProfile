@@ -17,7 +17,7 @@ const LeaderboardPage = async () => {
           <TabsTrigger value="docs">文档库活跃分</TabsTrigger>
         </TabsList>
         <TabsContent value="docs">
-          <LeaderboardTable data={BookstackRanking} title="文档库活跃分" />
+          <LeaderboardTable data={BookstackRanking} />
         </TabsContent>
       </Tabs>
     </div>
