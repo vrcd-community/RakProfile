@@ -7,9 +7,19 @@ import LeaderboardTable from './LeaderboardTable';
 
 import { getBookStackRank } from './rank/bookstack';
 
-const LeaderboardPage = async () => {
-  const BookstackRanking = await getBookStackRank()
-  
+export async function getServerSideProps() {
+  // 从数据库获取数据
+  const BookstackRanking = await getBookStackRank();
+
+  return {
+    props: {
+      BookstackRanking,
+    },
+  };
+}
+
+const LeaderboardPage = async ({ BookstackRanking }: any) => {
+
   return (
     <div className="container mx-auto p-4 font-sans">
       <h1 className="text-3xl font-bold mb-4">排行榜</h1>

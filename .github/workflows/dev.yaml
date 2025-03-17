@@ -10,6 +10,21 @@ jobs:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
 
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -38,6 +53,11 @@ jobs:
             BOOKSTACK_API_SECRET=${{ secrets.BOOKSTACK_API_SECRET }}
             LOGTO_APP_ID=${{ secrets.LOGTO_APP_ID }}
             LOGTO_APP_SECRET=${{ secrets.LOGTO_APP_SECRET }}
+            DB_HOST: postgres
+            DB_PORT: 5432
+            DB_USER: postgres
+            DB_PASSWORD: postgres
+            DB_DATABASE: postgres
 
       - name: Update Deployment Image Tag in Kubernetes (Kuboard)
         run: |

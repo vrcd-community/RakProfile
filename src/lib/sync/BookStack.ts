@@ -93,5 +93,3 @@ const sync = async () => {
 }
 
 export default sync;
-
-sync();
