@@ -71,6 +71,7 @@ interface BookStackBook {
 
 interface BookStackBooksListResponse {
   data: BookStackBook[];
+  total: number
 }
 
 interface BookStackPage {
@@ -94,6 +95,7 @@ interface BookStackPage {
 
 interface BookStackPageListResponse {
   data: BookStackPage[];
+  total: number;
 }
 
 export class BookStack {
@@ -107,13 +109,55 @@ export class BookStack {
     return await client.cachedGet<BookStackUserReadResponse>(`/users/${uid}`);
   }
 
-  static async booksList(): Promise<BookStackBooksListResponse> {
+  static async booksListPage(offset: number = 0, limit: number = 100): Promise<BookStackBooksListResponse> {
     const client = await getBookStackClient();
-    return await client.cachedGet<BookStackBooksListResponse>('/books');
+    return await client.cachedGet<BookStackBooksListResponse>(`/books?offset=${offset}&limit=${limit}`);
+  }
+
+  static async booksList(): Promise<BookStackBooksListResponse> {
+    const data = [];
+
+    let offset = 0;
+    let limit = 100;
+
+    while (true) {
+      const page = await BookStack.booksListPage(offset, limit);
+      data.push(...page.data);
+      if (page.total <= data.length) {
+        break;
+      }
+      offset += limit;
+    }
+
+    return {
+      data,
+      total: data.length
+    }
+  }
+
+  static async pageListPage(offset: number = 0, limit: number = 100): Promise<BookStackPageListResponse> {
+    const client = await getBookStackClient();
+    return await client.cachedGet<BookStackPageListResponse>(`/pages?offset=${offset}&limit=${limit}`);
   }
 
   static async pageList(): Promise<BookStackPageListResponse> {
-    const client = await getBookStackClient();
-    return await client.cachedGet<BookStackPageListResponse>('/pages');
+    const data = [];
+
+    let offset = 0;
+    let limit = 100;
+
+    while (true) {
+      const page = await BookStack.pageListPage(offset, limit);
+      data.push(...page.data);
+      if (page.total <= data.length) {
+        break;
+      }
+      offset += limit;
+    }
+
+    return {
+      data,
+      total: data.length
+    }
   }
 }

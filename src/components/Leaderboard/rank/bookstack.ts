@@ -4,7 +4,7 @@ import { Logto } from '@/lib/external/Logto';
 // 可调整的权重参数
 const WEIGHTS = {
   RECENCY: 0.4,    // 时间衰减权重
-  BOOK_COUNT: 0.6, // 书籍数量权重
+  PAGE_COUNT: 0.6, // 页面数量权重
   PENALTY: 0.2     // 长期未更新惩罚权重
 };
 
@@ -15,25 +15,25 @@ const TIME_PARAMS = {
 };
 
 export const getBookStackRank = async () => {
-  const books = await db.BookStack_Books.select('*');
+  const pages = await db.BookStack_Pages.select('*');
   const users = await db.User.select('*');
   const now = new Date();
 
   const activityScores: Record<number, {
-    totalScore: number,     // 所有书籍的活跃度总分
+    totalScore: number,     // 所有页面的活跃度总分
     penaltyScore: number,   // 长期未更新的惩罚分
     lastUpdated: Date,
-    booksCount: number,
+    pagesCount: number,
     ownerId: number,
     updateTimes: Date[]     // 记录所有更新时间
   }> = {};
 
-  // 为每本书计算活跃度分数并按所有者分组
-  for (const book of books) {
-    const updatedAt = new Date(book.updated_at);
+  // 为每个页面计算活跃度分数并按所有者分组
+  for (const page of pages) {
+    const updatedAt = new Date(page.updated_at);
     const daysDiff = Math.floor((now.getTime() - updatedAt.getTime()) / (1000 * 60 * 60 * 24));
 
-    // 计算单本书的活跃度分数
+    // 计算单个页面的活跃度分数
     const activityScore = 100 * Math.exp(-0.05 * daysDiff);
 
     // 计算惩罚分数
@@ -43,25 +43,25 @@ export const getBookStackRank = async () => {
       penaltyScore = 50 * (penaltyDays / TIME_PARAMS.MAX_PENALTY_DAYS);
     }
 
-    if (!activityScores[book.owned_by]) {
-      activityScores[book.owned_by] = {
+    if (!activityScores[page.created_by]) {
+      activityScores[page.created_by] = {
         totalScore: 0,
         penaltyScore: 0,
         lastUpdated: updatedAt,
-        booksCount: 0,
-        ownerId: book.owned_by,
+        pagesCount: 0,
+        ownerId: page.created_by,
         updateTimes: []
       };
     }
 
-    activityScores[book.owned_by].totalScore += activityScore;
-    activityScores[book.owned_by].penaltyScore += penaltyScore;
-    activityScores[book.owned_by].booksCount += 1;
-    activityScores[book.owned_by].updateTimes.push(updatedAt);
+    activityScores[page.created_by].totalScore += activityScore;
+    activityScores[page.created_by].penaltyScore += penaltyScore;
+    activityScores[page.created_by].pagesCount += 1;
+    activityScores[page.created_by].updateTimes.push(updatedAt);
 
     // 更新最近的更新时间
-    if (updatedAt > activityScores[book.owned_by].lastUpdated) {
-      activityScores[book.owned_by].lastUpdated = updatedAt;
+    if (updatedAt > activityScores[page.created_by].lastUpdated) {
+      activityScores[page.created_by].lastUpdated = updatedAt;
     }
   }
 
@@ -71,18 +71,18 @@ export const getBookStackRank = async () => {
   const activityRanking = await Promise.all(
     Object.values(activityScores).map(async (data) => {
       // 1. 计算时间衰减总分（考虑所有更新时间）
-      const recencyScore = data.totalScore / data.booksCount;
+      const recencyScore = data.totalScore / data.pagesCount;
       
-      // 2. 书籍数量分数
-      const bookCountScore = 100 * Math.log10(data.booksCount + 1) / Math.log10(11);
+      // 2. 页面数量分数
+      const pageCountScore = 100 * Math.log10(data.pagesCount + 1) / Math.log10(11);
       
       // 3. 计算平均惩罚分数
-      const avgPenaltyScore = data.penaltyScore / data.booksCount;
+      const avgPenaltyScore = data.penaltyScore / data.pagesCount;
       
       // 4. 加权计算最终分数
       const finalScore = 
         WEIGHTS.RECENCY * recencyScore + 
-        WEIGHTS.BOOK_COUNT * bookCountScore -
+        WEIGHTS.PAGE_COUNT * pageCountScore -
         WEIGHTS.PENALTY * avgPenaltyScore;
       
       // 查找对应的用户链接
@@ -112,7 +112,7 @@ export const getBookStackRank = async () => {
         avatar: userData.avatar,
         rank: +(Math.max(0, finalScore)).toFixed(0), // 确保分数不为负
         uid: userData.logto_id,
-        booksCount: data.booksCount,
+        pagesCount: data.pagesCount,
         lastActive: data.lastUpdated,
         penaltyScore: Math.round(avgPenaltyScore) // 添加惩罚分数显示
       };

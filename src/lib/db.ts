@@ -73,6 +73,46 @@ await pg.schema.createTableIfNotExists("bookstack_books", (table) => {
   table.text("cover_url");
 })
 
+export const BookStack_PagesSchema = z.object({
+  name: z.string().min(1),
+  id: z.number(),
+  slug: z.string().min(1),
+  book_id: z.number(),
+  chapter_id: z.number(),
+  draft: z.boolean(),
+  template: z.boolean(),
+  created_at: z.date(),
+  updated_at: z.date(),
+  priority: z.number(),
+  owned_by: z.number(),
+  book_slug: z.string().min(1),
+  created_by: z.number(),
+  updated_by: z.number(),
+  revision_count: z.number(),
+  editor: z.string().min(1),
+})
+
+export type BookStack_Pages = z.infer<typeof BookStack_PagesSchema>;
+
+await pg.schema.createTableIfNotExists("bookstack_pages", (table) => {
+  table.text("name");
+  table.integer("id").primary();
+  table.text("slug");
+  table.integer("book_id");
+  table.integer("chapter_id");
+  table.boolean("draft");
+  table.boolean("template");
+  table.date("created_at");
+  table.date("updated_at");
+  table.integer("priority");
+  table.integer("owned_by");
+  table.text("book_slug");
+  table.integer("created_by");
+  table.integer("updated_by");
+  table.integer("revision_count");
+  table.text("editor");
+})
+
 export const db = {
   get UserLink() {
     return pg<UserLink>("user_link");
@@ -84,5 +124,9 @@ export const db = {
 
   get BookStack_Books() {
     return pg<BookStack_Books>("bookstack_books");
+  },
+
+  get BookStack_Pages() {
+    return pg<BookStack_Pages>("bookstack_pages");
   }
 }

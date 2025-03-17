@@ -7,6 +7,11 @@ const hasBook = async (bookId: number) => {
   return count !== undefined;
 }
 
+const hasPage = async (pageId: number) => {
+  const count = await db.BookStack_Pages.where("id", pageId).first();
+  return count !== undefined;
+}
+
 const sync = async () => {
   const books = await (await BookStack.booksList()).data
 
@@ -42,6 +47,55 @@ const sync = async () => {
       }
     } catch (e) {
       console.error(`[${new Date().toISOString()}][BookStack] Failed to sync book ${book.name}(${book.id})`, e)
+    }
+  }
+
+  const pages = await (await BookStack.pageList()).data
+
+  for (const page of pages) {
+    console.log(`[${new Date().toISOString()}][BookStack] Syncing page ${page.name}(${page.id}) ...`)
+
+    try {
+      if (await hasPage(page.id)) {
+        await db.BookStack_Pages.where("id", page.id).update({
+          name: page.name,
+          slug: page.slug,
+          book_id: page.book_id,
+          chapter_id: page.chapter_id,
+          draft: page.draft,
+          template: page.template,
+          created_at: new Date(page.created_at),
+          updated_at: new Date(page.updated_at),
+          priority: page.priority,
+          owned_by: page.owned_by,
+          book_slug: page.book_slug,
+          created_by: page.created_by,
+          updated_by: page.updated_by,
+          revision_count: page.revision_count,
+          editor: page.editor,
+        })
+      } else {
+        await db.BookStack_Pages.insert({
+          id: page.id,
+          name: page.name,
+          slug: page.slug,
+          book_id: page.book_id,
+          chapter_id: page.chapter_id,
+          draft: page.draft,
+          template: page.template,
+          created_at: new Date(page.created_at),
+          updated_at: new Date(),
+          priority: page.priority,
+          owned_by: page.owned_by,
+          book_slug: page.book_slug,
+          created_by: page.created_by,
+          updated_by: page.updated_by,
+          revision_count: page.revision_count,
+          editor: page.editor,
+        })
+      }
+    } catch (e) {
+      console.error(`[${new Date().toISOString()}][BookStack] Failed to sync page ${page.name}(${page.id})`, e)
     }
   }
 
