@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { Logto } from '@/lib/external/Logto';
-import { BookStack_Pages, User, UserLink } from "@/lib/db";
+import { User, UserLink } from "@/lib/db";
 
 // 配置参数
 const WEIGHTS = {

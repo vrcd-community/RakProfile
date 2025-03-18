@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/Header";
 import syncBookStack from "@/lib/sync/BookStack"
+import { Bottom } from "@/components/Bottom";
 
 export const metadata: Metadata = {
   title: "VRCD Profile"
@@ -24,13 +25,16 @@ export default function RootLayout({
         >
           <Header />
           {children}
+          <Bottom />
         </ThemeProvider>
       </body>
     </html>
   );
 }
 
-syncBookStack()
-setInterval(() => {
+if (process.env.NODE_ENV === "production") {
   syncBookStack()
-}, 10 * 60  * 1000) // 10 minutes
+  setInterval(() => {
+    syncBookStack()
+  }, 10 * 60 * 1000)
+}

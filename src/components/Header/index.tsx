@@ -12,6 +12,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { ModeToggle } from "./mode-toggle"
+import VRCD from "@/assets/VRCD"
 
 interface NavItem {
   title: string
@@ -24,17 +25,13 @@ export function Header() {
 
   const navItems: NavItem[] = [
     {
-      title: "首页",
-      href: "/",
+      title: "博客",
+      href: "/blog",
     },
     {
       title: "贡献榜",
       href: "/ranking",
-    },
-    {
-      title: "关于",
-      href: "/about",
-    },
+    }
   ]
 
   return (
@@ -42,7 +39,7 @@ export function Header() {
       <div className="container flex h-14 items-center m-auto px-4">
         <div className="mr-8 flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-bold">VRCD 贡献榜</span>
+            <VRCD className="h-6" />
           </Link>
         </div>
 
@@ -55,7 +52,8 @@ export function Header() {
                     href={item.href}
                     className={cn(
                       "text-sm font-medium transition-colors hover:text-primary",
-                      item.disabled && "cursor-not-allowed opacity-80"
+                      item.disabled && "cursor-not-allowed opacity-80",
+                      "hover:text-blue-400"
                     )}
                   >
                     {item.title}
@@ -84,7 +82,7 @@ export function Header() {
                     className="flex items-center"
                     onClick={() => setIsOpen(false)}
                   >
-                    <span className="font-bold">VRCD 贡献榜</span>
+                    <VRCD className="h-6" />
                   </Link>
                 </div>
                 <nav className="mt-6 flex flex-col gap-4 px-7">
@@ -108,7 +106,7 @@ export function Header() {
         </div>
       </div>
 
-      <div className="w-full py-1 bg-amber-500/60 text-white text-center font-bold backdrop-blur">
+      <div className="w-full py-1 bg-amber-500/60 dark:text-white text-black text-center backdrop-blur">
         当前所有内容均为开发版本，不代表最终效果！
       </div>
     </header>
