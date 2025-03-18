@@ -1,5 +1,6 @@
 import VRCD_Outline from "@/assets/VRCD_Outline"
 import NextImage from "next/image"
+import Link from "next/link"
 
 import VRChat from "@/assets/VRChat.svg"
 import Bilibili from "@/assets/bilibili.svg"
@@ -9,6 +10,33 @@ import Discord from "@/assets/Discord.svg"
 import GitHub from "@/assets/github.svg"
 
 export const Bottom = () => {
+  const Links = [
+    // {
+    //   icon: VRChat,
+    //   url: "https://vrchat.vrcd.org.cn"
+    // },
+    {
+      icon: Bilibili,
+      url: "https://bilibili.vrcd.org.cn"
+    },
+    {
+      icon: QQ,
+      url: "https://qq.vrcd.org.cn"
+    },
+    {
+      icon: Kook,
+      url: "https://kook.vrcd.org.cn"
+    },
+    {
+      icon: Discord,
+      url: "https://discord.vrcd.org.cn"
+    },
+    {
+      icon: GitHub,
+      url: "https://github.vrcd.org.cn"
+    }
+  ]
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-10 dark:bg-[#161718] bg-[#F9F9F9] lg:px-60 lg:py-30 w-full px-4 py-8 pb-24">
       <div className="flex flex-col items-center lg:items-start">
@@ -21,24 +49,15 @@ export const Bottom = () => {
         <p className="dark:text-gray-400 text-gray-600 text-lg font-bold mb-4 text-right w-full">更多信息</p>
         <p className="dark:text-gray-400 text-gray-600 text-md text-right w-full">联系邮箱: us@vrcd.org.cn</p>
         <div className="flex flex-row gap-4 mt-4 justify-end w-full">
-          <div className="p-2 dark:bg-[#454546] bg-[#CCC] rounded-sm">
-            <NextImage className="dark:invert-0 invert-100" src={VRChat} alt="VRChat" width={20} height={20} />
-          </div>
-          <div className="p-2 dark:bg-[#454546] bg-[#CCC] rounded-sm">
-            <NextImage className="dark:invert-0 invert-100"  src={Bilibili} alt="Bilibili" width={20} height={20} />
-          </div>
-          <div className="p-2 dark:bg-[#454546] bg-[#CCC] rounded-sm">
-            <NextImage className="dark:invert-0 invert-100"  src={QQ} alt="QQ" width={18} height={18} />
-          </div>
-          <div className="p-2 dark:bg-[#454546] bg-[#CCC] rounded-sm">
-            <NextImage className="dark:invert-0 invert-100"  src={Kook} alt="KOOK" width={20} height={20} />
-          </div>
-          <div className="p-2 dark:bg-[#454546] bg-[#CCC] rounded-sm">
-            <NextImage className="dark:invert-0 invert-100"  src={Discord} alt="Discord" width={20} height={20} />
-          </div>
-          <div className="p-2 dark:bg-[#454546] bg-[#CCC] rounded-sm">
-            <NextImage className="dark:invert-0 invert-100"  src={GitHub} alt="GitHub" width={20} height={20} />
-          </div>
+          {
+            Links.map((link, index) => {
+              return (
+                <Link href={link.url} key={index} className="p-2 dark:bg-[#454546] bg-[#CCC] rounded-sm">
+                  <NextImage className="dark:invert-0 invert-100" src={link.icon} alt="VRChat" width={20} height={20} />
+                </Link>
+              )
+            })
+          }
         </div>
         <div className="h-[1px] w-full max-w-[440px] bg-gray-600 mt-8 mb-4"></div>
         <div className="grid grid-cols-3 gap-4">
