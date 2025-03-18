@@ -10,7 +10,7 @@ import {
   TableCell,
 } from "@/components/ui/table"
 import Link from 'next/link';
-import DefaultAvatar from "@/assets/DefaultAvatar"
+import DefaultAvatar from "@/assets/icons/DefaultAvatar"
 
 import font from "./fonts.module.css"
 

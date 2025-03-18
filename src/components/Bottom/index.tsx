@@ -1,20 +1,20 @@
-import VRCD_Outline from "@/assets/VRCD_Outline"
+import VRCD_Outline from "@/assets/icons/VRCD_Outline"
 import NextImage from "next/image"
 import Link from "next/link"
 
-import VRChat from "@/assets/VRChat.svg"
-import Bilibili from "@/assets/bilibili.svg"
-import QQ from "@/assets/QQ.svg"
-import Kook from "@/assets/KOOK.svg"
-import Discord from "@/assets/Discord.svg"
-import GitHub from "@/assets/github.svg"
+import VRChat from "@/assets/icons/VRChat.svg"
+import Bilibili from "@/assets/icons/bilibili.svg"
+import QQ from "@/assets/icons/QQ.svg"
+import Kook from "@/assets/icons/KOOK.svg"
+import Discord from "@/assets/icons/Discord.svg"
+import GitHub from "@/assets/icons/github.svg"
 
 export const Bottom = () => {
   const Links = [
-    // {
-    //   icon: VRChat,
-    //   url: "https://vrchat.vrcd.org.cn"
-    // },
+    {
+      icon: VRChat,
+      url: "https://vrchat.vrcd.org.cn"
+    },
     {
       icon: Bilibili,
       url: "https://bilibili.vrcd.org.cn"

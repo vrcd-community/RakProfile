@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ModeToggle } from "./mode-toggle"
 import { User } from "./User"
 import { Menu } from "./Menu"
-import VRCD from "@/assets/VRCD"
+import VRCD from "@/assets/icons/VRCD"
 
 const navItems = [
   {

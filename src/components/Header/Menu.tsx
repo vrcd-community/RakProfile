@@ -10,7 +10,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import VRCD from "@/assets/VRCD"
+import VRCD from "@/assets/icons/VRCD"
 
 interface NavItem {
   title: string
