@@ -4,8 +4,8 @@ import { User, UserLink } from "@/lib/db";
 
 // 配置参数
 const WEIGHTS = {
-  RECENT_ACTIVITY: 0.6,    // 最近活动权重（30天内）
-  TOTAL_CONTRIBUTION: 0.4  // 总贡献权重
+  RECENT_ACTIVITY: 0.4,    // 最近活动权重（30天内）
+  TOTAL_CONTRIBUTION: 0.6  // 总贡献权重
 };
 
 const TIME_PARAMS = {
@@ -32,9 +32,9 @@ const calculateRecentScore = (data: UserActivityData, now: Date) => {
 
 // 计算总贡献得分
 const calculateTotalScore = (data: UserActivityData) => {
-  return (data.totalPages * 5 + data.totalChars / 2000);
+  return (data.totalPages * 5 + data.totalChars / 1000);
 };
-
+ 
 // 获取用户信息
 const getUserData = async (ownerId: number, userLinks: UserLink[], users: User[]) => {
   const userLink = userLinks.find(link => link.platform_id === ownerId.toString());
