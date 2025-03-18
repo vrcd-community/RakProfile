@@ -14,10 +14,14 @@ const LeaderboardPage = async () => {
 
       <Tabs defaultValue="docs" className="w-full">
         <TabsList>
-          <TabsTrigger value="docs">文档库近期贡献</TabsTrigger>
+        <TabsTrigger value="docs">文档库</TabsTrigger>
+        <TabsTrigger value="bbs">论坛</TabsTrigger>
         </TabsList>
         <TabsContent value="docs">
           <LeaderboardTable data={BookstackRanking} />
+        </TabsContent>
+        <TabsContent value="bbs">
+          <p>还没做</p>
         </TabsContent>
       </Tabs>
     </div>
