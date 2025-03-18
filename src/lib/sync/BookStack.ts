@@ -12,6 +12,9 @@ const hasPage = async (pageId: number) => {
   return count !== undefined;
 }
 
+const htmlFilter = (html: string) => html.replace(/<[^>]*>/g, ""); // remove all html tags
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 const sync = async () => {
   const books = await (await BookStack.booksList()).data
 
@@ -50,12 +53,17 @@ const sync = async () => {
     }
   }
 
-  const pages = await (await BookStack.pageList()).data
+  const pages = await (await BookStack.pageList()).data.sort(() => Math.random() - 0.5); // randomize the order of pages
 
   for (const page of pages) {
     console.log(`[${new Date().toISOString()}][BookStack] Syncing page ${page.name}(${page.id}) ...`)
 
     try {
+      await sleep(2000)
+
+      const pageItem = await BookStack.pageRead(page.id)
+      const content = htmlFilter(pageItem.raw_html)
+
       if (await hasPage(page.id)) {
         await db.BookStack_Pages.where("id", page.id).update({
           name: page.name,
@@ -73,6 +81,7 @@ const sync = async () => {
           updated_by: page.updated_by,
           revision_count: page.revision_count,
           editor: page.editor,
+          chars: content.length,
         })
       } else {
         await db.BookStack_Pages.insert({
@@ -92,6 +101,7 @@ const sync = async () => {
           updated_by: page.updated_by,
           revision_count: page.revision_count,
           editor: page.editor,
+          chars: content.length,
         })
       }
     } catch (e) {
@@ -105,7 +115,6 @@ const sync = async () => {
     console.log(`[${new Date().toISOString()}][BookStack] Syncing user ${user.name}(${user.id}) ...`)
 
     try {
-
       const logtoUser = await Logto.getUser(user.external_auth_id);
 
       if (logtoUser) {

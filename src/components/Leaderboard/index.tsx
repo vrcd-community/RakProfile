@@ -3,7 +3,7 @@
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import LeaderboardTable from './LeaderboardTable';
-import { getBookStackRank } from './rank/bookstack';
+import { getBookStackRank } from './rank/bookstackRecently';
 
 const LeaderboardPage = async () => {
   const BookstackRanking = await getBookStackRank();

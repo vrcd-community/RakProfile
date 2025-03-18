@@ -9,8 +9,18 @@ import { notFound } from 'next/navigation';
 
 import { db } from "@/lib/db";
 
+const numberFormat = (number: number) => {
+  if (number >= 1000000) {
+    return (number / 1000000).toFixed(1) + 'M';
+  } else if (number >= 1000) {
+    return (number / 1000).toFixed(1) + 'K';
+  } else {
+    return number.toString();
+  }
+}
+
 export default async function UserProfilePage({ id }: { id: string }) {
-  let LogtoUser, BookStackUser, BookStackBooks, BookStackPages, editedBooks;
+  let LogtoUser, BookStackUser, BookStackBooks, BookStackPages, editedBooks, totalChars;
   let logtoUserError: any = null;
   let bookStackUserError: any = null;
   let bookStackBooksError: any = null;
@@ -50,6 +60,8 @@ export default async function UserProfilePage({ id }: { id: string }) {
   try {
     if (BookStackUser) {
       BookStackPages = await db.BookStack_Pages.where("created_by", BookStackUser.id);
+
+      totalChars = BookStackPages.reduce((acc, page) => acc + page.chars, 0);
     }
   } catch (error) {
     console.error("Failed to fetch pages from database:", error);
@@ -211,7 +223,7 @@ export default async function UserProfilePage({ id }: { id: string }) {
               </div>
               <div>
                 <CardDescription>
-                  用户ID: <Badge variant="outline">{BookStackUser.id}</Badge>
+                  总字数: <Badge variant="outline">{numberFormat(totalChars || 0)}</Badge>
                 </CardDescription>
               </div>
             </div>

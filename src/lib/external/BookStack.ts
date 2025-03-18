@@ -98,6 +98,40 @@ interface BookStackPageListResponse {
   total: number;
 }
 
+interface BookStackPageReadResponse {
+  id: number;
+  book_id: number;
+  chapter_id: number;
+  name: string;
+  slug: string;
+  html: string;
+  priority: number;
+  created_at: string;
+  updated_at: string;
+  created_by: {
+    id: number;
+    name: string;
+    slug: string;
+  };
+  updated_by: {
+    id: number;
+    name: string;
+    slug: string;
+  };
+  draft: boolean;
+  markdown: string;
+  revision_count: number;
+  template: boolean;
+  owned_by: {
+    id: number;
+    name: string;
+    slug: string;
+  };
+  editor: string;
+  raw_html: string;
+  tags: string[]
+}
+
 export class BookStack {
   static async userList(): Promise<BookStackUserListResponse> {
     const client = await getBookStackClient();
@@ -159,5 +193,10 @@ export class BookStack {
       data,
       total: data.length
     }
+  }
+
+  static async pageRead(pageId: number): Promise<BookStackPageReadResponse> {
+    const client = await getBookStackClient();
+    return await client.cachedGet<BookStackPageReadResponse>(`/pages/${pageId}`);
   }
 }

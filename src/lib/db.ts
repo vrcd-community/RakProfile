@@ -90,6 +90,7 @@ export const BookStack_PagesSchema = z.object({
   updated_by: z.number(),
   revision_count: z.number(),
   editor: z.string().min(1),
+  chars: z.number()
 })
 
 export type BookStack_Pages = z.infer<typeof BookStack_PagesSchema>;
@@ -111,6 +112,7 @@ await pg.schema.createTableIfNotExists("bookstack_pages", (table) => {
   table.integer("updated_by");
   table.integer("revision_count");
   table.text("editor");
+  table.integer("chars");
 })
 
 export const db = {
