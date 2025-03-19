@@ -48,6 +48,7 @@ interface SearchItemProps {
       };
       chunk: {
         content: string;
+        title: string;
       };
     };
   };
@@ -71,21 +72,69 @@ const DoSearch = async (search: string): Promise<SearchRespose> => {
   return response.data
 }
 
+const rControl = /[\u0000-\u001f]/g
+const rSpecial = /[\s~`!@#$%^&*()\-_+=[\]{}|\\;:"'“”‘’<>,.?/]+/g
+const rCombining = /[\u0300-\u036F]/g
+
+export function slugify(str: string): string {
+  return (
+    str
+      .normalize("NFKD")
+      // Remove accents
+      .replace(rCombining, "")
+      // Remove control characters
+      .replace(rControl, "")
+      // Replace special characters
+      .replace(rSpecial, "-")
+      // Remove continuos separators
+      .replace(/-{2,}/g, "-")
+      // Remove prefixing and trailing separators
+      .replace(/^-+|-+$/g, "")
+      // ensure it doesn't start with a number (#121)
+      .replace(/^(\d)/, "_$1")
+      // lowercase
+      .toLowerCase()
+  )
+}
+
 const SearchItemHeader = ({
   title,
   path,
   source,
   tags,
+  chunkTitle
 }: {
   title: string;
   path: string;
   source: string;
   tags: string[];
+  chunkTitle: string;
 }) => {
   const urlFormatter = () => {
-    path = path.startsWith("https://") ? path : `https://${path}`;
-    path = path.endsWith(".md") ? path.split(".md").slice(0, -1).join(".md") : path;
-    path = path.endsWith("/index") ? path.split("/index").slice(0, -1).join("/index") : path;
+    if (source === "bookstack") {
+      path = path + "#" + ("bkmrk-" + chunkTitle).substring(0, 26).toLowerCase()
+      return path
+    }
+
+    const docs = [
+      "creators.vrchat.com",
+      "docs.vrchat.com",
+      "udonsharp.docs.vrchat.com",
+      "vcc.docs.vrchat.com",
+      "clientsim.docs.vrchat.com"
+    ]
+
+    if (docs.includes(source)) {
+      path = (
+        "https://docs.vrczh.org/" +
+        path.replace(".md", "") +
+        "#" +
+        slugify(chunkTitle)
+      )
+
+      return path;
+    }
+
     return path;
   }
 
@@ -108,6 +157,7 @@ const SearchItemHeader = ({
             {tag}
           </Badge>
         ))}
+        <Badge variant="outline">来源: {source}</Badge>
       </div>
     </div>
   );
@@ -124,6 +174,7 @@ const SearchItem = ({ hit }: SearchItemProps) => {
           path={extra.path}
           source={extra.source}
           tags={extra.tags}
+          chunkTitle={chunk.title}
         />
         <div
           className="max-h-[180px] overflow-y-hidden prose prose-sm dark:prose-invert"
