@@ -1,49 +1,30 @@
-import { User2 } from "lucide-react"
-import { getLogtoContext, signIn, signOut } from "@logto/next/server-actions";
+import SignIn from "@/components/Logto/SignIn";
+import { getLogtoContext, signIn } from "@logto/next/server-actions";
 import { logtoConfig } from "@/lib/config";
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
+import { User2 } from "lucide-react";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 export async function User() {
   const { isAuthenticated, claims } = await getLogtoContext(logtoConfig);
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
+    isAuthenticated ? (
+      <Button
+        variant="ghost"
+        className="h-8 hover:scale-110 active:scale-90 transition-transform duration-200"
+        asChild
+      >
+        <Link href={`/profile/${claims?.sub!}`}>
           <User2 />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        {
-          isAuthenticated ? (
-            <>
-              <DropdownMenuItem>
-                <p>欢迎 {claims?.username || claims?.sub}</p>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/edit">编辑资料</Link>
-              </DropdownMenuItem>
-            </>
-          ) : (
-            <DropdownMenuItem
-              onClick={async () => {
-                'use server';
-
-                await signIn(logtoConfig);
-              }}
-            >
-              登录
-            </DropdownMenuItem>
-          )
-        }
-      </DropdownMenuContent>
-    </DropdownMenu>
+          个人资料
+        </Link>
+      </Button>
+    ) : (
+      <SignIn onSignIn={async () => {
+        "use server";
+        await signIn(logtoConfig)
+      }} />
+    )
   )
 }
