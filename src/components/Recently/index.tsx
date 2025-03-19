@@ -9,7 +9,7 @@ const getRecently = async () => {
     description: `更新于 ${new Date(item.updated_at).toLocaleDateString()}`,
     icon: BookMarked,
     color: "#867CAC",
-    link: `https://docs.vrcd.org.cn/books/${item.book_slug}/${item.slug}`
+    link: `https://docs.vrcd.org.cn/books/${item.book_slug}/page/${item.slug}`
   }))
 }
 
