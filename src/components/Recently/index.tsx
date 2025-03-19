@@ -6,7 +6,7 @@ const getRecently = async () => {
   const data = await db.BookStack_Pages.select("*").orderBy("updated_at", "desc").limit(10);
   return data.map((item) => ({
     title: item.name,
-    description: `更新于 ${new Date(item.updated_at).toLocaleDateString()}`,
+    description: `更新于 ${new Date(item.updated_at).toLocaleDateString("zh-CN")}`,
     icon: BookMarked,
     color: "#867CAC",
     link: `https://docs.vrcd.org.cn/books/${item.book_slug}/page/${item.slug}`
