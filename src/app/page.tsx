@@ -1,8 +1,12 @@
 import Link from "next/link";
+import NextImage from "next/image";
+
+import IntroImage from "@/assets/VRChat_2024-06-28_22-08-36.941_3840x2160.png"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, BookMarked, Database, FileText, BookOpen, ChevronRight, Goal } from "lucide-react";
 import Recently from "@/components/Recently";
+import LeaderboardPage from "@/components/Leaderboard";
 
 const AppCard = ({ title, description, icon: Icon, color, link }: any) => {
   return (
@@ -93,6 +97,24 @@ export default async function Home() {
       <div className="w-full max-w-6xl mt-16">
         <h1 className="text-4xl font-bold text-foreground mb-2">最近更新</h1>
         <Recently />
+      </div>
+
+      <div className="w-full max-w-6xl mt-16 flex flex-col md:flex-row gap-8">
+        <div className="flex-2/5 relative">
+          <div className="max-h-[490px] overflow-y-scroll scrollbar-hide">
+            <LeaderboardPage />
+          </div>
+          <div className={`absolute left-0 right-0 bottom-0 h-20 bg-gradient-to-t dark:from-[#0C0A09] from-[#FFFFFF] to-transparent`} />
+        </div>
+        <div className="flex flex-3/5 flex-col mt-3 gap-4 rounded-xl">
+          <h1 className="text-4xl font-bold text-foreground mb-2">我们是谁？</h1>
+          <NextImage src={IntroImage} alt="Intro" className="rounded-xl" />
+          <div>
+            <p>我们运营一个面向玩家，内容创作者与开发者的 中文VR创作社区⁄开源内容分享平台。</p>
+            <p>为你的创作提供教程、汉化文档、官方资讯、社区帮助。</p>
+            <p>我们定期运营⁄举办创作者活动。</p>
+          </div>
+        </div>
       </div>
     </div>
   );
