@@ -27,50 +27,87 @@ const AppCard = ({ title, description, icon: Icon, color, link }: any) => {
   );
 };
 
-export default async function Home() {
-  const apps = [{
-    title: "VRChat 汉化文档",
-    description: "VRChat 官方文档的汉化项目",
-    icon: BookMarked,
-    color: "#24BC9C",
-    link: "https://docs.vrczh.org/",
-  }, {
-    title: "VRChat 入门包",
-    description: "带你零基础学习制作虚拟角色",
-    icon: Goal,
-    color: "#F0D826",
-    link: "https://docs.vrcd.org.cn/books/vrchat",
-  }, {
-    title: "VPM 镜像库",
-    description: "分流镜像，更便捷的 VPM 加速",
-    icon: Database,
-    color: "#1E80A0",
-    link: "https://vcc.vrczh.org/",
-  }, {
-    title: "VRCD 论坛",
-    description: "深入了解 VRCD 和常见服务",
-    icon: FileText,
-    color: "#4C8045",
-    link: "https://bbs.vrcd.org.cn/",
-  }, {
-    title: "文档库",
-    description: "教程、开发、开源项目等资源汇总",
-    icon: BookOpen,
-    color: "#867CAC",
-    link: "https://docs.vrcd.org.cn/",
-  }, {
-    title: "VRCD Wiki",
-    description: "深入了解 VRCD 和配置服务",
-    icon: BookOpen,
-    color: "#BFC49F",
-    link: "https://wiki.vrcd.org.cn/",
-  }]
+const apps = [{
+  title: "VRChat 汉化文档",
+  description: "VRChat 官方文档的汉化项目",
+  icon: BookMarked,
+  color: "#24BC9C",
+  link: "https://docs.vrczh.org/",
+}, {
+  title: "VRChat 入门包",
+  description: "带你零基础学习制作虚拟角色",
+  icon: Goal,
+  color: "#F0D826",
+  link: "https://docs.vrcd.org.cn/books/vrchat",
+}, {
+  title: "VPM 镜像库",
+  description: "分流镜像，更便捷的 VPM 加速",
+  icon: Database,
+  color: "#1E80A0",
+  link: "https://vcc.vrczh.org/",
+}, {
+  title: "VRCD 论坛",
+  description: "深入了解 VRCD 和常见服务",
+  icon: FileText,
+  color: "#4C8045",
+  link: "https://bbs.vrcd.org.cn/",
+}, {
+  title: "文档库",
+  description: "教程、开发、开源项目等资源汇总",
+  icon: BookOpen,
+  color: "#867CAC",
+  link: "https://docs.vrcd.org.cn/",
+}, {
+  title: "VRCD Wiki",
+  description: "深入了解 VRCD 和配置服务",
+  icon: BookOpen,
+  color: "#BFC49F",
+  link: "https://wiki.vrcd.org.cn/",
+}]
 
+const getTitle = () => {
+  const list = [
+    "重庆火锅吃得屁股痛痛💨",
+    "奶酪是天下第一美食！🧀",
+    "什么时候才能盼到天亮🐀",
+    "You Look Lonely👁👄👁",
+    "我们有VRC最全的文档！",
+    "Unity 报错不用怕。。呜",
+    "一起...组一辈子乐队！🎸",
+    "我是来结束乐队的！",
+    "saki酱saki酱saki酱uwu",
+    "小猫你可以吃抹茶芭菲",
+    "我的C和弦怎么样～",
+    "Linux全名为GNU/Linux",
+    "virtual意为真实也为虚拟",
+    "NullPointerException",
+    "Upload failed!",
+    "其实VRC有拟真画质地图",
+    "子级的子级物体是什么？",
+    "有人要来玩 Basis 吗～",
+    "祥，移动",
+    "为什么要演奏春日影？",
+    "iprem",
+    "我明明是来结束乐队的",
+    "等待VRC出现RTX选项",
+    "醒啦？RTX9090出来了",
+    "睦子米没有错哦",
+    "哇袄！！！！！！！！！",
+  ]
+
+  if (Math.random() <= 0.75) {
+    return "虚拟现实中文开发者社区"
+  }
+
+  return list[Math.floor(Math.random() * list.length)]
+}
+
+export default async function Home() {
   return (
     <div className="w-full min-h-[calc(100vh-120px)] mt-8 flex flex-col items-center p-8 bg-background">
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-10">
         <div className="flex-5/6">
-          <h1 className="text-4xl font-bold text-foreground mb-2">虚拟现实中文开发者社区</h1>
+          <h1 className="text-4xl font-bold text-foreground mb-2">{getTitle()}</h1>
           <p className="text-muted-foreground mb-8">——酷酷的鼠鼠</p>
 
           {/* 搜索框 */}
