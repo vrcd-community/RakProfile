@@ -107,7 +107,7 @@ export default async function Home() {
           <div className={`absolute left-0 right-0 bottom-0 h-20 bg-gradient-to-t dark:from-[#0C0A09] from-[#FFFFFF] to-transparent`} />
         </div>
         <div className="flex flex-3/5 flex-col mt-3 gap-4 rounded-xl">
-          <h1 className="text-4xl font-bold text-foreground mb-2">我们是谁？</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">我们是谁？</h1>
           <NextImage src={IntroImage} alt="Intro" className="rounded-xl" />
           <div>
             <p>我们运营一个面向玩家，内容创作者与开发者的 中文VR创作社区⁄开源内容分享平台。</p>
