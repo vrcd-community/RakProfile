@@ -77,7 +77,7 @@ export default async function UserProfilePage({ id, edit }: { id: string, edit: 
           user={{
             nickname: LogtoUser.name,
             avatar: LogtoUser.avatar,
-            bio: LogtoUser.custom_data.bio
+            bio: (LogtoUser.custom_data.bio || "")
           }}
           edit={edit}
           id={id} 
