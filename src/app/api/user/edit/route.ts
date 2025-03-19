@@ -27,13 +27,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const nameCensorResult = await censor(parsedBody.data.nickname);
-
-    if (nameCensorResult.pass === false) {
-      return NextResponse.json({ message: `昵称不合法: ${nameCensorResult.message}` });
-    }
-
     const bioCensorResult = parsedBody.data.bio ? await censor(parsedBody.data.bio) : { pass: true, message: "" };
+
+    console.log(`[api/user/edit] bio: ${JSON.stringify(parsedBody.data.bio)}, result: ${JSON.stringify(bioCensorResult)}`)
 
     if (parsedBody.data.bio && bioCensorResult.pass === false) {
       return NextResponse.json({ message: `个人简介不合法: ${bioCensorResult.message}` });
