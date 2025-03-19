@@ -82,11 +82,18 @@ const SearchItemHeader = ({
   source: string;
   tags: string[];
 }) => {
+  const urlFormatter = () => {
+    path = path.startsWith("https://") ? path : `https://${path}`;
+    path = path.endsWith(".md") ? path.split(".md").slice(0, -1).join(".md") : path;
+    path = path.endsWith("/index") ? path.split("/index").slice(0, -1).join("/index") : path;
+    return path;
+  }
+
   return (
     <div className="flex items-start justify-between">
       <div>
         <Link
-          href={path}
+          href={urlFormatter()}
           target="_blank"
           className="text-xl font-semibold hover:text-primary flex items-center gap-2"
         >
