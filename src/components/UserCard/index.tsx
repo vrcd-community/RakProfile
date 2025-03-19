@@ -9,6 +9,9 @@ import { ErrorCard } from "./components/ErrorCard";
 import { UserProfile } from "./components/UserProfile";
 import { BookStackStats } from "./components/BookStackStats";
 
+import { getLogtoContext } from "@logto/next/server-actions";
+import { logtoConfig } from "@/lib/config";
+
 const numberFormat = (number: number) => {
   if (number >= 1000000) {
     return (number / 1000000).toFixed(1) + 'M';
@@ -20,6 +23,8 @@ const numberFormat = (number: number) => {
 }
 
 export default async function UserProfilePage({ id, edit }: { id: string, edit: boolean }) {
+  const { isAuthenticated, claims } = await getLogtoContext(logtoConfig);
+
   const { LogtoUser, BookStackUser, BookStackBooks, BookStackPages, editedBooks, totalChars, errors } = await useUserData(id);
 
   if (!LogtoUser || !BookStackUser) {
@@ -79,7 +84,7 @@ export default async function UserProfilePage({ id, edit }: { id: string, edit: 
             avatar: LogtoUser.avatar,
             bio: (LogtoUser.custom_data.bio || "")
           }}
-          edit={edit}
+          edit={edit && isAuthenticated && claims?.sub === id}
           id={id} 
         />
         <Separator />
