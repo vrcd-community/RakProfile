@@ -119,7 +119,7 @@ export function UserProfile({ user, edit }: UserProfileProps) {
                     </Tabs>
                     <p className="text-xs text-gray-500 mt-2">
                       {
-                        bio.length > 500 ?
+                        (bio && bio.length || 0) > 500 ?
                           <span className="text-red-500">字数超过限制</span>
                           :
                           <span className="text-gray-500">字数: {bio.length}/500 (支持Markdown格式, 支持GFM)</span>
