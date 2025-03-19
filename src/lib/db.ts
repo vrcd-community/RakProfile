@@ -23,11 +23,18 @@ export const UserLinkSchema = z.object({
 
 export type UserLink = z.infer<typeof UserLinkSchema>;
 
-await pg.schema.createTableIfNotExists("user_link", (table) => {
-  table.text("logto_id").primary();
-  table.text("platform");
-  table.text("platform_id");
-})
+if (!await pg.schema.hasTable("user_link")) {
+  await pg.schema.createTable("user_link", (table) => {
+    table.text("logto_id").primary();
+    table.text("platform");
+    table.text("platform_id");
+  });
+  
+  // 为 platform 和 platform_id 创建联合索引，因为经常一起查询
+  await pg.schema.alterTable("user_link", (table) => {
+    table.index(["platform", "platform_id"]);
+  });
+}
 
 // ==== USER ====
 
@@ -35,15 +42,27 @@ export const UserSchema = z.object({
   logto_id: z.string().min(1),
   avatar: z.string().min(1),
   name: z.string().min(1),
+  custom_data: z.string(),
 })
 
 export type User = z.infer<typeof UserSchema>;
 
-await pg.schema.createTableIfNotExists("user", (table) => {
-  table.text("logto_id").primary();
-  table.text("avatar");
-  table.text("name");
-})
+if (!await pg.schema.hasTable("user")) {
+  await pg.schema.createTable("user", (table) => {
+    table.text("logto_id").primary();
+    table.text("avatar");
+    table.text("name");
+    table.text("custom_data");
+  });
+
+  // 为 name 创建索引，因为可能会按名字搜索
+  await pg.schema.alterTable("user", (table) => {
+    table.index(["name"]);
+    table.index(["logto_id"]);
+  });
+}
+
+// ==== BOOKSTACK BOOKS ====
 
 export const BookStack_BooksSchema = z.object({
   id: z.number(),
@@ -60,18 +79,31 @@ export const BookStack_BooksSchema = z.object({
 
 export type BookStack_Books = z.infer<typeof BookStack_BooksSchema>;
 
-await pg.schema.createTableIfNotExists("bookstack_books", (table) => {
-  table.integer("id").primary();
-  table.text("slug");
-  table.text("name");
-  table.text("description");
-  table.date("created_at");
-  table.date("updated_at");
-  table.integer("owned_by");
-  table.integer("created_by");
-  table.integer("updated_by");
-  table.text("cover_url");
-})
+if (!await pg.schema.hasTable("bookstack_books")) {
+  await pg.schema.createTable("bookstack_books", (table) => {
+    table.integer("id").primary();
+    table.text("slug");
+    table.text("name");
+    table.text("description");
+    table.date("created_at");
+    table.date("updated_at");
+    table.integer("owned_by");
+    table.integer("created_by");
+    table.integer("updated_by");
+    table.text("cover_url");
+  });
+
+  // 为常用查询字段创建索引
+  await pg.schema.alterTable("bookstack_books", (table) => {
+    table.index(["slug"]); // 用于URL路由
+    table.index(["name"]); // 用于搜索
+    table.index(["owned_by"]); // 用于查询用户的书籍
+    table.index(["created_by"]); // 用于查询用户创建的书籍
+    table.index(["created_at"]); // 用于时间排序
+  });
+}
+
+// ==== BOOKSTACK PAGES ====
 
 export const BookStack_PagesSchema = z.object({
   name: z.string().min(1),
@@ -95,31 +127,44 @@ export const BookStack_PagesSchema = z.object({
 
 export type BookStack_Pages = z.infer<typeof BookStack_PagesSchema>;
 
-await pg.schema.createTableIfNotExists("bookstack_pages", (table) => {
-  table.text("name");
-  table.integer("id").primary();
-  table.text("slug");
-  table.integer("book_id");
-  table.integer("chapter_id");
-  table.boolean("draft");
-  table.boolean("template");
-  table.date("created_at");
-  table.date("updated_at");
-  table.integer("priority");
-  table.integer("owned_by");
-  table.text("book_slug");
-  table.integer("created_by");
-  table.integer("updated_by");
-  table.integer("revision_count");
-  table.text("editor");
-  table.integer("chars");
-})
+if (!await pg.schema.hasTable("bookstack_pages")) {
+  await pg.schema.createTable("bookstack_pages", (table) => {
+    table.text("name");
+    table.integer("id").primary();
+    table.text("slug");
+    table.integer("book_id");
+    table.integer("chapter_id");
+    table.boolean("draft");
+    table.boolean("template");
+    table.date("created_at");
+    table.date("updated_at");
+    table.integer("priority");
+    table.integer("owned_by");
+    table.text("book_slug");
+    table.integer("created_by");
+    table.integer("updated_by");
+    table.integer("revision_count");
+    table.text("editor");
+    table.integer("chars");
+  });
+
+  // 为常用查询字段创建索引
+  await pg.schema.alterTable("bookstack_pages", (table) => {
+    table.index(["slug"]); // 用于URL路由
+    table.index(["book_id"]); // 用于查询书籍的页面
+    table.index(["chapter_id"]); // 用于查询章节的页面
+    table.index(["created_by"]); // 用于查询用户创建的页面
+    table.index(["book_slug"]); // 用于URL路由和关联查询
+    table.index(["created_at"]); // 用于时间排序
+    table.index(["draft", "template"]); // 用于筛选草稿和模板
+  });
+}
 
 export const db = {
   get UserLink() {
     return pg<UserLink>("user_link");
   },
-  
+
   get User() {
     return pg<User>("user");
   },

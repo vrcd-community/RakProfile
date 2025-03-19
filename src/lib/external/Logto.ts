@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Cache from '../cache'
+import { db } from '../db';
 
 const accessTokenCache = new Cache();
 const apiResponseCache = new Cache(); // 新增 API 响应缓存
@@ -137,5 +138,16 @@ export class Logto {
   static async updateUser(id: string, data: UpdateUserRequest): Promise<UserResponse> {
     const client = await getLogtoClient();
     return await client.logtoClient.patch(`api/users/${id}`, data);
+  }
+
+  static async UpdateCustomData(id: string, customData: Record<string, unknown>) {
+    const currentData = await Logto.getUser(id);
+    const currentCustomData = currentData.customData || {};
+    const newData = Object.assign(currentCustomData, customData);
+    
+    await Logto.updateUser(id, { customData: newData });
+    await db.User.where("logto_id", id).update("custom_data", JSON.stringify(newData));
+
+    return newData;
   }
 }

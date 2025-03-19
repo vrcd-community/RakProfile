@@ -59,7 +59,7 @@ const sync = async () => {
     console.log(`[${new Date().toISOString()}][BookStack] Syncing page ${page.name}(${page.id}) ...`)
 
     try {
-      await sleep(2000)
+      await sleep(1000)
 
       const pageItem = await BookStack.pageRead(page.id)
       const content = htmlFilter(pageItem.raw_html)
@@ -125,11 +125,13 @@ const sync = async () => {
             logto_id: logtoUser.id,
             name: user.name || logtoUser.username,
             avatar: logtoUser.avatar,
+            custom_data: JSON.stringify(logtoUser.customData)
           })
         } else {
           await db.User.where("logto_id", logtoUser.id).update({
             name: user.name || logtoUser.username,
             avatar: logtoUser.avatar,
+            custom_data: JSON.stringify(logtoUser.customData)
           })
         }
 

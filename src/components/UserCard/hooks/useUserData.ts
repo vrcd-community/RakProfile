@@ -1,7 +1,6 @@
 'use server';
 
 import { db } from "@/lib/db";
-import { Logto } from "@/lib/external/Logto";
 
 export interface UserData {
   LogtoUser: any;
@@ -28,10 +27,12 @@ export async function useUserData(id: string): Promise<UserData> {
   let editedBooksError: any = null;
 
   try {
-    LogtoUser = await Logto.getUser(id);
+    LogtoUser = await db.User.where("logto_id", id).first();
     if (!LogtoUser) {
       throw new Error("User not found");
     }
+
+    LogtoUser.custom_data = JSON.parse(LogtoUser.custom_data || "{}");
   } catch (error) {
     console.error("Failed to fetch user from database:", error);
     logtoUserError = error;

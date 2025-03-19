@@ -8,7 +8,7 @@ import { db } from "@/lib/db";
 
 const editUserSchema = z.object({
   nickname: z.string().min(1).max(20),
-  bio: z.string().max(100).optional(),
+  bio: z.string().max(500).optional(),
 })
 
 export async function POST(request: NextRequest) {
@@ -29,17 +29,16 @@ export async function POST(request: NextRequest) {
   try {
     const bioCensorResult = parsedBody.data.bio ? await censor(parsedBody.data.bio) : { pass: true, message: "" };
 
-    console.log(`[api/user/edit] bio: ${JSON.stringify(parsedBody.data.bio)}, result: ${JSON.stringify(bioCensorResult)}`)
-
     if (parsedBody.data.bio && bioCensorResult.pass === false) {
       return NextResponse.json({ message: `个人简介不合法: ${bioCensorResult.message}` });
     }
 
     await Logto.updateUser(claims?.sub!, {
-      name: parsedBody.data.nickname,
-      customData: {
-        ...(parsedBody.data.bio ? { bio: parsedBody.data.bio } : {}),
-      }
+      name: parsedBody.data.nickname
+    })
+
+    await Logto.UpdateCustomData(claims?.sub!, {
+      bio: parsedBody.data.bio
     })
 
     await db.User.where("logto_id", claims?.sub!).update({
