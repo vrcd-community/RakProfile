@@ -5,9 +5,7 @@ import { Search as SearchIcon } from "lucide-react";
 
 export default async function SearchPage({
   searchParams,
-}: {
-  searchParams: { q?: string };
-}) {
+}: any) {
   const awaitedSearchParams = await searchParams;
   const query = awaitedSearchParams.q;
 
