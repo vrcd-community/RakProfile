@@ -4,6 +4,7 @@ import { logtoConfig } from "@/lib/config";
 import { getLogtoContext } from "@logto/next/server-actions";
 import { Logto } from "@/lib/external/Logto";
 import { censor } from "@/lib/external/SiliconFlow";
+import { db } from "@/lib/db";
 
 const editUserSchema = z.object({
   nickname: z.string().min(1).max(20),
@@ -43,6 +44,10 @@ export async function POST(request: NextRequest) {
       customData: {
         ...(parsedBody.data.bio ? { bio: parsedBody.data.bio } : {}),
       }
+    })
+
+    await db.User.where("logto_id", claims?.sub!).update({
+      name: parsedBody.data.nickname,
     })
 
     return NextResponse.json({ message: "修改成功", success: true });
