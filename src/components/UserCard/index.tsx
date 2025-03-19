@@ -19,7 +19,7 @@ const numberFormat = (number: number) => {
   }
 }
 
-export default async function UserProfilePage({ id }: { id: string }) {
+export default async function UserProfilePage({ id, edit }: { id: string, edit: boolean }) {
   const { LogtoUser, BookStackUser, BookStackBooks, BookStackPages, editedBooks, totalChars, errors } = await useUserData(id);
 
   if (!LogtoUser || !BookStackUser) {
@@ -75,9 +75,11 @@ export default async function UserProfilePage({ id }: { id: string }) {
       <Card className="w-full">
         <UserProfile 
           user={{
-            name: LogtoUser.name,
-            avatar: LogtoUser.avatar
-          }} 
+            nickname: LogtoUser.name,
+            avatar: LogtoUser.avatar,
+            bio: LogtoUser.customData?.bio
+          }}
+          edit={edit}
           id={id} 
         />
         <Separator />

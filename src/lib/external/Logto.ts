@@ -42,12 +42,12 @@ const getLogtoClient = async () => {
   };
 
   return { // 返回包含 cachedGet 方法的客户端
-    ...logtoClient,
+    logtoClient,
     cachedGet,
   };
 }
 
-interface GetUserResponse {
+interface UserResponse {
   id: string
   username: string
   primaryEmail: string
@@ -98,9 +98,44 @@ interface GetUserResponse {
   }[]
 }
 
+interface UpdateUserRequest {
+  username?: string,
+  primaryEmail?: string,
+  primaryPhone?: string,
+  name?: string,
+  avatar?: string,
+  customData?: Record<string, unknown>,
+  profile?: {
+    familyName?: string,
+    givenName?: string,
+    middleName?: string,
+    nickname?: string,
+    preferredUsername?: string,
+    profile?: string,
+    website?: string,
+    gender?: string,
+    birthdate?: string,
+    zoneinfo?: string,
+    locale?: string,
+    address?: {
+      formatted?: string,
+      streetAddress?: string,
+      locality?: string,
+      region?: string,
+      postalCode?: string,
+      country?: string
+    }
+  }
+}
+
 export class Logto {
-  static async getUser (id: string) {
+  static async getUser(id: string) {
     const client = await getLogtoClient(); // 获取包含 cachedGet 的客户端
-    return await client.cachedGet<GetUserResponse>(`api/users/${id}`); // 使用 cachedGet 方法
+    return await client.cachedGet<UserResponse>(`api/users/${id}`); // 使用 cachedGet 方法
+  }
+
+  static async updateUser(id: string, data: UpdateUserRequest): Promise<UserResponse> {
+    const client = await getLogtoClient();
+    return await client.logtoClient.patch(`api/users/${id}`, data);
   }
 }
