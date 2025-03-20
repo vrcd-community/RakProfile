@@ -31,9 +31,13 @@ interface UserProfileProps {
   };
   id: string;
   edit: boolean;
+  customData: Record<string, any>;
+  admin: boolean
 }
 
-export function UserProfile({ user, edit }: UserProfileProps) {
+export function UserProfile({ user, edit, customData, admin }: UserProfileProps) {
+  console.log(`isAdmin: ${admin}, custom_data: ${customData}`)
+
   const [name, setName] = useState(user.nickname);
   const [bio, setBio] = useState(user.bio);
   const [loading, setLoading] = useState(false);
@@ -92,6 +96,21 @@ export function UserProfile({ user, edit }: UserProfileProps) {
         </div>
       </CardHeader>
       <Separator />
+      {
+        admin && (
+          <>
+            <CardContent className="grid gap-6">
+              <div>
+                <CardTitle className="text-lg">!!!Admin Only!!!</CardTitle>
+                <div className="mt-2">
+                  <Textarea defaultValue={JSON.stringify(JSON.parse(customData['censor.bio']), null, 2)} />
+                </div>
+              </div>
+            </CardContent>
+            <Separator />
+          </>
+        )
+      }
       <CardContent className="grid gap-6">
         <div>
           <CardTitle className="text-lg">个人介绍</CardTitle>

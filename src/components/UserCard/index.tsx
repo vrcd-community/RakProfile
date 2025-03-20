@@ -94,6 +94,8 @@ export default async function UserProfilePage({ id, edit }: { id: string, edit: 
             avatar: LogtoUser.avatar,
             bio: (LogtoUser.custom_data.bio || "")
           }}
+          admin={claims?.roles?.includes("RakAdmin") || false}
+          customData={LogtoUser.custom_data}
           edit={edit && (claims?.roles?.includes("RakAdmin") || (isAuthenticated && claims?.sub === id))}
           id={id}
         />

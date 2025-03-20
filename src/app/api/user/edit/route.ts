@@ -23,6 +23,8 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const parsedBody = editUserSchema.safeParse(body);
 
+  let sub = claims?.sub;
+
   if (!parsedBody.success) {
     return NextResponse.json({ message: "参数错误", error: parsedBody.error });
   }
@@ -33,12 +35,11 @@ export async function POST(request: NextRequest) {
     if (!parsedBody.data?.uid) {
       return NextResponse.json({ message: "参数错误", error: "uid is required" });
     } else {
-      // @ts-ignore
-      claims?.sub = parsedBody.data.uid
+      sub = parsedBody.data.uid
     }
   }
 
-  if (claims?.sub !== parsedBody.data?.uid) {
+  if (sub !== parsedBody.data?.uid) {
     return NextResponse.json({ message: "权限不足" });
   }
 
@@ -46,19 +47,19 @@ export async function POST(request: NextRequest) {
     const bioCensorResult = (parsedBody.data.bio && !isAdmin) ? await censor(parsedBody.data.bio) : { pass: true, message: "" };
 
     if (parsedBody.data.bio && bioCensorResult.pass === false) {
-      return NextResponse.json({ message: `个人简介不合法: ${bioCensorResult.message}` });
+      return NextResponse.json({ message: "个人简介不合法" });
     }
 
-    await Logto.updateUser(claims?.sub!, {
+    await Logto.updateUser(sub, {
       name: parsedBody.data.nickname
     })
 
-    await Logto.UpdateCustomData(claims?.sub!, {
+    await Logto.UpdateCustomData(sub, {
       bio: parsedBody.data.bio,
       "censor.bio": JSON.stringify(bioCensorResult)
     })
 
-    await db.User.where("logto_id", claims?.sub!).update({
+    await db.User.where("logto_id", sub).update({
       name: parsedBody.data.nickname,
     })
 
