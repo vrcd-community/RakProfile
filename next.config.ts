@@ -1,8 +1,19 @@
-import type { NextConfig } from "next";
+import createMDX from '@next/mdx';
+import gfm from "remark-gfm"
+import highlight from "rehype-highlight"
+import remarkFrontmatter from 'remark-frontmatter'
 
-const nextConfig: NextConfig = {
-  /* config options here */
-  serverExternalPackages: ["knex"]
-};
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  serverExternalPackages: ["knex"],
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx']
+}
 
-export default nextConfig;
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [gfm, remarkFrontmatter],
+    rehypePlugins: [highlight]
+  }
+})
+
+export default withMDX(nextConfig)

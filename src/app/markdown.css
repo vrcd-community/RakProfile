@@ -106,7 +106,7 @@
   overflow: hidden;
   background: transparent;
   border-bottom: 1px solid var(--border);
-  height: .25em;
+  height: 1px;
   padding: 0;
   margin: 24px 0;
   background-color: var(--border);
@@ -244,6 +244,11 @@
   margin-top: 0;
   margin-bottom: 0;
   padding-left: 2em;
+  list-style: disc;
+}
+
+.markdown-root ol {
+  list-style: decimal;
 }
 
 .markdown-root ol ol,

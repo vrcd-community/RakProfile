@@ -1,0 +1,44 @@
+---
+title: 示例文章标题
+date: 2024-01-01
+description: 这是一篇示例文章的描述
+tags: ['示例', 'MDX', '文档']
+---
+
+## Code Block Test
+```typescript
+import CreateMDX from "@next/mdx";
+import gfm from "remark-gfm";
+import highlight from "rehype-highlight";
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  serverExternalPackages: ["knex"],
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+};
+
+const withMDX = CreateMDX({
+  options: {
+    remarkPlugins: [gfm],
+    rehypePlugins: [highlight],
+  },
+});
+
+export default withMDX(nextConfig);
+```
+
+## GFM Test
+- List item 1
+- List item 2
+- List item 3
+
+---
+
+1. List item 1
+2. List item 2
+3. List item 3
+
+---
+
+- [ ] Checkbox item 1
+- [x] Checkbox item 2
