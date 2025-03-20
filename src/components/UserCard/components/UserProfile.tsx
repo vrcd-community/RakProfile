@@ -103,7 +103,7 @@ export function UserProfile({ user, edit, customData, admin }: UserProfileProps)
               <div>
                 <CardTitle className="text-lg">!!!Admin Only!!!</CardTitle>
                 <div className="mt-2">
-                  <Textarea defaultValue={JSON.stringify(JSON.parse(customData['censor.bio']), null, 2)} />
+                  <Textarea defaultValue={customData['censor.bio'] ? JSON.stringify(JSON.parse(customData['censor.bio']), null, 2) : "[无数据]"} readOnly/>
                 </div>
               </div>
             </CardContent>
