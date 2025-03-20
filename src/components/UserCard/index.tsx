@@ -29,67 +29,77 @@ export default async function UserProfilePage({ id, edit }: { id: string, edit: 
 
   if (!LogtoUser || !BookStackUser) {
     if (!LogtoUser && !BookStackUser) {
-      return <ErrorCard 
-        title="加载用户数据失败" 
-        description={`无法找到与ID ${id} 相关的用户信息。`} 
+      return <ErrorCard
+        title="加载用户数据失败"
+        description={`无法找到与ID ${id} 相关的用户信息。`}
       />;
     }
     if (!LogtoUser) {
-      return <ErrorCard 
-        title="加载用户信息失败" 
-        description="无法加载用户信息，请稍后重试。" 
-        error={errors.logtoUserError} 
+      return <ErrorCard
+        title="加载用户信息失败"
+        description="无法加载用户信息，请稍后重试。"
+        error={errors.logtoUserError}
       />;
     }
     if (!BookStackUser) {
-      return <ErrorCard 
-        title="加载文档库用户信息失败" 
-        description="无法加载文档库用户信息，请稍后重试。" 
-        error={errors.bookStackUserError} 
+      return <ErrorCard
+        title="加载文档库用户信息失败"
+        description="无法加载文档库用户信息，请稍后重试。"
+        error={errors.bookStackUserError}
       />;
     }
     return notFound();
   }
 
   if (errors.bookStackBooksError) {
-    return <ErrorCard 
-      title="加载文档库书籍信息失败" 
-      description="无法加载文档库书籍信息，书籍列表可能无法显示。" 
-      error={errors.bookStackBooksError} 
+    return <ErrorCard
+      title="加载文档库书籍信息失败"
+      description="无法加载文档库书籍信息，书籍列表可能无法显示。"
+      error={errors.bookStackBooksError}
     />;
   }
 
   if (errors.bookStackPagesError) {
-    return <ErrorCard 
-      title="加载文档库页面信息失败" 
-      description="无法加载文档库页面信息，页面列表可能无法显示。" 
-      error={errors.bookStackPagesError} 
+    return <ErrorCard
+      title="加载文档库页面信息失败"
+      description="无法加载文档库页面信息，页面列表可能无法显示。"
+      error={errors.bookStackPagesError}
     />;
   }
 
   if (errors.editedBooksError) {
-    return <ErrorCard 
-      title="加载参与编辑的书籍信息失败" 
-      description="无法加载参与编辑的书籍信息，书籍列表可能无法显示。" 
-      error={errors.editedBooksError} 
+    return <ErrorCard
+      title="加载参与编辑的书籍信息失败"
+      description="无法加载参与编辑的书籍信息，书籍列表可能无法显示。"
+      error={errors.editedBooksError}
     />;
   }
 
   return (
     <div className="container max-w-4xl mx-auto py-10">
+      {
+        claims?.roles?.includes("RakAdmin") && claims?.sub !== id && edit && (
+          <>
+            <div className="p-4">
+              <p className="text-sm text-red-500 text-center">您正在作为管理员强制编辑用户信息，请谨慎操作</p>
+            </div>
+          </>
+        )
+      }
       <Card className="w-full">
-        <UserProfile 
+        <UserProfile
           user={{
+            uid: LogtoUser.logto_id,
             nickname: LogtoUser.name,
             avatar: LogtoUser.avatar,
             bio: (LogtoUser.custom_data.bio || "")
           }}
-          edit={edit && isAuthenticated && claims?.sub === id}
-          id={id} 
+          edit={edit && (claims?.roles?.includes("RakAdmin") || (isAuthenticated && claims?.sub === id))}
+          id={id}
         />
         <Separator />
         <CardContent className="grid gap-6">
-          <BookStackStats 
+          <BookStackStats
             stats={{
               booksCount: BookStackBooks.length,
               editedBooksCount: editedBooks.length,

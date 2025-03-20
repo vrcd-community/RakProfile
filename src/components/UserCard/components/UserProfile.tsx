@@ -24,6 +24,7 @@ import "@/app/markdown.css"
 
 interface UserProfileProps {
   user: {
+    uid: string;
     nickname: string;
     avatar: string;
     bio: string;
@@ -45,6 +46,7 @@ export function UserProfile({ user, edit }: UserProfileProps) {
     setLoading(true);
     try {
       const respose = await axios.post(`/api/user/edit`, {
+        uid: user.uid,
         nickname: name,
         bio: bio,
       });

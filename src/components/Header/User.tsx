@@ -23,7 +23,10 @@ export async function User() {
     ) : (
       <SignIn onSignIn={async () => {
         "use server";
-        await signIn(logtoConfig)
+        await signIn({
+          ...logtoConfig,
+          scopes: ["custom_data", "roles", "openid", "profile"]
+        })
       }} />
     )
   )

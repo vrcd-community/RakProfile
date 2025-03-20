@@ -7,6 +7,7 @@ import { censor } from "@/lib/external/SiliconFlow";
 import { db } from "@/lib/db";
 
 const editUserSchema = z.object({
+  uid: z.string(),
   nickname: z.string().min(1).max(20),
   bio: z.string().max(500).optional(),
 })
@@ -26,8 +27,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "参数错误", error: parsedBody.error });
   }
 
+  const isAdmin = claims?.roles?.includes("RakAdmin")
+
+  if (isAdmin) {
+    if (!parsedBody.data?.uid) {
+      return NextResponse.json({ message: "参数错误", error: "uid is required" });
+    } else {
+      // @ts-ignore
+      claims?.sub = parsedBody.data.uid
+    }
+  }
+
+  if (claims?.sub !== parsedBody.data?.uid) {
+    return NextResponse.json({ message: "权限不足" });
+  }
+
   try {
-    const bioCensorResult = parsedBody.data.bio ? await censor(parsedBody.data.bio) : { pass: true, message: "" };
+    const bioCensorResult = (parsedBody.data.bio && !isAdmin) ? await censor(parsedBody.data.bio) : { pass: true, message: "" };
 
     if (parsedBody.data.bio && bioCensorResult.pass === false) {
       return NextResponse.json({ message: `个人简介不合法: ${bioCensorResult.message}` });
@@ -38,7 +54,8 @@ export async function POST(request: NextRequest) {
     })
 
     await Logto.UpdateCustomData(claims?.sub!, {
-      bio: parsedBody.data.bio
+      bio: parsedBody.data.bio,
+      "censor.bio": JSON.stringify(bioCensorResult)
     })
 
     await db.User.where("logto_id", claims?.sub!).update({
