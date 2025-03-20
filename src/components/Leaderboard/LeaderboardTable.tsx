@@ -34,7 +34,7 @@ const LeaderboardTable = ({ data }: { data: any }) => {
                   <div className="flex items-center space-x-2">
                     {
                       item.avatar ?
-                      <img src={item.avatar} alt="avatar" width={32} height={32} className="rounded-full"/> :
+                      <img loading='lazy' src={"https://ims.m.owonet.work/cgi/image/format=auto,w=64/" + item.avatar} alt="avatar" width={32} height={32} className="rounded-full"/> :
                       <DefaultAvatar className="w-[32px] h-[32px] rounded-full"/>
                     }
                     <span>{item.name}</span>
