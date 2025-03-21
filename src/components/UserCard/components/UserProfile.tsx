@@ -80,7 +80,7 @@ export function UserProfile({ user, edit, customData, admin }: UserProfileProps)
           <AvatarImage src={user.avatar} alt="User avatar" />
           <AvatarFallback>{user.nickname.substring(0, 2)}</AvatarFallback>
         </Avatar>
-        <div className="flex-1 text-center md:text-left">
+        <div className="flex-1 flex flex-row text-center md:text-left justify-between items-center gap-4">
           {
             edit ?
               <div className="w-full flex flex-col md:flex-row justify-between items-center gap-2">
@@ -92,6 +92,17 @@ export function UserProfile({ user, edit, customData, admin }: UserProfileProps)
               </div>
               :
               <CardTitle className="text-2xl">{user.nickname}</CardTitle>
+          }
+
+          {
+            admin && !edit && <>
+              <Button
+                variant="default"
+                onClick={() => {
+                  window.location.href = window.location.href + "?edit=1"
+                }}
+              >编辑模式</Button>
+            </>
           }
         </div>
       </CardHeader>
