@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { format } from "date-fns";
+import { Separator } from "@radix-ui/react-dropdown-menu";
 
 export default async function BlogPage() {
   const files = await getMdxFiles();
@@ -32,19 +33,19 @@ export default async function BlogPage() {
             <Link key={post.slug} href={`/blog/${post.slug}`}>
               <Card className="p-6 hover:shadow-lg transition-shadow">
                 <article>
-                  <h2 className="text-2xl font-semibold mb-2 hover:text-primary transition-colors">
+                  <h2 className="text-2xl font-semibold mb-4 hover:text-primary transition-colors">
                     {post.title}
                   </h2>
-                  
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                    <time dateTime={post.date}>
-                      {format(new Date(post.date), 'yyyy年MM月dd日')}
-                    </time>
+
+                  <div className="flex flex-col gap-4 text-sm text-muted-foreground mb-4">
                     <div className="flex gap-2">
                       {post.tags?.map(tag => (
                         <Badge key={tag} variant="secondary">{tag}</Badge>
                       ))}
                     </div>
+                    <time dateTime={post.date}>
+                      {format(new Date(post.date), 'yyyy年MM月dd日')}
+                    </time>
                   </div>
 
                   {post.description && (

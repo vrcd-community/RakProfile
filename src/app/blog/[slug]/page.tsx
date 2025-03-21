@@ -31,15 +31,15 @@ export default async function Page({
         <article className="px-8">
           <header className="mb-8 pt-8">
             <h1 className="text-4xl font-bold mb-4">{matter.title}</h1>
-            <div className="flex items-center gap-4 text-muted-foreground">
-              <time dateTime={matter.date}>
-                {format(new Date(matter.date), 'yyyy年MM月dd日')}
-              </time>
+            <div className="flex flex-col gap-4 text-muted-foreground">
               <div className="flex gap-2">
                 {matter.tags?.map(tag => (
                   <Badge key={tag} variant="secondary">{tag}</Badge>
                 ))}
               </div>
+              <time dateTime={matter.date}>
+                {format(new Date(matter.date), 'yyyy年MM月dd日')}
+              </time>
             </div>
           </header>
 
