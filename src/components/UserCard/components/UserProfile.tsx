@@ -75,7 +75,7 @@ export function UserProfile({ user, edit, customData, admin, name, bio, onNameCh
       if (response.data.success) {
         const t = Date.now();
         setAvatarPreview(response.data.url + `?t=${t}`);
-        onAvatarChange(response.data.url + `t=${t}`);
+        onAvatarChange(response.data.url + `?t=${t}`);
         toast.success('头像上传成功');
       }
     } catch (error) {
