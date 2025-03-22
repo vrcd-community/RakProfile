@@ -21,11 +21,17 @@ export interface BookStackStatsProps {
     name: string;
     slug: string;
     description: string;
-  }>;
-  numberFormat: (number: number) => string;
+  }>
 }
 
-function StatsGrid({ stats, numberFormat }: Pick<BookStackStatsProps, 'stats' | 'numberFormat'>) {
+const numberFormat = (num: number) => {
+  if (num < 1000) return num.toString();
+  if (num < 1000000) return (num / 1000).toFixed(1) + "K";
+  if (num < 1000000000) return (num / 1000000).toFixed(1) + "M";
+  return (num / 1000000000).toFixed(1) + "B";
+}
+
+function StatsGrid({ stats }: Pick<BookStackStatsProps, 'stats'>) {
   return (
     <div className="grid sm:grid-cols-2 gap-4 mt-2">
       <div>
@@ -52,7 +58,7 @@ function StatsGrid({ stats, numberFormat }: Pick<BookStackStatsProps, 'stats' | 
   );
 }
 
-export function BookStackStats({ stats, books, editedBooks, numberFormat }: BookStackStatsProps) {
+export function BookStackStats({ stats, books, editedBooks }: BookStackStatsProps) {
   return (
     <>
       <div>
@@ -64,7 +70,7 @@ export function BookStackStats({ stats, books, editedBooks, numberFormat }: Book
             {editedBooks.length > 0 && <TabsTrigger value="edited">参与编辑的书籍</TabsTrigger>}
           </TabsList>
           <TabsContent value="stats">
-            <StatsGrid stats={stats} numberFormat={numberFormat} />
+            <StatsGrid stats={stats}/>
           </TabsContent>
           {books.length > 0 && (
             <TabsContent value="owned">

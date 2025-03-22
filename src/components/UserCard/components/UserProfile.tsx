@@ -9,9 +9,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useTheme } from 'next-themes';
 import dynamic from "next/dynamic";
 
-import axios from "axios";
 import { Loader2 } from "lucide-react";
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
+import axios from "axios";
+
 import Markdown from "react-markdown";
 import gfm from "remark-gfm"
 import highlight from "rehype-highlight"
@@ -32,77 +34,105 @@ interface UserProfileProps {
   id: string;
   edit: boolean;
   customData: Record<string, any>;
-  admin: boolean
+  admin: boolean;
+  name: string;
+  bio: string;
+  onNameChange: (name: string) => void;
+  onBioChange: (bio: string) => void;
+  onAvatarChange: (avatar: string) => void;
 }
 
-export function UserProfile({ user, edit, customData, admin }: UserProfileProps) {
-  console.log(`isAdmin: ${admin}, custom_data: ${customData}`)
-
-  const [name, setName] = useState(user.nickname);
-  const [bio, setBio] = useState(user.bio);
-  const [loading, setLoading] = useState(false);
-
+export function UserProfile({ user, edit, customData, admin, name, bio, onNameChange, onBioChange, onAvatarChange }: UserProfileProps) {
   const { resolvedTheme } = useTheme();
 
   const CSSComponent = dynamic(() => import(`@/assets/markdown/${resolvedTheme}`), { ssr: false })
 
-  const handleSave = async () => {
-    setLoading(true);
-    try {
-      const respose = await axios.post(`/api/user/edit`, {
-        uid: user.uid,
-        nickname: name,
-        bio: bio,
-      });
+  const [uploading, setUploading] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState(user.avatar);
 
-      if (respose.data.success) {
-        toast("保存成功")
-      } else {
-        toast(`保存失败 (${respose.data.message})`)
-      }
-    } catch (error) {
-      toast("保存失败: 网络错误")
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // 检查文件类型
+    if (!file.type.startsWith('image/')) {
+      toast.error('请上传图片文件');
+      return;
     }
 
-    setLoading(false);
-  }
+    // 检查文件大小（限制为2MB）
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('图片大小不能超过2MB');
+      return;
+    }
 
-  useEffect(() => {
-    setBio(user.bio);
-  }, [])
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await axios.post('/api/user/upload', formData);
+      if (response.data.success) {
+        setAvatarPreview(response.data.url);
+        onAvatarChange(response.data.url);
+        toast.success('头像上传成功');
+      }
+    } catch (error) {
+      toast.error('头像上传失败');
+      console.error('Avatar upload error:', error);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <>
       <CSSComponent />
       <Toaster theme={resolvedTheme as any} />
       <CardHeader className="flex flex-col md:flex-row items-center gap-4">
-        <Avatar className="w-24 h-24">
-          <AvatarImage src={user.avatar} alt="User avatar" />
-          <AvatarFallback>{user.nickname.substring(0, 2)}</AvatarFallback>
-        </Avatar>
+        <div className="relative group">
+          <Avatar className="w-24 h-24">
+            <AvatarImage src={avatarPreview} alt="User avatar" />
+            <AvatarFallback>{user.nickname.substring(0, 2)}</AvatarFallback>
+          </Avatar>
+          {edit && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 rounded-full transition-opacity">
+              <label className="cursor-pointer">
+                <Input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleAvatarUpload}
+                  disabled={uploading}
+                />
+                {uploading ? (
+                  <Loader2 className="h-6 w-6 text-white animate-spin" />
+                ) : (
+                  <span className="text-white text-sm">更换头像</span>
+                )}
+              </label>
+            </div>
+          )}
+        </div>
         <div className="flex-1 flex flex-row text-center md:text-left justify-between items-center gap-4">
           {
             edit ?
               <div className="w-full flex flex-col md:flex-row justify-between items-center gap-2">
-                <Input placeholder="用户昵称" className="max-w-[160px]" defaultValue={user.nickname} onChange={(e) => setName(e.target.value)} />
-                <Button variant="outline" disabled={loading} onClick={handleSave}>
-                  {loading && <Loader2 className="animate-spin" />}
-                  保存
-                </Button>
+                <Input placeholder="用户昵称" className="max-w-[160px]" defaultValue={user.nickname} onChange={(e) => onNameChange(e.target.value)} />
               </div>
               :
               <CardTitle className="text-2xl">{user.nickname}</CardTitle>
           }
 
           {
-            admin && !edit && <>
+            admin && !edit && (
               <Button
                 variant="default"
                 onClick={() => {
                   window.location.href = window.location.href + "?edit=1"
                 }}
               >编辑模式</Button>
-            </>
+            )
           }
         </div>
       </CardHeader>
@@ -140,11 +170,12 @@ export function UserProfile({ user, edit, customData, admin }: UserProfileProps)
                           placeholder="写点什么呢..."
                           className="w-full resize-none text-black dark:text-white whitespace-pre-wrap break-all"
                           value={bio}
-                          onChange={(e) => setBio(e.target.value)}
+                          onChange={(e) => onBioChange(e.target.value)}
                         />
                       </TabsContent>
                       <TabsContent value="preview">
                         <div className="markdown-root">
+                          {/* @ts-ignore */}
                           <Markdown remarkPlugins={[gfm]} rehypePlugins={[highlight]}>{bio}</Markdown>
                         </div>
                       </TabsContent>
@@ -160,6 +191,7 @@ export function UserProfile({ user, edit, customData, admin }: UserProfileProps)
                   </>
                 ) : (
                   <div className="markdown-root">
+                    {/* @ts-ignore */}
                     <Markdown remarkPlugins={[gfm]} rehypePlugins={[highlight]}>{bio}</Markdown>
                   </div>
                 )

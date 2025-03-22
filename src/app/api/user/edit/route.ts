@@ -10,6 +10,7 @@ const editUserSchema = z.object({
   uid: z.string(),
   nickname: z.string().min(1).max(20),
   bio: z.string().max(500).optional(),
+  avatar: z.string().optional(),
 })
 
 export async function POST(request: NextRequest) {
@@ -51,7 +52,8 @@ export async function POST(request: NextRequest) {
     }
 
     await Logto.updateUser(sub, {
-      name: parsedBody.data.nickname
+      name: parsedBody.data.nickname,
+      avatar: parsedBody.data.avatar
     })
 
     await Logto.UpdateCustomData(sub, {
@@ -61,6 +63,7 @@ export async function POST(request: NextRequest) {
 
     await db.User.where("logto_id", sub).update({
       name: parsedBody.data.nickname,
+      avatar: parsedBody.data.avatar
     })
 
     return NextResponse.json({ message: "修改成功", success: true });
