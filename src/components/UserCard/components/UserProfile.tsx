@@ -73,8 +73,9 @@ export function UserProfile({ user, edit, customData, admin, name, bio, onNameCh
 
       const response = await axios.post('/api/user/upload', formData);
       if (response.data.success) {
-        setAvatarPreview(response.data.url);
-        onAvatarChange(response.data.url);
+        const t = Date.now();
+        setAvatarPreview(response.data.url + `?t=${t}`);
+        onAvatarChange(response.data.url + `t=${t}`);
         toast.success('头像上传成功');
       }
     } catch (error) {
