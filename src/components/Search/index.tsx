@@ -1,5 +1,6 @@
 import axios from "axios";
 import Markdown from "react-markdown";
+import RehypeRaw from "rehype-raw"
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
@@ -179,7 +180,7 @@ const SearchItem = ({ hit }: SearchItemProps) => {
         <div
           className="max-h-[180px] overflow-y-hidden prose prose-sm dark:prose-invert"
         >
-          <Markdown>{chunk.content}</Markdown>
+          <Markdown rehypePlugins={[RehypeRaw]}>{chunk.content}</Markdown>
         </div>
         <div
           className={`absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t dark:from-[#1C1917] from-[#FFFFFF] to-transparent block`}
