@@ -20,7 +20,7 @@ export const userProfileSchema = z.object({
     iat: z.number(),
     iss: z.string().url(),
     bio: z.string().optional(),
-  }),
+  })
 });
 
 type UserProfile = z.infer<typeof userProfileSchema>;
@@ -50,8 +50,6 @@ interface SettingsContextType {
   setIsEditingBio: (value: boolean) => void;
   handleSaveProfile: () => Promise<void>;
   updatePassword: (oldPassword: string, newPassword: string) => Promise<void>;
-  toggle2FA: (enabled: boolean) => Promise<void>;
-  manageThirdPartyAccounts: () => Promise<void>;
   stats?: {
     booksCount: number;
     editedBooksCount: number;
@@ -107,6 +105,7 @@ export function SettingsProvider({ children, initialData }: SettingsProviderProp
         const response = await fetch("/api/user/me/profile");
         const data = await response.json();
         const parsedData = userProfileSchema.safeParse(data.user);
+
         if (parsedData.success) {
           setProfile(parsedData.data);
           if (!initialData) {
@@ -167,19 +166,6 @@ export function SettingsProvider({ children, initialData }: SettingsProviderProp
     } catch (error) {
       toast.error("密码更新失败");
     }
-  };
-
-  const toggle2FA = async (enabled: boolean) => {
-    try {
-      // 实现2FA切换逻辑
-      toast.success(enabled ? "已启用双因素认证" : "已禁用双因素认证");
-    } catch (error) {
-      toast.error("操作失败");
-    }
-  };
-
-  const manageThirdPartyAccounts = async () => {
-    // 实现第三方账号管理逻辑
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -247,13 +233,11 @@ export function SettingsProvider({ children, initialData }: SettingsProviderProp
       setIsEditingBio,
       handleSaveProfile,
       updatePassword,
-      toggle2FA,
-      manageThirdPartyAccounts,
       stats: initialData?.stats,
       books: initialData?.books,
       editedBooks: initialData?.editedBooks,
       customData: initialData?.customData,
-      handleAvatarUpload,
+      handleAvatarUpload
     }}>
       {children}
     </SettingsContext.Provider>

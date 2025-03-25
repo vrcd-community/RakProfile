@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { logtoConfig } from "@/lib/config";
 import { getLogtoContext } from "@logto/next/server-actions";
 import { db } from "@/lib/db";
+import { Logto } from "@/lib/external/Logto";
 
 export async function GET(request: NextRequest) {
   const user = await getLogtoContext(logtoConfig);

@@ -100,7 +100,7 @@ export async function ServerUserProfile({ id }: { id: string }) {
           <Tabs defaultValue="profile" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="profile">用户资料</TabsTrigger>
-              <TabsTrigger value="settings">用户设置</TabsTrigger>
+              <TabsTrigger value="settings">账号设置</TabsTrigger>
             </TabsList>
             <TabsContent value="profile">
               <ClientUserProfile />

@@ -129,6 +129,14 @@ interface UpdateUserRequest {
   }
 }
 
+interface MFAitem {
+  id: string;
+  createdAt: string;
+  type: string;
+  agent?: string;
+  remainCodes?: number;
+}
+
 export class Logto {
   static async getUser(id: string) {
     const client = await getLogtoClient(); // 获取包含 cachedGet 的客户端
@@ -165,6 +173,31 @@ export class Logto {
       password: password
     });
 
+    return true;
+  }
+
+  static async getMFA (id: string) {
+    const client = await getLogtoClient();
+
+    const mfa = await client.logtoClient.get(`/api/users/${id}/mfa-verifications`);
+
+    return mfa.data as MFAitem[];
+  }
+
+  static async CreateMFA (id: string, type: string) {
+    const client = await getLogtoClient();
+
+    const mfa = await client.logtoClient.post(`/api/users/${id}/mfa-verifications`, {
+      type: type
+    });
+
+    return mfa.data;
+  }
+
+  static async DeleteMFA (id: string, mfaId: string) {
+    const client = await getLogtoClient();
+
+    await client.logtoClient.delete(`/api/users/${id}/mfa-verifications/${mfaId}`);
     return true;
   }
 }

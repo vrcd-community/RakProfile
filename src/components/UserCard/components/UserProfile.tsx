@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useTheme } from 'next-themes';
 import dynamic from "next/dynamic";
@@ -18,10 +18,10 @@ import "@/app/markdown.css";
 import { cn } from "@/lib/utils";
 
 export function UserProfile() {
-  const { 
-    targetUser, 
+  const {
+    targetUser,
     isAdmin,
-    isSelf, 
+    isSelf,
     customData,
     isEditingName,
     setIsEditingName,
@@ -38,7 +38,7 @@ export function UserProfile() {
     handleAvatarUpload,
     uploadLoading,
   } = useSettings();
-  
+
   const { resolvedTheme } = useTheme();
   const CSSComponent = dynamic(() => import(`@/assets/markdown/${resolvedTheme}`), { ssr: false });
 
@@ -103,8 +103,8 @@ export function UserProfile() {
             )}
           </div>
           {(isEditingName || isEditingBio) && (
-            <Button 
-              onClick={handleSaveProfile} 
+            <Button
+              onClick={handleSaveProfile}
               disabled={saveLoading}
             >
               {saveLoading ? (
@@ -122,15 +122,22 @@ export function UserProfile() {
         <>
           <CardContent className="grid gap-6">
             <div>
-              <CardTitle className="text-lg">!!!Admin Only!!!</CardTitle>
-              <div className="mt-2">
-                <pre className="whitespace-pre-wrap">
-                  {customData['censor.bio'] ? 
-                    JSON.stringify(JSON.parse(customData['censor.bio']), null, 2) : 
-                    "[无数据]"
-                  }
-                </pre>
-              </div>
+              <CardTitle className="text-lg">额外信息</CardTitle>
+              <CardDescription className="text-sm text-muted-foreground">注: 此板块仅管理员可见</CardDescription>
+              <Card className="mt-4">
+                <CardHeader>
+                  <CardTitle className="text-lg">AI审核意见</CardTitle>
+                  <CardDescription className="text-sm text-muted-foreground">当前模型: Qwen/Qwen2.5-7B-Instruct</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <pre className="whitespace-pre-wrap bg-muted p-4 rounded-md">
+                    {customData['censor.bio'] ?
+                      JSON.stringify(JSON.parse(customData['censor.bio']), null, 2) :
+                      "[无数据]"
+                    }
+                  </pre>
+                </CardContent>
+              </Card>
             </div>
           </CardContent>
           <Separator />
@@ -165,8 +172,8 @@ export function UserProfile() {
                     className="min-h-[200px]"
                   />
                   <p className="text-xs text-muted-foreground mt-2">
-                    {bio.length > 500 ? 
-                      <span className="text-red-500">字数超过限制 ({bio.length}/500)</span> : 
+                    {bio.length > 500 ?
+                      <span className="text-red-500">字数超过限制 ({bio.length}/500)</span> :
                       <span>字数: {bio.length}/500 (支持Markdown格式)</span>
                     }
                   </p>
