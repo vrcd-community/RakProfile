@@ -132,7 +132,11 @@ export default function MFA() {
       }
 
       fetchMFA();
-      toast.success(mfa.message);
+      if (mfa.message) {
+        toast.error(mfa.message);
+      } else {
+        toast.success("添加成功");
+      }
     } catch (error) {
       toast.error("网络错误，请重试");
     } finally {

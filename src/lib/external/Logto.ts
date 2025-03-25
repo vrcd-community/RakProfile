@@ -2,6 +2,8 @@ import axios from 'axios'
 import Cache from '../cache'
 import { db } from '../db';
 
+import { LogtoContext } from '@logto/next/server-actions';
+
 const accessTokenCache = new Cache();
 const apiResponseCache = new Cache(); // 新增 API 响应缓存
 const accessTokenKey = 'logto_access_token';
@@ -58,7 +60,11 @@ interface UserResponse {
   customData: Record<string, unknown>
   identities: Record<string, {
     userId: string
-    details: Record<string, unknown>
+    details: {
+      email: string
+      name: string
+      [key: string]: unknown
+    }
   }>
   lastSignInAt: number
   createdAt: number
@@ -137,6 +143,12 @@ interface MFAitem {
   remainCodes?: number;
 }
 
+interface SocialIdentityResponse {
+  verificationRecordId: string;
+  authorizationUri: string;
+  expiresAt: string;
+}
+
 export class Logto {
   static async getUser(id: string) {
     const client = await getLogtoClient(); // 获取包含 cachedGet 的客户端
@@ -199,5 +211,45 @@ export class Logto {
 
     await client.logtoClient.delete(`/api/users/${id}/mfa-verifications/${mfaId}`);
     return true;
+  }
+
+  static async CreateSocialIdentity (provider: string, token: string) {
+    const providerMap: Record<string, string> = {
+      "github": "2y2edbfkoweknupqblcc3",
+      "azuread": "d0n5zorq55oh8qbkgtw9v",
+      "discord": "jautjvxf4byxsad3nfrz2"
+    }
+
+    const social = await axios.post(`${process.env.LOGTO_BASEURL}/api/verifications/social`, {
+      state: crypto.randomUUID(),
+      redirectUri: `${process.env.NEXT_PUBLIC_APP_URL}/api/user/me/3rd/callback`,
+      connectorId: providerMap[provider]
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    return social.data as SocialIdentityResponse;
+  }
+
+  static async DeleteSocialIdentity (id: string, target: string) {
+    const client = await getLogtoClient();
+
+    await client.logtoClient.delete(`/api/users/${id}/identities/${target}`);
+    return true;
+  }
+
+  static async VerifySocialIdentity(verificationRecordId: string, connectorData: { code: string; state: string; redirectUri: string; }, token: string) {
+    const verification = await axios.post(`${process.env.LOGTO_BASEURL}/api/verifications/social/verify`, {
+      verificationRecordId,
+      connectorData
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    return verification.data;
   }
 }

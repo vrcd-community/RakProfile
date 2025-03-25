@@ -25,7 +25,7 @@ export async function User() {
         "use server";
         await signIn({
           ...logtoConfig,
-          scopes: ["custom_data", "roles", "openid", "profile"]
+          scopes: ["custom_data", "roles", "openid", "profile", "identities"]
         })
       }} />
     )
