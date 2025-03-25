@@ -1,113 +1,79 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
 import { useTheme } from 'next-themes';
 import dynamic from "next/dynamic";
-
-import { Loader2 } from "lucide-react";
-
-import { useState } from "react";
-import axios from "axios";
-
 import Markdown from "react-markdown";
-import gfm from "remark-gfm"
-import highlight from "rehype-highlight"
-
-import { toast, Toaster } from "sonner"
-
+import gfm from "remark-gfm";
+import highlight from "rehype-highlight";
+import { useSettings } from "./settings/SettingsContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Loader2, Pencil } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import "@/app/markdown.css";
+import { cn } from "@/lib/utils";
 
-import "@/app/markdown.css"
-
-interface UserProfileProps {
-  user: {
-    uid: string;
-    nickname: string;
-    avatar: string;
-    bio: string;
-  };
-  id: string;
-  edit: boolean;
-  customData: Record<string, any>;
-  admin: boolean;
-  name: string;
-  bio: string;
-  onNameChange: (name: string) => void;
-  onBioChange: (bio: string) => void;
-  onAvatarChange: (avatar: string) => void;
-}
-
-export function UserProfile({ user, edit, customData, admin, name, bio, onNameChange, onBioChange, onAvatarChange }: UserProfileProps) {
+export function UserProfile() {
+  const { 
+    targetUser, 
+    isAdmin,
+    isSelf, 
+    customData,
+    isEditingName,
+    setIsEditingName,
+    name,
+    setName,
+    bio,
+    isEditingBio,
+    setIsEditingBio,
+    setBio,
+    avatarPreview,
+    setAvatarPreview,
+    handleSaveProfile,
+    saveLoading,
+    handleAvatarUpload,
+    uploadLoading,
+  } = useSettings();
+  
   const { resolvedTheme } = useTheme();
+  const CSSComponent = dynamic(() => import(`@/assets/markdown/${resolvedTheme}`), { ssr: false });
 
-  const CSSComponent = dynamic(() => import(`@/assets/markdown/${resolvedTheme}`), { ssr: false })
+  if (!targetUser) return null;
 
-  const [uploading, setUploading] = useState(false);
-  const [avatarPreview, setAvatarPreview] = useState(user.avatar);
-
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // 检查文件类型
-    if (!file.type.startsWith('image/')) {
-      toast.error('请上传图片文件');
-      return;
-    }
-
-    // 检查文件大小（限制为2MB）
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error('图片大小不能超过2MB');
-      return;
-    }
-
-    setUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await axios.post('/api/user/upload', formData);
-      if (response.data.success) {
-        const t = Date.now();
-        setAvatarPreview(response.data.url + `?t=${t}`);
-        onAvatarChange(response.data.url + `?t=${t}`);
-        toast.success('头像上传成功');
-      }
-    } catch (error) {
-      toast.error('头像上传失败');
-      console.error('Avatar upload error:', error);
-    } finally {
-      setUploading(false);
-    }
-  };
+  const canEdit = isAdmin || isSelf;
 
   return (
     <>
       <CSSComponent />
-      <Toaster theme={resolvedTheme as any} />
       <CardHeader className="flex flex-col md:flex-row items-center gap-4">
         <div className="relative group">
           <Avatar className="w-24 h-24">
             <AvatarImage src={avatarPreview} alt="User avatar" />
-            <AvatarFallback>{user.nickname.substring(0, 2)}</AvatarFallback>
+            <AvatarFallback>{targetUser.nickname.substring(0, 2)}</AvatarFallback>
           </Avatar>
-          {edit && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 rounded-full transition-opacity">
-              <label className="cursor-pointer">
+          {canEdit && (
+            <div className={cn(
+              "absolute inset-0 flex items-center justify-center bg-black/50 rounded-full transition-opacity",
+              uploadLoading ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+              "cursor-pointer"
+            )}>
+              <label className="cursor-pointer w-full h-full flex items-center justify-center">
                 <Input
                   type="file"
                   className="hidden"
                   accept="image/*"
                   onChange={handleAvatarUpload}
-                  disabled={uploading}
+                  disabled={uploadLoading}
                 />
-                {uploading ? (
-                  <Loader2 className="h-6 w-6 text-white animate-spin" />
+                {uploadLoading ? (
+                  <div className="flex flex-col items-center">
+                    <Loader2 className="h-6 w-6 text-white animate-spin" />
+                    <span className="text-white text-xs mt-1">上传中...</span>
+                  </div>
                 ) : (
                   <span className="text-white text-sm">更换头像</span>
                 )}
@@ -116,88 +82,110 @@ export function UserProfile({ user, edit, customData, admin, name, bio, onNameCh
           )}
         </div>
         <div className="flex-1 flex flex-row text-center md:text-left justify-between items-center gap-4">
-          {
-            edit ?
-              <div className="w-full flex flex-col md:flex-row justify-between items-center gap-2">
-                <Input placeholder="用户昵称" className="max-w-[160px]" defaultValue={user.nickname} onChange={(e) => onNameChange(e.target.value)} />
-              </div>
-              :
-              <CardTitle className="text-2xl">{user.nickname}</CardTitle>
-          }
-
-          {
-            admin && !edit && (
+          <div className="flex items-center gap-4">
+            {isEditingName ? (
+              <Input
+                value={name}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                className="max-w-[200px]"
+              />
+            ) : (
+              <CardTitle className="text-2xl">{name}</CardTitle>
+            )}
+            {canEdit && (
               <Button
-                variant="default"
-                onClick={() => {
-                  window.location.href = window.location.href + "?edit=1"
-                }}
-              >编辑模式</Button>
-            )
-          }
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsEditingName(!isEditingName)}
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+          {(isEditingName || isEditingBio) && (
+            <Button 
+              onClick={handleSaveProfile} 
+              disabled={saveLoading}
+            >
+              {saveLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  保存中
+                </>
+              ) : "保存修改"}
+            </Button>
+          )}
         </div>
       </CardHeader>
       <Separator />
-      {
-        admin && (
-          <>
-            <CardContent className="grid gap-6">
-              <div>
-                <CardTitle className="text-lg">!!!Admin Only!!!</CardTitle>
-                <div className="mt-2">
-                  <Textarea defaultValue={customData['censor.bio'] ? JSON.stringify(JSON.parse(customData['censor.bio']), null, 2) : "[无数据]"} readOnly/>
-                </div>
+      {isAdmin && customData && (
+        <>
+          <CardContent className="grid gap-6">
+            <div>
+              <CardTitle className="text-lg">!!!Admin Only!!!</CardTitle>
+              <div className="mt-2">
+                <pre className="whitespace-pre-wrap">
+                  {customData['censor.bio'] ? 
+                    JSON.stringify(JSON.parse(customData['censor.bio']), null, 2) : 
+                    "[无数据]"
+                  }
+                </pre>
               </div>
-            </CardContent>
-            <Separator />
-          </>
-        )
-      }
+            </div>
+          </CardContent>
+          <Separator />
+        </>
+      )}
       <CardContent className="grid gap-6">
         <div>
-          <CardTitle className="text-lg">个人介绍</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-lg">个人介绍</CardTitle>
+            {canEdit && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsEditingBio(!isEditingBio)}
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
           <div className="mt-2">
-            <div>
-              {
-                edit ? (
-                  <>
-                    <Tabs defaultValue="edit" className="w-full">
-                      <TabsList className="mb-2">
-                        <TabsTrigger value="edit">编辑</TabsTrigger>
-                        <TabsTrigger value="preview">预览</TabsTrigger>
-                      </TabsList>
-                      <TabsContent value="edit">
-                        <Textarea
-                          placeholder="写点什么呢..."
-                          className="w-full resize-none text-black dark:text-white whitespace-pre-wrap break-all"
-                          value={bio}
-                          onChange={(e) => onBioChange(e.target.value)}
-                        />
-                      </TabsContent>
-                      <TabsContent value="preview">
-                        <div className="markdown-root">
-                          {/* @ts-ignore */}
-                          <Markdown remarkPlugins={[gfm]} rehypePlugins={[highlight]}>{bio}</Markdown>
-                        </div>
-                      </TabsContent>
-                    </Tabs>
-                    <p className="text-xs text-gray-500 mt-2">
-                      {
-                        (bio && bio.length || 0) > 500 ?
-                          <span className="text-red-500">字数超过限制</span>
-                          :
-                          <span className="text-gray-500">字数: {bio.length}/500 (支持Markdown格式, 支持GFM)</span>
-                      }
-                    </p>
-                  </>
-                ) : (
-                  <div className="markdown-root">
-                    {/* @ts-ignore */}
-                    <Markdown remarkPlugins={[gfm]} rehypePlugins={[highlight]}>{bio}</Markdown>
+            {isEditingBio ? (
+              <Tabs defaultValue="edit" className="w-full">
+                <TabsList className="mb-2">
+                  <TabsTrigger value="edit">编辑</TabsTrigger>
+                  <TabsTrigger value="preview">预览</TabsTrigger>
+                </TabsList>
+                <TabsContent value="edit">
+                  <Textarea
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    placeholder="写点什么呢..."
+                    className="min-h-[200px]"
+                  />
+                  <p className="text-xs text-muted-foreground mt-2">
+                    {bio.length > 500 ? 
+                      <span className="text-red-500">字数超过限制 ({bio.length}/500)</span> : 
+                      <span>字数: {bio.length}/500 (支持Markdown格式)</span>
+                    }
+                  </p>
+                </TabsContent>
+                <TabsContent value="preview">
+                  <div className="markdown-root min-h-[200px] border rounded-md p-4">
+                    <Markdown remarkPlugins={[gfm]} rehypePlugins={[highlight]}>
+                      {bio}
+                    </Markdown>
                   </div>
-                )
-              }
-            </div>
+                </TabsContent>
+              </Tabs>
+            ) : (
+              <div className="markdown-root">
+                <Markdown remarkPlugins={[gfm]} rehypePlugins={[highlight]}>
+                  {targetUser.bio || "暂无个人介绍"}
+                </Markdown>
+              </div>
+            )}
           </div>
         </div>
       </CardContent>

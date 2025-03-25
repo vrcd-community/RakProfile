@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/Header";
 import syncBookStack from "@/lib/sync/BookStack"
 import { Bottom } from "@/components/Bottom";
+import Toast from "@/components/Toast";
 
 export const metadata: Metadata = {
   title: "VRCD Profile"
@@ -26,6 +27,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Bottom />
+          <Toast />
         </ThemeProvider>
       </body>
     </html>

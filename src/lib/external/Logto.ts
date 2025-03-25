@@ -150,4 +150,21 @@ export class Logto {
 
     return newData;
   }
+
+  static async UpdatePassword(id: string, old_password: string, password: string) {
+    const client = await getLogtoClient();
+    const verify = await client.logtoClient.post(`api/users/${id}/password/verify`, {
+      password: old_password
+    });
+
+    if (verify.status !== 200) {
+      throw new Error("旧密码错误");
+    }
+
+    await client.logtoClient.patch(`api/users/${id}/password`, {
+      password: password
+    });
+
+    return true;
+  }
 }

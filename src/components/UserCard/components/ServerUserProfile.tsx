@@ -6,8 +6,11 @@ import { ErrorCard } from "./ErrorCard";
 import { ClientUserProfile } from "./ClientUserProfile";
 import { getLogtoContext } from "@logto/next/server-actions";
 import { logtoConfig } from "@/lib/config";
+import { ClientUserSettings } from "./settings/ClientUserSettings";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SettingsProvider } from "./settings/SettingsContext";
 
-export async function ServerUserProfile({ id, edit }: { id: string, edit: boolean }) {
+export async function ServerUserProfile({ id }: { id: string }) {
   const { isAuthenticated, claims } = await getLogtoContext(logtoConfig);
   const { LogtoUser, BookStackUser, BookStackBooks, BookStackPages, editedBooks, totalChars, errors } = await useUserData(id);
 
@@ -68,22 +71,48 @@ export async function ServerUserProfile({ id, edit }: { id: string, edit: boolea
     bio: (LogtoUser.custom_data.bio || "")
   };
 
+  const statsData = {
+    booksCount: BookStackBooks.length,
+    editedBooksCount: editedBooks.length,
+    pagesCount: BookStackPages.length,
+    totalChars
+  };
+
+  const initialData = {
+    user: userData,
+    isAdmin,
+    isSelf,
+    stats: statsData,
+    books: BookStackBooks,
+    editedBooks: editedBooks,
+    customData: LogtoUser.custom_data,
+  };
+
   return (
-    <ClientUserProfile
-      user={userData}
-      admin={isAdmin}
-      self={isSelf}
-      customData={LogtoUser.custom_data}
-      edit={edit && (claims?.roles?.includes("RakAdmin") || (isAuthenticated && claims?.sub === id))}
-      id={id}
-      stats={{
-        booksCount: BookStackBooks.length,
-        editedBooksCount: editedBooks.length,
-        pagesCount: BookStackPages.length,
-        totalChars
-      }}
-      books={BookStackBooks}
-      editedBooks={editedBooks}
-    />
+    <div className="container max-w-4xl mx-auto py-10">
+      {
+        isAdmin && !isSelf && <>
+          <p className="text-sm text-red-500 mb-2 w-full text-center">您正在作为管理员强制修改他人资料，请谨慎操作</p>
+        </>
+      }
+      <SettingsProvider initialData={initialData}>
+        {isSelf ? (
+          <Tabs defaultValue="profile" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="profile">用户资料</TabsTrigger>
+              <TabsTrigger value="settings">用户设置</TabsTrigger>
+            </TabsList>
+            <TabsContent value="profile">
+              <ClientUserProfile />
+            </TabsContent>
+            <TabsContent value="settings">
+              <ClientUserSettings />
+            </TabsContent>
+          </Tabs>
+        ) : (
+          <ClientUserProfile />
+        )}
+      </SettingsProvider>
+    </div>
   );
 }
