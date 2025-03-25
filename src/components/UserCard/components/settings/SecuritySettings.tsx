@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { Key, Eye, EyeOff, Loader2 } from "lucide-react";
-import { useSettings } from "./SettingsContext";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -14,10 +13,8 @@ const passwordSchema = z.object({
   newPassword: z.string()
     .min(8, "密码长度至少为8位")
     .max(32, "密码长度不能超过32位")
-    .regex(/[A-Z]/, "密码必须包含大写字母")
-    .regex(/[a-z]/, "密码必须包含小写字母")
-    .regex(/[0-9]/, "密码必须包含数字")
-    .regex(/[^A-Za-z0-9]/, "密码必须包含特殊字符"),
+    .regex(/[a-zA-Z]/, "密码必须包含大小写字母")
+    .regex(/[0-9]/, "密码必须包含数字"),
   confirmPassword: z.string().min(1, "请确认新密码"),
 }).refine((data) => data.newPassword === data.confirmPassword, {
   message: "两次输入的密码不一致",

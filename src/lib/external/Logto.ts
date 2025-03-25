@@ -157,7 +157,7 @@ export class Logto {
       password: old_password
     });
 
-    if (verify.status !== 200) {
+    if (verify.status !== 204) {
       throw new Error("旧密码错误");
     }
 
