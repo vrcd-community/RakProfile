@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logtoConfig } from "@/lib/config";
 import { getLogtoContext } from "@logto/next/server-actions";
-import { db } from "@/lib/db";
-import { Logto } from "@/lib/external/Logto";
+import prisma from "@/lib/db";
 
 export async function GET(request: NextRequest) {
   const user = await getLogtoContext(logtoConfig);
@@ -11,7 +10,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ message: "未登录" });
   }
 
-  const dbUser = await db.User.where("logto_id", user.claims?.sub).first();
+  const dbUser = await prisma.user.findUnique({
+    where: { logto_id: user.claims?.sub }
+  });
 
   return NextResponse.json({
     message: "登录成功",

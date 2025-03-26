@@ -5,7 +5,6 @@ import remarkFrontmatter from 'remark-frontmatter'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ["knex"],
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx']
 }
 

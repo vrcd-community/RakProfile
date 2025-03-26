@@ -1,6 +1,5 @@
-import { db } from "@/lib/db";
 import { Logto } from '@/lib/external/Logto';
-import { User, UserLink } from "@/lib/db";
+import prisma from "@/lib/db";
 
 // 配置参数
 const WEIGHTS = {
@@ -36,7 +35,7 @@ const calculateTotalScore = (data: UserActivityData) => {
 };
  
 // 获取用户信息
-const getUserData = async (ownerId: number, userLinks: UserLink[], users: User[]) => {
+const getUserData = async (ownerId: number, userLinks: any[], users: any[]) => {
   const userLink = userLinks.find(link => link.platform_id === ownerId.toString());
   let userData = { name: '未知用户', avatar: '', logto_id: '' };
 
@@ -61,9 +60,9 @@ const getUserData = async (ownerId: number, userLinks: UserLink[], users: User[]
 // 主函数
 export const getBookStackRank = async () => {
   const [pages, users, userLinks] = await Promise.all([
-    db.BookStack_Pages.select('*'),
-    db.User.select('*'),
-    db.UserLink.where('platform', 'bookstack').select('*')
+    prisma.bookstack_pages.findMany(),
+    prisma.user.findMany(),
+    prisma.user_link.findMany({ where: { platform: 'bookstack' } })
   ]);
 
   const now = new Date();

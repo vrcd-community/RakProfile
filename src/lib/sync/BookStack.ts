@@ -1,14 +1,14 @@
-import { db } from "../db";
 import { BookStack } from "../external/BookStack";
 import { Logto } from "../external/Logto";
+import prisma from "../db";
 
 const hasBook = async (bookId: number) => {
-  const count = await db.BookStack_Books.where("id", bookId).first();
+  const count = await prisma.bookstack_books.findUnique({ where: { id: bookId } });
   return count !== undefined;
 }
 
 const hasPage = async (pageId: number) => {
-  const count = await db.BookStack_Pages.where("id", pageId).first();
+  const count = await prisma.bookstack_pages.findUnique({ where: { id: pageId } });
   return count !== undefined;
 }
 
@@ -23,19 +23,22 @@ const sync = async () => {
 
     try {
       if (await hasBook(book.id)) {
-        await db.BookStack_Books.where("id", book.id).update({
-          name: book.name,
-          slug: book.slug,
-          description: book.description.substring(0, 200),
-          created_at: new Date(book.created_at),
-          updated_at: new Date(book.updated_at),
-          owned_by: book.owned_by,
-          created_by: book.created_by,
-          updated_by: book.updated_by,
-          cover_url: book.cover?.url!,
+        await prisma.bookstack_books.update({
+          where: { id: book.id },
+          data: {
+            name: book.name,
+            slug: book.slug,
+            description: book.description.substring(0, 200),
+            created_at: new Date(book.created_at),
+            updated_at: new Date(book.updated_at),
+            owned_by: book.owned_by,
+            created_by: book.created_by,
+            updated_by: book.updated_by,
+            cover_url: book.cover?.url!,
+          }
         })
       } else {
-        await db.BookStack_Books.insert({
+        await prisma.bookstack_books.insert({
           id: book.id,
           name: book.name,
           slug: book.slug,
@@ -65,26 +68,29 @@ const sync = async () => {
       const content = htmlFilter(pageItem.raw_html)
 
       if (await hasPage(page.id)) {
-        await db.BookStack_Pages.where("id", page.id).update({
-          name: page.name,
-          slug: page.slug,
-          book_id: page.book_id,
-          chapter_id: page.chapter_id,
-          draft: page.draft,
-          template: page.template,
-          created_at: new Date(page.created_at),
-          updated_at: new Date(page.updated_at),
-          priority: page.priority,
-          owned_by: page.owned_by,
-          book_slug: page.book_slug,
-          created_by: page.created_by,
-          updated_by: page.updated_by,
-          revision_count: page.revision_count,
-          editor: page.editor,
-          chars: content.length,
+        await prisma.bookstack_pages.update({
+          where: { id: page.id },
+          data: {
+            name: page.name,
+            slug: page.slug,
+            book_id: page.book_id,
+            chapter_id: page.chapter_id,
+            draft: page.draft,
+            template: page.template,
+            created_at: new Date(page.created_at),
+            updated_at: new Date(page.updated_at),
+            priority: page.priority,
+            owned_by: page.owned_by,
+            book_slug: page.book_slug,
+            created_by: page.created_by,
+            updated_by: page.updated_by,
+            revision_count: page.revision_count,
+            editor: page.editor,
+            chars: content.length,
+          }
         })
       } else {
-        await db.BookStack_Pages.insert({
+        await prisma.bookstack_pages.insert({
           id: page.id,
           name: page.name,
           slug: page.slug,
@@ -118,34 +124,40 @@ const sync = async () => {
       const logtoUser = await Logto.getUser(user.external_auth_id);
 
       if (logtoUser) {
-        const hasUser = await db.User.where("logto_id", logtoUser.id).first();
+        const hasUser = await prisma.user.findUnique({ where: { logto_id: logtoUser.id } });
 
         if (!hasUser) {
-          await db.User.insert({
+          await prisma.user.insert({
             logto_id: logtoUser.id,
             name: user.name || logtoUser.username,
             avatar: logtoUser.avatar,
             custom_data: JSON.stringify(logtoUser.customData)
           })
         } else {
-          await db.User.where("logto_id", logtoUser.id).update({
-            name: user.name || logtoUser.username,
-            avatar: logtoUser.avatar,
-            custom_data: JSON.stringify(logtoUser.customData)
+          await prisma.user.update({
+            where: { logto_id: logtoUser.id },
+            data: {
+              name: user.name || logtoUser.username,
+              avatar: logtoUser.avatar,
+              custom_data: JSON.stringify(logtoUser.customData)
+            }
           })
         }
 
-        const hasLink = await db.UserLink.where("logto_id", logtoUser.id).where("platform", "bookstack").first();
+        const hasLink = await prisma.user_link.findUnique({ where: { logto_id: logtoUser.id, platform: "bookstack" } });
 
         if (!hasLink) {
-          await db.UserLink.insert({
+          await prisma.user_link.insert({
             logto_id: logtoUser.id,
             platform: "bookstack",
             platform_id: user.id.toString(),
           })
         } else {
-          await db.UserLink.where("logto_id", logtoUser.id).where("platform", "bookstack").update({
-            platform_id: user.id.toString(),
+          await prisma.user_link.update({
+            where: { logto_id: logtoUser.id, platform: "bookstack" },
+            data: {
+              platform_id: user.id.toString(),
+            }
           })
         }
       }

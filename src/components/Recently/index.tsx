@@ -1,10 +1,14 @@
-import { db } from "@/lib/db";
+import prisma from "@/lib/db";
 import Link from "next/link";
 import { BookMarked } from "lucide-react";
 
 const getRecently = async () => {
-  const data = await db.BookStack_Pages.select("*").orderBy("updated_at", "desc").limit(10);
-  return data.map((item) => ({
+  const data = await prisma.bookstack_pages.findMany({
+    orderBy: { updated_at: "desc" },
+    take: 10
+  });
+  
+  return data.map((item: any) => ({
     title: item.name,
     description: `更新于 ${new Date(item.updated_at).toLocaleDateString("zh-CN")}`,
     icon: BookMarked,

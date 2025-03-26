@@ -1,6 +1,5 @@
 'use server';
-
-import { db } from "@/lib/db";
+import prisma from "@/lib/db";
 
 export interface UserData {
   LogtoUser: any;
@@ -27,7 +26,7 @@ export async function useUserData(id: string): Promise<UserData> {
   let editedBooksError: any = null;
 
   try {
-    LogtoUser = await db.User.where("logto_id", id).first();
+    LogtoUser = await prisma.user.findUnique({ where: { logto_id: id } });
     if (!LogtoUser) {
       throw new Error("User not found");
     }
@@ -39,7 +38,7 @@ export async function useUserData(id: string): Promise<UserData> {
   }
 
   try {
-    const userLink = await db.UserLink.where("logto_id", id).where("platform", "bookstack").first();
+    const userLink = await prisma.user_link.findFirst({ where: { logto_id: id, platform: "bookstack" } });
     if (!userLink) {
       throw new Error("BookStack user link not found");
     }
@@ -51,7 +50,7 @@ export async function useUserData(id: string): Promise<UserData> {
 
   try {
     if (BookStackUser) {
-      BookStackBooks = await db.BookStack_Books.where("owned_by", BookStackUser.id);
+      BookStackBooks = await prisma.bookstack_books.findMany({ where: { owned_by: BookStackUser.id } });
     }
   } catch (error) {
     console.error("Failed to fetch books from database:", error);
@@ -60,8 +59,8 @@ export async function useUserData(id: string): Promise<UserData> {
 
   try {
     if (BookStackUser) {
-      BookStackPages = await db.BookStack_Pages.where("created_by", BookStackUser.id);
-      totalChars = BookStackPages.reduce((acc, page) => acc + page.chars, 0);
+      BookStackPages = await prisma.bookstack_pages.findMany({ where: { created_by: BookStackUser.id } });
+      totalChars = BookStackPages.reduce((acc: number, page: any) => acc + page.chars, 0);
     }
   } catch (error) {
     console.error("Failed to fetch pages from database:", error);
@@ -69,9 +68,9 @@ export async function useUserData(id: string): Promise<UserData> {
   }
 
   try {
-    const bookIds = Array.from(new Set(BookStackPages?.map(page => page.book_id) || []));
-    editedBooks = await Promise.all(bookIds.map(async (bookId) => {
-      const book = await db.BookStack_Books.where("id", bookId).first();
+    const bookIds = Array.from(new Set(BookStackPages?.map((page: any) => page.book_id) || []));
+    editedBooks = await Promise.all(bookIds.map(async (bookId: any) => {
+      const book = await prisma.bookstack_books.findUnique({ where: { id: bookId } });
       return book;
     }));
   } catch (error) {

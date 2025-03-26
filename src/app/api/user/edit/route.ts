@@ -4,7 +4,7 @@ import { logtoConfig } from "@/lib/config";
 import { getLogtoContext } from "@logto/next/server-actions";
 import { Logto } from "@/lib/external/Logto";
 import { censor } from "@/lib/external/SiliconFlow";
-import { db } from "@/lib/db";
+import prisma from "@/lib/db";
 
 const editUserSchema = z.object({
   uid: z.string(),
@@ -61,9 +61,12 @@ export async function POST(request: NextRequest) {
       "censor.bio": JSON.stringify(bioCensorResult)
     })
 
-    await db.User.where("logto_id", sub).update({
-      name: parsedBody.data.nickname,
-      avatar: parsedBody.data.avatar
+    await prisma.user.update({
+      where: { logto_id: sub },
+      data: {
+        name: parsedBody.data.nickname,
+        avatar: parsedBody.data.avatar
+      }
     })
 
     return NextResponse.json({ message: "修改成功", success: true });

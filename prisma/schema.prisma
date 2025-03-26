@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/prisma"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model bookstack_books {
+  id          Int       @id
+  slug        String?
+  name        String?
+  description String?
+  created_at  DateTime? @db.Date
+  updated_at  DateTime? @db.Date
+  owned_by    Int?
+  created_by  Int?
+  updated_by  Int?
+  cover_url   String?
+
+  @@index([slug])
+  @@index([created_at])
+  @@index([updated_at])
+  @@index([owned_by])
+  @@index([created_by])
+  @@index([updated_by])
+}
+
+model bookstack_pages {
+  name           String?
+  id             Int       @id
+  slug           String?
+  book_id        Int?
+  chapter_id     Int?
+  draft          Boolean?
+  template       Boolean?
+  created_at     DateTime? @db.Date
+  updated_at     DateTime? @db.Date
+  priority       Int?
+  owned_by       Int?
+  book_slug      String?
+  created_by     Int?
+  updated_by     Int?
+  revision_count Int?
+  editor         String?
+  chars          Int?
+
+  @@index([slug])
+  @@index([created_at])
+  @@index([updated_at])
+  @@index([owned_by])
+  @@index([created_by])
+  @@index([updated_by])
+}
+
+model user {
+  logto_id    String  @id
+  avatar      String?
+  name        String?
+  custom_data String?
+
+  @@index([logto_id])
+}
+
+model user_link {
+  logto_id    String  @id
+  platform    String?
+  platform_id String?
+
+  @@index([logto_id])
+  @@index([platform])
+  @@index([platform_id])
+}

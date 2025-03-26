@@ -1,8 +1,6 @@
 import axios from 'axios'
 import Cache from '../cache'
-import { db } from '../db';
-
-import { LogtoContext } from '@logto/next/server-actions';
+import prisma from '../db'
 
 const accessTokenCache = new Cache();
 const apiResponseCache = new Cache(); // 新增 API 响应缓存
@@ -166,7 +164,7 @@ export class Logto {
     const newData = Object.assign(currentCustomData, customData);
     
     await Logto.updateUser(id, { customData: newData });
-    await db.User.where("logto_id", id).update("custom_data", JSON.stringify(newData));
+    await prisma.user.update({ where: { logto_id: id }, data: { custom_data: JSON.stringify(newData) } });
 
     return newData;
   }
