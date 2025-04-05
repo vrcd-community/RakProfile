@@ -8,8 +8,7 @@ COPY pnpm-lock.yaml ./
 RUN npm install --global corepack@latest
 RUN corepack enable pnpm
 
-RUN pnpm install
-RUN pnpm approve-builds
+RUN pnpm install --allow-build=@prisma/client
 
 COPY . .
 
