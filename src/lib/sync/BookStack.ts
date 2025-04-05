@@ -92,24 +92,26 @@ const sync = async () => {
           }
         })
       } else {
-        await prisma.bookstack_pages.insert({
-          id: page.id,
-          name: page.name,
-          slug: page.slug,
-          book_id: page.book_id,
-          chapter_id: page.chapter_id,
-          draft: page.draft,
-          template: page.template,
-          created_at: new Date(page.created_at),
-          updated_at: new Date(),
-          priority: page.priority,
-          owned_by: page.owned_by,
-          book_slug: page.book_slug,
-          created_by: page.created_by,
-          updated_by: page.updated_by,
-          revision_count: page.revision_count,
-          editor: page.editor,
-          chars: content.length,
+        await prisma.bookstack_pages.create({
+          data: {
+            id: page.id,
+            name: page.name,
+            slug: page.slug,
+            book_id: page.book_id,
+            chapter_id: page.chapter_id,
+            draft: page.draft,
+            template: page.template,
+            created_at: new Date(page.created_at),
+            updated_at: new Date(),
+            priority: page.priority,
+            owned_by: page.owned_by,
+            book_slug: page.book_slug,
+            created_by: page.created_by,
+            updated_by: page.updated_by,
+            revision_count: page.revision_count,
+            editor: page.editor,
+            chars: content.length,
+          }
         })
       }
     } catch (e) {
@@ -129,11 +131,13 @@ const sync = async () => {
         const hasUser = await prisma.user.findUnique({ where: { logto_id: logtoUser.id } });
 
         if (!hasUser) {
-          await prisma.user.insert({
-            logto_id: logtoUser.id,
-            name: user.name || logtoUser.username,
-            avatar: logtoUser.avatar,
-            custom_data: JSON.stringify(logtoUser.customData)
+          await prisma.user.create({
+            data: {
+              logto_id: logtoUser.id,
+              name: user.name || logtoUser.username,
+              avatar: logtoUser.avatar,
+              custom_data: JSON.stringify(logtoUser.customData)
+            }
           })
         } else {
           await prisma.user.update({
@@ -149,10 +153,12 @@ const sync = async () => {
         const hasLink = await prisma.user_link.findUnique({ where: { logto_id: logtoUser.id, platform: "bookstack" } });
 
         if (!hasLink) {
-          await prisma.user_link.insert({
-            logto_id: logtoUser.id,
-            platform: "bookstack",
-            platform_id: user.id.toString(),
+          await prisma.user_link.create({
+            data: {
+              logto_id: logtoUser.id,
+              platform: "bookstack",
+              platform_id: user.id.toString(),
+            }
           })
         } else {
           await prisma.user_link.update({
