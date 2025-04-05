@@ -42,7 +42,7 @@ export async function useUserData(id: string): Promise<UserData> {
     if (!userLink) {
       throw new Error("BookStack user link not found");
     }
-    BookStackUser = { id: parseInt(userLink.platform_id) };
+    BookStackUser = { id: parseInt(userLink.platform_id as string) };
   } catch (error) {
     console.error("Failed to fetch BookStack user link from database:", error);
     bookStackUserError = error;
