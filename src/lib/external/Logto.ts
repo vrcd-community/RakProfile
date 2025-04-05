@@ -219,8 +219,8 @@ export class Logto {
     }
 
     const social = await axios.post(`${process.env.LOGTO_BASEURL}/api/verifications/social`, {
-      state: crypto.randomUUID(),
-      redirectUri: `${process.env.NEXT_PUBLIC_APP_URL}/api/user/me/3rd/callback`,
+      state: provider,
+      redirectUri: `${process.env.LOGTO_AUTH_BASE_URL}/api/user/me/3rd/callback`,
       connectorId: providerMap[provider]
     }, {
       headers: {
@@ -238,14 +238,18 @@ export class Logto {
     return true;
   }
 
-  static async VerifySocialIdentity(verificationRecordId: string, connectorData: { code: string; state: string; redirectUri: string; }, token: string) {
-    const verification = await axios.post(`${process.env.LOGTO_BASEURL}/api/verifications/social/verify`, {
-      verificationRecordId,
+  static async VerifySocialIdentity(provider: string, userId: string, connectorData: { code: string; state: string; redirectUri: string; }) {
+    const providerMap: Record<string, string> = {
+      "github": "2y2edbfkoweknupqblcc3",
+      "azuread": "d0n5zorq55oh8qbkgtw9v",
+      "discord": "jautjvxf4byxsad3nfrz2"
+    }
+
+    const client = await getLogtoClient();
+
+    const verification = await client.logtoClient.post(`${process.env.LOGTO_BASEURL}/api/users/${userId}/identities`, {
+      connectorId: providerMap[provider],
       connectorData
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
     });
 
     return verification.data;

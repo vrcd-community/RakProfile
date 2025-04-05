@@ -197,9 +197,9 @@ export default function SocialIdentity() {
                   variant="secondary"
                   size="sm"
                   onClick={() => handleConnect(provider)}
-                  disabled={connectLoading === provider}
+                  disabled={connectLoading === provider || loading}
                 >
-                  {connectLoading === provider ? (
+                  {connectLoading === provider || loading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
                     <>
