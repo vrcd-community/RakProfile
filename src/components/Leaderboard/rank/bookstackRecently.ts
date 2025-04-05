@@ -71,21 +71,21 @@ export const getBookStackRank = async () => {
 
   // 统计用户活动数据
   for (const page of pages) {
-    const updatedAt = new Date(page.updated_at);
+    const updatedAt = new Date(page.updated_at as Date);
     const isRecent = updatedAt >= recentDate;
 
-    if (!activityScores[page.created_by]) {
-      activityScores[page.created_by] = {
+    if (!activityScores[page.created_by as number]) {
+      activityScores[page.created_by as number] = {
         recentPages: 0,
         recentChars: 0,
         totalPages: 0,
         totalChars: 0,
         lastActive: updatedAt,
-        ownerId: page.created_by
+        ownerId: page.created_by as number
       };
     }
 
-    const userData = activityScores[page.created_by];
+    const userData = activityScores[page.created_by as number];
     if (isRecent) {
       userData.recentPages += 1;
       userData.recentChars += page.chars || 0;
