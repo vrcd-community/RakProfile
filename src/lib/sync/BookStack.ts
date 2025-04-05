@@ -38,17 +38,19 @@ const sync = async () => {
           }
         })
       } else {
-        await prisma.bookstack_books.insert({
-          id: book.id,
-          name: book.name,
-          slug: book.slug,
-          description: book.description,
-          created_at: new Date(book.created_at),
-          updated_at: new Date(),
-          owned_by: book.owned_by,
-          created_by: book.created_by,
-          updated_by: book.updated_by,
-          cover_url: book.cover?.url!,
+        await prisma.bookstack_books.create({
+          data: {
+            id: book.id,
+            name: book.name,
+            slug: book.slug,
+            description: book.description,
+            created_at: new Date(book.created_at),
+            updated_at: new Date(),
+            owned_by: book.owned_by,
+            created_by: book.created_by,
+            updated_by: book.updated_by,
+            cover_url: book.cover?.url!,
+          }
         })
       }
     } catch (e) {
