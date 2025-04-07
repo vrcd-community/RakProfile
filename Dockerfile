@@ -12,4 +12,4 @@ ENV NODE_ENV=production
 
 EXPOSE 3000
 
-CMD ["/bin/sh", "-c", "npm run build && npm start"]
+CMD ["/bin/sh", "-c", "prisma generate && npm run build && npm start"]
