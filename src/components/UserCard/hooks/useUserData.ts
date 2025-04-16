@@ -1,5 +1,6 @@
 'use server';
 import prisma from "@/lib/db";
+import { Logto } from "@/lib/external/Logto";
 
 export interface UserData {
   LogtoUser: any;
@@ -28,10 +29,25 @@ export async function useUserData(id: string): Promise<UserData> {
   try {
     LogtoUser = await prisma.user.findUnique({ where: { logto_id: id } });
     if (!LogtoUser) {
-      throw new Error("User not found");
-    }
+      const user = await Logto.getUser(id);
+      LogtoUser = {
+        logto_id: id,
+        avatar: user.avatar,
+        name: user.name || user.username,
+        custom_data: user.customData
+      }
 
-    LogtoUser.custom_data = JSON.parse(LogtoUser.custom_data || "{}");
+      await prisma.user.create({
+        data: {
+          logto_id: id,
+          avatar: user.avatar,
+          name: user.name || user.username,
+          custom_data: JSON.stringify(user.customData)
+        }
+      })
+    } else {
+      LogtoUser.custom_data = JSON.parse(LogtoUser.custom_data || "{}");
+    }
   } catch (error) {
     console.error("Failed to fetch user from database:", error);
     logtoUserError = error;
@@ -39,10 +55,7 @@ export async function useUserData(id: string): Promise<UserData> {
 
   try {
     const userLink = await prisma.user_link.findFirst({ where: { logto_id: id, platform: "bookstack" } });
-    if (!userLink) {
-      throw new Error("BookStack user link not found");
-    }
-    BookStackUser = { id: parseInt(userLink.platform_id as string) };
+    if (userLink) BookStackUser = { id: parseInt(userLink.platform_id as string) };
   } catch (error) {
     console.error("Failed to fetch BookStack user link from database:", error);
     bookStackUserError = error;
@@ -68,17 +81,19 @@ export async function useUserData(id: string): Promise<UserData> {
   }
 
   try {
-    const bookIds = Array.from(new Set(BookStackPages?.map((page: any) => page.book_id) || []));
-    editedBooks = await Promise.all(bookIds.map(async (bookId: any) => {
-      const book = await prisma.bookstack_books.findUnique({ where: { id: bookId } });
-      return book;
-    }));
+    if (BookStackPages) {
+      const bookIds = Array.from(new Set(BookStackPages?.map((page: any) => page.book_id) || []));
+      editedBooks = await Promise.all(bookIds.map(async (bookId: any) => {
+        const book = await prisma.bookstack_books.findUnique({ where: { id: bookId } });
+        return book;
+      }));
+    }
   } catch (error) {
     console.error("Failed to fetch edited books from database:", error);
     editedBooksError = error;
   }
 
-  return {
+  const result = {
     LogtoUser,
     BookStackUser,
     BookStackBooks: BookStackBooks || [],
@@ -93,4 +108,6 @@ export async function useUserData(id: string): Promise<UserData> {
       editedBooksError
     }
   };
+
+  return result;
 }

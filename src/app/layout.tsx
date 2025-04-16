@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-[var(--bg-1)]">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

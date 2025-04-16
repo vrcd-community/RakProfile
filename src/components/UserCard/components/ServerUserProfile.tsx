@@ -12,15 +12,9 @@ import { SettingsProvider } from "./settings/SettingsContext";
 
 export async function ServerUserProfile({ id }: { id: string }) {
   const { isAuthenticated, claims } = await getLogtoContext(logtoConfig);
-  const { LogtoUser, BookStackUser, BookStackBooks, BookStackPages, editedBooks, totalChars, errors } = await useUserData(id);
+  const { LogtoUser, BookStackBooks, BookStackPages, editedBooks, totalChars, errors } = await useUserData(id);
 
-  if (!LogtoUser || !BookStackUser) {
-    if (!LogtoUser && !BookStackUser) {
-      return <ErrorCard
-        title="加载用户数据失败"
-        description={`无法找到与ID ${id} 相关的用户信息。`}
-      />;
-    }
+  if (!LogtoUser) {
     if (!LogtoUser) {
       return <ErrorCard
         title="加载用户信息失败"
@@ -28,13 +22,7 @@ export async function ServerUserProfile({ id }: { id: string }) {
         error={errors.logtoUserError}
       />;
     }
-    if (!BookStackUser) {
-      return <ErrorCard
-        title="加载文档库用户信息失败"
-        description="无法加载文档库用户信息，请稍后重试。"
-        error={errors.bookStackUserError}
-      />;
-    }
+
     return notFound();
   }
 

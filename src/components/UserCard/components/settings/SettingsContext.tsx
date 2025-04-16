@@ -212,16 +212,23 @@ export function SettingsProvider({ children, initialData }: SettingsProviderProp
     }
   };
 
+  console.log(initialData)
+
   return (
     <SettingsContext.Provider value={{
       profile,
-      targetUser: initialData?.user || null,
+      targetUser: initialData?.user ? {
+        uid: initialData?.user.uid,
+        nickname: profile?.claims.name || profile?.claims.username || "",
+        avatar: profile?.claims.picture || "",
+        bio: profile?.claims.bio || "",
+      } : null,
       isAdmin: initialData?.isAdmin || false,
       isSelf: initialData?.isSelf || false,
       loading,
       saveLoading,
       name,
-      bio,
+      bio: initialData?.user?.bio || bio || "",
       avatarPreview,
       isEditingName,
       isEditingBio,

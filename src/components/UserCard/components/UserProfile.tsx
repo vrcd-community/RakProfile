@@ -189,7 +189,7 @@ export function UserProfile() {
             ) : (
               <div className="markdown-root">
                 <Markdown remarkPlugins={[gfm]} rehypePlugins={[highlight]}>
-                  {targetUser.bio || "暂无个人介绍"}
+                  {bio || "暂无个人介绍"}
                 </Markdown>
               </div>
             )}

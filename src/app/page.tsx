@@ -10,17 +10,17 @@ import LeaderboardPage from "@/components/Leaderboard";
 
 const AppCard = ({ title, description, icon: Icon, color, link }: any) => {
   return (
-    <Link href={link} target="_blank" className={`rounded-xl overflow-hidden flex flex-row justify-between shadow hover:shadow-xl transition group`} style={{ borderColor: color, borderWidth: "2px", backgroundColor: color }}>
-      <div className="p-4 flex items-center justify-between rounded rounded-r-xl dark:rounded-r-2xl flex-1 dark:bg-black/90 bg-white/94">
+    <Link href={link} target="_blank" className={`rounded-lg overflow-hidden flex flex-row justify-between shadow hover:shadow-xl transition group`} style={{ borderColor: color, borderWidth: "2px", backgroundColor: color }}>
+      <div className="p-4 flex items-center justify-between rounded rounded-r-lg dark:rounded-r-xl flex-1 dark:bg-[#202122]/96 bg-[#FFFFFF]/96">
         <div>
           <div className="flex items-center gap-2">
-            <p className="text-[18px] font-semibold dark:text-white text-black">{title}</p>
             <Icon className="h-5 w-5" style={{ color: color }} />
+            <p className="text-[18px] font-semibold" style={{ color: color }}>{title}</p>
           </div>
           <p className="text-[13px] text-black dark:text-gray-400 mt-2">{description}</p>
         </div>
       </div>
-      <div className="flex items-center justify-end p-0.5 transition-all duration-200 group-hover:p-1.5">
+      <div className="flex items-center justify-end p-1 transition-all duration-200 group-hover:p-2">
         <ChevronRight className="h-5 w-5" />
       </div>
     </Link>
@@ -37,7 +37,7 @@ const apps = [{
   title: "VRChat 入门包",
   description: "带你零基础学习制作虚拟角色",
   icon: Goal,
-  color: "#F0D826",
+  color: "#F09926",
   link: "https://docs.vrcd.org.cn/books/vrchat",
 }, {
   title: "VPM 镜像库",
@@ -61,7 +61,7 @@ const apps = [{
   title: "VRCD Wiki",
   description: "深入了解 VRCD 和配置服务",
   icon: BookOpen,
-  color: "#BFC49F",
+  color: "#7E835C",
   link: "https://wiki.vrcd.org.cn/",
 }]
 
@@ -141,7 +141,7 @@ export default async function Home() {
           <div className="max-h-[490px] overflow-y-scroll scrollbar-hide">
             <LeaderboardPage />
           </div>
-          <div className={`absolute left-0 right-0 bottom-0 h-20 bg-gradient-to-t dark:from-[#0C0A09] from-[#FFFFFF] to-transparent`} />
+          <div className={`absolute left-0 right-0 bottom-0 h-20 bg-gradient-to-t from-[var(--bg-1)] to-transparent`} />
         </div>
         <div className="flex flex-3/5 flex-col mt-3 gap-4 rounded-xl">
           <h1 className="text-3xl font-bold text-foreground mb-2">我们是谁？</h1>
