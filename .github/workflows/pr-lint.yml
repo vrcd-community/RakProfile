@@ -16,7 +16,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "23"
+          node-version: "22"
+
+      - name: Install Corepack
+        run: npm install --global corepack@latest
+  
+      - name: Install pnpm
+        run: corepack enable pnpm
 
       - name: Install dependencies
         run: pnpm install
