@@ -128,7 +128,7 @@ importers:
         version: 4.1.8
       '@types/node':
         specifier: ^22.0.0
-        version: 22.15.26
+        version: 22.15.27
       '@types/react':
         specifier: ^19
         version: 19.1.6
@@ -1366,11 +1366,11 @@ packages:
   '@types/node-fetch@2.6.12':
     resolution: {integrity: sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==}
 
-  '@types/node@18.19.107':
-    resolution: {integrity: sha512-uvHN/vnsPj8hJWaqXUjT59LKYh0RlZXsdYa4CGz4R9aFGePPsUPN0xlHrDzOset937H2TunFJ8SwPCX69y9qhA==}
+  '@types/node@18.19.108':
+    resolution: {integrity: sha512-JZv9uwGYYtfcsO7B99KszTlNhvrIWqsRy7Xjp5Hr7ZFj7DSlsxIi0zJfibe/1xtPn6kEEbfMjH2lbsubwa81pQ==}
 
-  '@types/node@22.15.26':
-    resolution: {integrity: sha512-lgISkNrqdQ5DAzjBhnDNGKDuXDNo7/1V4FhNzsKREhWLZTOELQAptuAnJMzHtUl1qyEBBy9lNBKQ9WjyiSloTw==}
+  '@types/node@22.15.27':
+    resolution: {integrity: sha512-5fF+eu5mwihV2BeVtX5vijhdaZOfkQTATrePEaXTcKqI16LhJ7gi2/Vhd9OZM0UojcdmiOCVg5rrax+i1MdoQQ==}
 
   '@types/react-dom@19.1.5':
     resolution: {integrity: sha512-CMCjrWucUBZvohgZxkjd6S9h0nZxXjzus6yDfUb+xLxYM7VvjKNH1tQrE9GWLql1XoOP4/Ds3bwFqShHUYraGg==}
@@ -4042,14 +4042,14 @@ snapshots:
 
   '@types/node-fetch@2.6.12':
     dependencies:
-      '@types/node': 22.15.26
+      '@types/node': 22.15.27
       form-data: 4.0.2
 
-  '@types/node@18.19.107':
+  '@types/node@18.19.108':
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@22.15.26':
+  '@types/node@22.15.27':
     dependencies:
       undici-types: 6.21.0
 
@@ -5075,7 +5075,7 @@ snapshots:
 
   openai@4.104.0(zod@3.25.41):
     dependencies:
-      '@types/node': 18.19.107
+      '@types/node': 18.19.108
       '@types/node-fetch': 2.6.12
       abort-controller: 3.0.0
       agentkeepalive: 4.6.0
