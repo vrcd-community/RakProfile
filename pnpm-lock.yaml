@@ -88,7 +88,7 @@ importers:
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       openai:
         specifier: ^4.87.4
-        version: 4.104.0(zod@3.25.39)
+        version: 4.104.0(zod@3.25.41)
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -121,14 +121,14 @@ importers:
         version: 1.0.7(tailwindcss@4.1.8)
       zod:
         specifier: ^3.24.2
-        version: 3.25.39
+        version: 3.25.41
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4
         version: 4.1.8
       '@types/node':
         specifier: ^22.0.0
-        version: 22.15.25
+        version: 22.15.26
       '@types/react':
         specifier: ^19
         version: 19.1.6
@@ -1366,11 +1366,11 @@ packages:
   '@types/node-fetch@2.6.12':
     resolution: {integrity: sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==}
 
-  '@types/node@18.19.106':
-    resolution: {integrity: sha512-Y4/Dhgs0KqUjvzbBkPvHJ16ds4D+l9qjXNdc5QNQc2T+8g4KRIH4A9qDsawx1BuUealX/tVyMqUNWYoy6uS33A==}
+  '@types/node@18.19.107':
+    resolution: {integrity: sha512-uvHN/vnsPj8hJWaqXUjT59LKYh0RlZXsdYa4CGz4R9aFGePPsUPN0xlHrDzOset937H2TunFJ8SwPCX69y9qhA==}
 
-  '@types/node@22.15.25':
-    resolution: {integrity: sha512-RJCAZ1E7JgMDJRnyVwIvlnKnNa0oHXrgSeq5aoXdhxCOSuwCe9sccKnngOJq8GuukzSf45u4VeD0JxUXfC3Dwg==}
+  '@types/node@22.15.26':
+    resolution: {integrity: sha512-lgISkNrqdQ5DAzjBhnDNGKDuXDNo7/1V4FhNzsKREhWLZTOELQAptuAnJMzHtUl1qyEBBy9lNBKQ9WjyiSloTw==}
 
   '@types/react-dom@19.1.5':
     resolution: {integrity: sha512-CMCjrWucUBZvohgZxkjd6S9h0nZxXjzus6yDfUb+xLxYM7VvjKNH1tQrE9GWLql1XoOP4/Ds3bwFqShHUYraGg==}
@@ -2428,8 +2428,8 @@ packages:
     resolution: {integrity: sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==}
     engines: {node: '>=18'}
 
-  zod@3.25.39:
-    resolution: {integrity: sha512-yrva2T2x4R+FMFTPBVD/YPS7ct8njqjnV93zNx/MlwqLAxcnxwRGbXWyWF63/nErl3rdRd8KARObon7BiWzabQ==}
+  zod@3.25.41:
+    resolution: {integrity: sha512-8+sDJTGtCYIDBhdqDygp0ffj8kzziRKqAJPhpYObbElJ+3TRe/mnlnwH+/OMa3kKhueS4Drm5UMW00/u1p07zA==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -4042,14 +4042,14 @@ snapshots:
 
   '@types/node-fetch@2.6.12':
     dependencies:
-      '@types/node': 22.15.25
+      '@types/node': 22.15.26
       form-data: 4.0.2
 
-  '@types/node@18.19.106':
+  '@types/node@18.19.107':
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@22.15.25':
+  '@types/node@22.15.26':
     dependencies:
       undici-types: 6.21.0
 
@@ -5073,9 +5073,9 @@ snapshots:
     dependencies:
       whatwg-url: 5.0.0
 
-  openai@4.104.0(zod@3.25.39):
+  openai@4.104.0(zod@3.25.41):
     dependencies:
-      '@types/node': 18.19.106
+      '@types/node': 18.19.107
       '@types/node-fetch': 2.6.12
       abort-controller: 3.0.0
       agentkeepalive: 4.6.0
@@ -5083,7 +5083,7 @@ snapshots:
       formdata-node: 4.4.1
       node-fetch: 2.7.0
     optionalDependencies:
-      zod: 3.25.39
+      zod: 3.25.41
     transitivePeerDependencies:
       - encoding
 
@@ -5490,6 +5490,6 @@ snapshots:
 
   yallist@5.0.0: {}
 
-  zod@3.25.39: {}
+  zod@3.25.41: {}
 
   zwitch@2.0.4: {}
