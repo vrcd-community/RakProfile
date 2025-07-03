@@ -62,8 +62,6 @@ export const censor = async (text: string) => {
     }
   })
 
-  console.log(response.choices[0].message?.content)
-
   try {
     const json = JSON.parse(response.choices[0].message?.content!)
     const parsed = CensorSchema.parse(json)

@@ -212,8 +212,6 @@ export function SettingsProvider({ children, initialData }: SettingsProviderProp
     }
   };
 
-  console.log(initialData)
-
   return (
     <SettingsContext.Provider value={{
       profile,
@@ -257,4 +255,4 @@ export const useSettings = () => {
     throw new Error('useSettings must be used within a SettingsProvider');
   }
   return context;
-}; 
+};

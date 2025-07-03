@@ -12,10 +12,10 @@ const navItems = [
     title: "博客",
     href: "/blog",
   },
-  {
-    title: "贡献榜",
-    href: "/ranking",
-  }
+  // {
+  //   title: "贡献榜",
+  //   href: "/ranking",
+  // }
 ]
 
 export async function Header() {

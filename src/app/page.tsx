@@ -1,12 +1,18 @@
 import Link from "next/link";
-import NextImage from "next/image";
 
-import IntroImage from "@/assets/VRChat_2024-06-28_22-08-36.941_3840x2160.png"
+import img0 from "@/assets/VRChat_2024-02-22_22-33-55.530_7680x4320_1080p.jpg";
+import img2 from "@/assets/VRChat_2025-05-21_04-28-10.408_2560x1440.png";
+import img5 from "@/assets/VRChat_2025-02-01_22-18-24.441_3840x2160_1080p.jpg";
+import img6 from "@/assets/VRChat_2025-02-05_04-15-44.472_3840x2160_1080p.jpg";
+import img7 from "@/assets/F66F251AE50B347CCE02A3AA94D45211_1080p.jpg";
+import img8 from "@/assets/VRChat_2024-12-01_22-42-40.502_3840x2160_1080p.jpg";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, BookMarked, Database, FileText, BookOpen, ChevronRight, Goal } from "lucide-react";
 import Recently from "@/components/Recently";
-import LeaderboardPage from "@/components/Leaderboard";
+// import LeaderboardPage from "@/components/Leaderboard";
+import { Carousel } from "@/components/carousel";
 
 const AppCard = ({ title, description, icon: Icon, color, link }: any) => {
   return (
@@ -102,6 +108,39 @@ const getTitle = () => {
   return list[Math.floor(Math.random() * list.length)]
 }
 
+const images = [
+  {
+    src: img5,
+    alt: "Intro Image 5",
+    from: "@超爽劲霸VRCD"
+  },
+  {
+    src: img0,
+    alt: "Intro Image 0",
+    from: "@flower_elf"
+  },
+  {
+    src: img2,
+    alt: "Intro Image 2",
+    from: "@风间苏苏"
+  },
+  {
+    src: img7,
+    alt: "Intro Image 7",
+    from: "@酒保K"
+  },
+  {
+    src: img6,
+    alt: "Intro Image 6",
+    from: "@COCOA_GAME"
+  },
+  {
+    src: img8,
+    alt: "Intro Image 8",
+    from: "@巧克力蛋包饭"
+  }
+];
+
 export default async function Home() {
   return (
     <div className="w-full min-h-[calc(100vh-120px)] mt-8 flex flex-col items-center p-8 bg-background">
@@ -136,20 +175,24 @@ export default async function Home() {
         <Recently />
       </div>
 
-      <div className="w-full max-w-6xl mt-16 flex flex-col md:flex-row gap-8">
-        <div className="flex-2/5 relative">
+      <div className="w-full max-w-6xl mt-16 md:flex-row gap-8">
+        {/* <div className="flex-2/5 relative">
           <div className="max-h-[490px] overflow-y-scroll scrollbar-hide">
             <LeaderboardPage />
           </div>
           <div className={`absolute left-0 right-0 bottom-0 h-20 bg-gradient-to-t from-[var(--bg-1)] to-transparent`} />
-        </div>
-        <div className="flex flex-3/5 flex-col mt-3 gap-4 rounded-xl">
+        </div> */}
+        <div className="flex flex-col mt-3 gap-4 rounded-xl">
           <h1 className="text-3xl font-bold text-foreground mb-2">我们是谁？</h1>
-          <NextImage src={IntroImage} alt="Intro" className="rounded-xl" />
-          <div>
-            <p>我们运营一个面向玩家，内容创作者与开发者的 中文VR创作社区⁄开源内容分享平台。</p>
-            <p>为你的创作提供教程、汉化文档、官方资讯、社区帮助。</p>
-            <p>我们定期运营⁄举办创作者活动。</p>
+          <div className="flex-col sm:flex-row gap-4 flex bg-[#F1F1F1] dark:bg-[#202122] p-6 rounded-xl shadow-lg">
+            <Carousel
+              images={images}
+            />
+            <div className="flex flex-col gap-4">
+              <p>我们运营一个面向玩家，内容创作者与开发者的 中文VR创作社区⁄开源内容分享平台。</p>
+              <p>为你的创作提供教程、汉化文档、官方资讯、社区帮助。</p>
+              <p>我们定期运营⁄举办创作者活动。</p>
+            </div>
           </div>
         </div>
       </div>
