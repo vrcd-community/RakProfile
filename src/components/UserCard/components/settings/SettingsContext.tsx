@@ -226,7 +226,7 @@ export function SettingsProvider({ children, initialData }: SettingsProviderProp
       loading,
       saveLoading,
       name,
-      bio: initialData?.user?.bio || bio || "",
+      bio: bio,
       avatarPreview,
       isEditingName,
       isEditingBio,
