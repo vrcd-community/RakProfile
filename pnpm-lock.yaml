@@ -91,7 +91,7 @@ importers:
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       openai:
         specifier: ^5.0.0
-        version: 5.7.0(zod@3.25.67)
+        version: 5.7.0(zod@3.25.71)
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -124,7 +124,7 @@ importers:
         version: 1.0.7(tailwindcss@4.1.11)
       zod:
         specifier: ^3.24.2
-        version: 3.25.67
+        version: 3.25.71
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4
@@ -2355,8 +2355,8 @@ packages:
     resolution: {integrity: sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==}
     engines: {node: '>=18'}
 
-  zod@3.25.67:
-    resolution: {integrity: sha512-idA2YXwpCdqUSKRCACDE6ItZD9TZzy3OZMtpfLoh6oPR47lipysRrJfjzMqFxQ3uJuUPyUeWe1r9vLH33xO/Qw==}
+  zod@3.25.71:
+    resolution: {integrity: sha512-BsBc/NPk7h8WsUWYWYL+BajcJPY8YhjelaWu2NMLuzgraKAz4Lb4/6K11g9jpuDetjMiqhZ6YaexFLOC0Ogi3Q==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -4936,9 +4936,9 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  openai@5.7.0(zod@3.25.67):
+  openai@5.7.0(zod@3.25.71):
     optionalDependencies:
-      zod: 3.25.67
+      zod: 3.25.71
 
   parse-entities@4.0.2:
     dependencies:
@@ -5330,6 +5330,6 @@ snapshots:
 
   yallist@5.0.0: {}
 
-  zod@3.25.67: {}
+  zod@3.25.71: {}
 
   zwitch@2.0.4: {}
