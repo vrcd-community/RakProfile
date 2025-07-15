@@ -91,7 +91,7 @@ importers:
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       openai:
         specifier: ^5.0.0
-        version: 5.9.0(zod@3.25.76)
+        version: 5.9.2(zod@3.25.76)
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -2044,8 +2044,8 @@ packages:
       sass:
         optional: true
 
-  openai@5.9.0:
-    resolution: {integrity: sha512-cmLC0pfqLLhBGxE4aZPyRPjydgYCncppV2ClQkKmW79hNjCvmzkfhz8rN5/YVDmjVQlFV+UsF1JIuNjNgeagyQ==}
+  openai@5.9.2:
+    resolution: {integrity: sha512-d7t/lRkwZpSwIk7GW3EHRSGAlsuoi1WL6VhCO02raEzZO2ahEVAbWn3WmOcpeh9zF6xF9weJXoVeDkWJRz+SHA==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -4939,7 +4939,7 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  openai@5.9.0(zod@3.25.76):
+  openai@5.9.2(zod@3.25.76):
     optionalDependencies:
       zod: 3.25.76
 
