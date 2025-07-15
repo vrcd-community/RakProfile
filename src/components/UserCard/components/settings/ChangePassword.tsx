@@ -11,13 +11,13 @@ import { z } from "zod";
 const passwordSchema = z.object({
   oldPassword: z.string().min(1, "请输入旧密码"),
   newPassword: z.string()
-    .min(8, "密码长度至少为8位")
-    .max(32, "密码长度不能超过32位")
-    .regex(/[a-zA-Z]/, "密码必须包含大小写字母")
-    .regex(/[0-9]/, "密码必须包含数字"),
-  confirmPassword: z.string().min(1, "请确认新密码"),
+    .min(8, { error: "密码长度至少为8位" })
+    .max(32, { error: "密码长度不能超过32位" })
+    .regex(/[a-zA-Z]/, { error: "密码必须包含大小写字母" })
+    .regex(/[0-9]/, { error: "密码必须包含数字" }),
+  confirmPassword: z.string().min(1, { error: "请确认新密码" }),
 }).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "两次输入的密码不一致",
+  error: "两次输入的密码不一致",
   path: ["confirmPassword"],
 });
 
@@ -90,9 +90,9 @@ export function ChangePassword() {
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors: { [key: string]: string } = {};
-        error.errors.forEach(err => {
+        error.issues.forEach(err => {
           if (err.path[0]) {
-            newErrors[err.path[0]] = err.message;
+            newErrors[err.path[0].toString()] = err.message;
           }
         });
         setErrors(newErrors);
