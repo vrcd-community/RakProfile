@@ -12,6 +12,10 @@ const navItems = [
     title: "博客",
     href: "/blog",
   },
+  {
+    title: "团队成员",
+    href: "/team",
+  }
   // {
   //   title: "贡献榜",
   //   href: "/ranking",

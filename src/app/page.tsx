@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import img0 from "@/assets/intro-images/VRChat_2024-02-22_22-33-55.530_7680x4320_1080p.jpg";
-import img2 from "@/assets/intro-images/VRChat_2025-05-21_04-28-10.408_2560x1440.png";
+import img2 from "@/assets/intro-images/VRChat_2025-07-12_23-11-33.962_1920x1080.png";
 import img5 from "@/assets/intro-images/VRChat_2025-02-01_22-18-24.441_3840x2160_1080p.jpg";
 import img6 from "@/assets/intro-images/VRChat_2025-02-05_04-15-44.472_3840x2160_1080p.jpg";
 import img7 from "@/assets/intro-images/F66F251AE50B347CCE02A3AA94D45211_1080p.jpg";
