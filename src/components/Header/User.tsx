@@ -15,7 +15,7 @@ export async function User() {
         className="h-8 hover:scale-110 active:scale-90 transition-transform duration-200"
         asChild
       >
-        <Link href={`/profile/${claims?.sub!}?edit=1`}>
+        <Link href={`/profile/${claims?.sub!}`}>
           <User2 />
           个人资料
         </Link>

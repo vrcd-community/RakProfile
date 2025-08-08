@@ -61,14 +61,6 @@ export async function POST(request: NextRequest) {
       "censor.bio": JSON.stringify(bioCensorResult)
     })
 
-    await prisma.user.update({
-      where: { logto_id: sub },
-      data: {
-        name: parsedBody.data.nickname,
-        avatar: parsedBody.data.avatar
-      }
-    })
-
     return NextResponse.json({ message: "修改成功", success: true });
   } catch (error) {
     return NextResponse.json({ message: "内部错误", error: (error as any).message || "Unknown error" });

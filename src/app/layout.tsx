@@ -17,6 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN">
+      <head>
+        <meta name="referrer" content="no-referrer" />
+      </head>
       <body className="bg-[var(--bg-1)]">
         <ThemeProvider
           attribute="class"

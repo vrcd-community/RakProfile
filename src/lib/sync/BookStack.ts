@@ -128,28 +128,6 @@ const sync = async () => {
       const logtoUser = await Logto.getUser(user.external_auth_id);
 
       if (logtoUser) {
-        const hasUser = await prisma.user.findUnique({ where: { logto_id: logtoUser.id } });
-
-        if (!hasUser) {
-          await prisma.user.create({
-            data: {
-              logto_id: logtoUser.id,
-              name: user.name || logtoUser.username,
-              avatar: logtoUser.avatar,
-              custom_data: JSON.stringify(logtoUser.customData)
-            }
-          })
-        } else {
-          await prisma.user.update({
-            where: { logto_id: logtoUser.id },
-            data: {
-              name: user.name || logtoUser.username,
-              avatar: logtoUser.avatar,
-              custom_data: JSON.stringify(logtoUser.customData)
-            }
-          })
-        }
-
         const hasLink = await prisma.user_link.findUnique({ where: { logto_id: logtoUser.id, platform: "bookstack" } });
 
         if (!hasLink) {

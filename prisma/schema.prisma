@@ -56,15 +56,6 @@ model bookstack_pages {
   @@index([updated_by])
 }
 
-model user {
-  logto_id    String  @id
-  avatar      String?
-  name        String?
-  custom_data String?
-
-  @@index([logto_id])
-}
-
 model user_link {
   logto_id    String  @id
   platform    String?

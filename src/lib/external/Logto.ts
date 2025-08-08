@@ -19,6 +19,7 @@ const fetchAccessToken = async () => {
       'Authorization': `Basic ${Buffer.from(`${process.env.LOGTO_APP_ID}:${process.env.LOGTO_APP_SECRET}`).toString('base64')}`
     }
   });
+
   return resp.data.access_token;
 }
 
@@ -164,7 +165,6 @@ export class Logto {
     const newData = Object.assign(currentCustomData, customData);
     
     await Logto.updateUser(id, { customData: newData });
-    await prisma.user.update({ where: { logto_id: id }, data: { custom_data: JSON.stringify(newData) } });
 
     return newData;
   }
