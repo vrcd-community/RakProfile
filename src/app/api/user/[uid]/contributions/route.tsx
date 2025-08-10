@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from "next/server";
-import type {ContributionsCalendarProps} from "@/components/UserCardV2/components/ContributionsCalendar"
+import type {ContributionsCalendarProps} from "@/components/UserCardV2/Profile/ContributionsCalendar"
 import db from "@/lib/db"
 
 interface Contributions {
