@@ -87,7 +87,7 @@ export const Books = ({bookstack, initialLimit = 6}: {
 
     merged.forEach((item, index, arr) => {
       if (item.type === "owned") {
-        const editedIndex = arr.findIndex((v) => v.type === "edited" && v.slug === item.slug);
+        const editedIndex = arr.findIndex((v) => v.type === "edited" && v.url === item.url);
         if (editedIndex !== -1) {
           arr.splice(editedIndex, 1);
         }
