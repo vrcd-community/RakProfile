@@ -158,7 +158,7 @@ export const ContributionsCalendar: React.FC<ContributionsCalendarProps> = ({con
 
   const sharedWidth = width + 40
 
-  const mLabels = monthLabels(start, end);
+  const mLabels = monthLabels(start);
 
   return (
     <TooltipProvider delayDuration={100}>
