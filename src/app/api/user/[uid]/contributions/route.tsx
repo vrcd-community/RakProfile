@@ -8,7 +8,10 @@ interface Contributions {
   type: string;
 }
 
-export async function GET(request: NextRequest, { params }: { params: { uid: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ uid: string }> }
+) {
   const uid = (await params).uid;
   const now = Date.now();
   const year = 366 * 24 * 60 * 60 * 1000;

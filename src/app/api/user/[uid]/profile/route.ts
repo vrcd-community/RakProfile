@@ -3,7 +3,10 @@ import { logtoConfig } from "@/lib/config";
 import { getLogtoContext } from "@logto/next/server-actions";
 import { Logto } from "@/lib/external/Logto";
 
-export async function GET(request: NextRequest, { params }: { params: { uid: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ uid: string }> }
+) {
   const uid = (await params).uid;
   const user = await getLogtoContext(logtoConfig);
 

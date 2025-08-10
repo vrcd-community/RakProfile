@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/lib/db"
 
-export async function GET(request: NextRequest, { params }: { params: { uid: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ uid: string }> }
+) {
   const uid = (await params).uid;
 
   const bookstack_id = await db.user_link.findFirst({
