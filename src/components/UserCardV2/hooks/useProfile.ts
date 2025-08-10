@@ -21,7 +21,7 @@ export const useProfile = (uid: string) => {
   const [claims, setClaims] = useState<Claims>()
   const [user, setUser] = useState<User>()
 
-  const { loading, data, error } = useFetch<{ data: { user: User, claims: Claims } }>(`/api/user/profile/${uid}`)
+  const { loading, data, error } = useFetch<{ data: { user: User, claims: Claims } }>(`/api/user/${uid}/profile`)
 
   useEffect(() => {
     if (data) {

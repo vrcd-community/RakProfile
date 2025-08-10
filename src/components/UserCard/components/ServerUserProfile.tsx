@@ -2,7 +2,7 @@
 
 import { notFound } from 'next/navigation';
 import { useUserData } from "../hooks/useUserData";
-import { ErrorCard } from "./ErrorCard";
+import { ErrorCard } from "../../common/ErrorCard";
 import { ClientUserProfile } from "./ClientUserProfile";
 import { getLogtoContext } from "@logto/next/server-actions";
 import { logtoConfig } from "@/lib/config";

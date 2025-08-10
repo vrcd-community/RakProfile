@@ -14,6 +14,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model contributions_history
+ * 
+ */
+export type contributions_history = $Result.DefaultSelection<Prisma.$contributions_historyPayload>
+/**
  * Model bookstack_books
  * 
  */
@@ -36,8 +41,8 @@ export type user_link = $Result.DefaultSelection<Prisma.$user_linkPayload>
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Bookstack_books
- * const bookstack_books = await prisma.bookstack_books.findMany()
+ * // Fetch zero or more Contributions_histories
+ * const contributions_histories = await prisma.contributions_history.findMany()
  * ```
  *
  *
@@ -57,8 +62,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Bookstack_books
-   * const bookstack_books = await prisma.bookstack_books.findMany()
+   * // Fetch zero or more Contributions_histories
+   * const contributions_histories = await prisma.contributions_history.findMany()
    * ```
    *
    *
@@ -155,6 +160,16 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.contributions_history`: Exposes CRUD operations for the **contributions_history** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Contributions_histories
+    * const contributions_histories = await prisma.contributions_history.findMany()
+    * ```
+    */
+  get contributions_history(): Prisma.contributions_historyDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.bookstack_books`: Exposes CRUD operations for the **bookstack_books** model.
     * Example usage:
     * ```ts
@@ -623,6 +638,7 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    contributions_history: 'contributions_history',
     bookstack_books: 'bookstack_books',
     bookstack_pages: 'bookstack_pages',
     user_link: 'user_link'
@@ -644,10 +660,84 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "bookstack_books" | "bookstack_pages" | "user_link"
+      modelProps: "contributions_history" | "bookstack_books" | "bookstack_pages" | "user_link"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      contributions_history: {
+        payload: Prisma.$contributions_historyPayload<ExtArgs>
+        fields: Prisma.contributions_historyFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.contributions_historyFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contributions_historyPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.contributions_historyFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contributions_historyPayload>
+          }
+          findFirst: {
+            args: Prisma.contributions_historyFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contributions_historyPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.contributions_historyFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contributions_historyPayload>
+          }
+          findMany: {
+            args: Prisma.contributions_historyFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contributions_historyPayload>[]
+          }
+          create: {
+            args: Prisma.contributions_historyCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contributions_historyPayload>
+          }
+          createMany: {
+            args: Prisma.contributions_historyCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.contributions_historyCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contributions_historyPayload>[]
+          }
+          delete: {
+            args: Prisma.contributions_historyDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contributions_historyPayload>
+          }
+          update: {
+            args: Prisma.contributions_historyUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contributions_historyPayload>
+          }
+          deleteMany: {
+            args: Prisma.contributions_historyDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.contributions_historyUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.contributions_historyUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contributions_historyPayload>[]
+          }
+          upsert: {
+            args: Prisma.contributions_historyUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contributions_historyPayload>
+          }
+          aggregate: {
+            args: Prisma.Contributions_historyAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateContributions_history>
+          }
+          groupBy: {
+            args: Prisma.contributions_historyGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Contributions_historyGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.contributions_historyCountArgs<ExtArgs>
+            result: $Utils.Optional<Contributions_historyCountAggregateOutputType> | number
+          }
+        }
+      }
       bookstack_books: {
         payload: Prisma.$bookstack_booksPayload<ExtArgs>
         fields: Prisma.bookstack_booksFieldRefs
@@ -962,6 +1052,7 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
+    contributions_history?: contributions_historyOmit
     bookstack_books?: bookstack_booksOmit
     bookstack_pages?: bookstack_pagesOmit
     user_link?: user_linkOmit
@@ -1063,6 +1154,1061 @@ export namespace Prisma {
   /**
    * Models
    */
+
+  /**
+   * Model contributions_history
+   */
+
+  export type AggregateContributions_history = {
+    _count: Contributions_historyCountAggregateOutputType | null
+    _avg: Contributions_historyAvgAggregateOutputType | null
+    _sum: Contributions_historySumAggregateOutputType | null
+    _min: Contributions_historyMinAggregateOutputType | null
+    _max: Contributions_historyMaxAggregateOutputType | null
+  }
+
+  export type Contributions_historyAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type Contributions_historySumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type Contributions_historyMinAggregateOutputType = {
+    id: number | null
+    resource_id: string | null
+    logto_id: string | null
+    date: Date | null
+    type: string | null
+    message: string | null
+    url: string | null
+  }
+
+  export type Contributions_historyMaxAggregateOutputType = {
+    id: number | null
+    resource_id: string | null
+    logto_id: string | null
+    date: Date | null
+    type: string | null
+    message: string | null
+    url: string | null
+  }
+
+  export type Contributions_historyCountAggregateOutputType = {
+    id: number
+    resource_id: number
+    logto_id: number
+    date: number
+    type: number
+    message: number
+    url: number
+    _all: number
+  }
+
+
+  export type Contributions_historyAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type Contributions_historySumAggregateInputType = {
+    id?: true
+  }
+
+  export type Contributions_historyMinAggregateInputType = {
+    id?: true
+    resource_id?: true
+    logto_id?: true
+    date?: true
+    type?: true
+    message?: true
+    url?: true
+  }
+
+  export type Contributions_historyMaxAggregateInputType = {
+    id?: true
+    resource_id?: true
+    logto_id?: true
+    date?: true
+    type?: true
+    message?: true
+    url?: true
+  }
+
+  export type Contributions_historyCountAggregateInputType = {
+    id?: true
+    resource_id?: true
+    logto_id?: true
+    date?: true
+    type?: true
+    message?: true
+    url?: true
+    _all?: true
+  }
+
+  export type Contributions_historyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which contributions_history to aggregate.
+     */
+    where?: contributions_historyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of contributions_histories to fetch.
+     */
+    orderBy?: contributions_historyOrderByWithRelationInput | contributions_historyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: contributions_historyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` contributions_histories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` contributions_histories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned contributions_histories
+    **/
+    _count?: true | Contributions_historyCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Contributions_historyAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Contributions_historySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Contributions_historyMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Contributions_historyMaxAggregateInputType
+  }
+
+  export type GetContributions_historyAggregateType<T extends Contributions_historyAggregateArgs> = {
+        [P in keyof T & keyof AggregateContributions_history]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateContributions_history[P]>
+      : GetScalarType<T[P], AggregateContributions_history[P]>
+  }
+
+
+
+
+  export type contributions_historyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: contributions_historyWhereInput
+    orderBy?: contributions_historyOrderByWithAggregationInput | contributions_historyOrderByWithAggregationInput[]
+    by: Contributions_historyScalarFieldEnum[] | Contributions_historyScalarFieldEnum
+    having?: contributions_historyScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Contributions_historyCountAggregateInputType | true
+    _avg?: Contributions_historyAvgAggregateInputType
+    _sum?: Contributions_historySumAggregateInputType
+    _min?: Contributions_historyMinAggregateInputType
+    _max?: Contributions_historyMaxAggregateInputType
+  }
+
+  export type Contributions_historyGroupByOutputType = {
+    id: number
+    resource_id: string
+    logto_id: string
+    date: Date
+    type: string
+    message: string | null
+    url: string | null
+    _count: Contributions_historyCountAggregateOutputType | null
+    _avg: Contributions_historyAvgAggregateOutputType | null
+    _sum: Contributions_historySumAggregateOutputType | null
+    _min: Contributions_historyMinAggregateOutputType | null
+    _max: Contributions_historyMaxAggregateOutputType | null
+  }
+
+  type GetContributions_historyGroupByPayload<T extends contributions_historyGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Contributions_historyGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Contributions_historyGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Contributions_historyGroupByOutputType[P]>
+            : GetScalarType<T[P], Contributions_historyGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type contributions_historySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    resource_id?: boolean
+    logto_id?: boolean
+    date?: boolean
+    type?: boolean
+    message?: boolean
+    url?: boolean
+  }, ExtArgs["result"]["contributions_history"]>
+
+  export type contributions_historySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    resource_id?: boolean
+    logto_id?: boolean
+    date?: boolean
+    type?: boolean
+    message?: boolean
+    url?: boolean
+  }, ExtArgs["result"]["contributions_history"]>
+
+  export type contributions_historySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    resource_id?: boolean
+    logto_id?: boolean
+    date?: boolean
+    type?: boolean
+    message?: boolean
+    url?: boolean
+  }, ExtArgs["result"]["contributions_history"]>
+
+  export type contributions_historySelectScalar = {
+    id?: boolean
+    resource_id?: boolean
+    logto_id?: boolean
+    date?: boolean
+    type?: boolean
+    message?: boolean
+    url?: boolean
+  }
+
+  export type contributions_historyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "resource_id" | "logto_id" | "date" | "type" | "message" | "url", ExtArgs["result"]["contributions_history"]>
+
+  export type $contributions_historyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "contributions_history"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      resource_id: string
+      logto_id: string
+      date: Date
+      type: string
+      message: string | null
+      url: string | null
+    }, ExtArgs["result"]["contributions_history"]>
+    composites: {}
+  }
+
+  type contributions_historyGetPayload<S extends boolean | null | undefined | contributions_historyDefaultArgs> = $Result.GetResult<Prisma.$contributions_historyPayload, S>
+
+  type contributions_historyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<contributions_historyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Contributions_historyCountAggregateInputType | true
+    }
+
+  export interface contributions_historyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['contributions_history'], meta: { name: 'contributions_history' } }
+    /**
+     * Find zero or one Contributions_history that matches the filter.
+     * @param {contributions_historyFindUniqueArgs} args - Arguments to find a Contributions_history
+     * @example
+     * // Get one Contributions_history
+     * const contributions_history = await prisma.contributions_history.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends contributions_historyFindUniqueArgs>(args: SelectSubset<T, contributions_historyFindUniqueArgs<ExtArgs>>): Prisma__contributions_historyClient<$Result.GetResult<Prisma.$contributions_historyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Contributions_history that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {contributions_historyFindUniqueOrThrowArgs} args - Arguments to find a Contributions_history
+     * @example
+     * // Get one Contributions_history
+     * const contributions_history = await prisma.contributions_history.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends contributions_historyFindUniqueOrThrowArgs>(args: SelectSubset<T, contributions_historyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__contributions_historyClient<$Result.GetResult<Prisma.$contributions_historyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Contributions_history that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contributions_historyFindFirstArgs} args - Arguments to find a Contributions_history
+     * @example
+     * // Get one Contributions_history
+     * const contributions_history = await prisma.contributions_history.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends contributions_historyFindFirstArgs>(args?: SelectSubset<T, contributions_historyFindFirstArgs<ExtArgs>>): Prisma__contributions_historyClient<$Result.GetResult<Prisma.$contributions_historyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Contributions_history that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contributions_historyFindFirstOrThrowArgs} args - Arguments to find a Contributions_history
+     * @example
+     * // Get one Contributions_history
+     * const contributions_history = await prisma.contributions_history.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends contributions_historyFindFirstOrThrowArgs>(args?: SelectSubset<T, contributions_historyFindFirstOrThrowArgs<ExtArgs>>): Prisma__contributions_historyClient<$Result.GetResult<Prisma.$contributions_historyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Contributions_histories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contributions_historyFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Contributions_histories
+     * const contributions_histories = await prisma.contributions_history.findMany()
+     * 
+     * // Get first 10 Contributions_histories
+     * const contributions_histories = await prisma.contributions_history.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const contributions_historyWithIdOnly = await prisma.contributions_history.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends contributions_historyFindManyArgs>(args?: SelectSubset<T, contributions_historyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$contributions_historyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Contributions_history.
+     * @param {contributions_historyCreateArgs} args - Arguments to create a Contributions_history.
+     * @example
+     * // Create one Contributions_history
+     * const Contributions_history = await prisma.contributions_history.create({
+     *   data: {
+     *     // ... data to create a Contributions_history
+     *   }
+     * })
+     * 
+     */
+    create<T extends contributions_historyCreateArgs>(args: SelectSubset<T, contributions_historyCreateArgs<ExtArgs>>): Prisma__contributions_historyClient<$Result.GetResult<Prisma.$contributions_historyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Contributions_histories.
+     * @param {contributions_historyCreateManyArgs} args - Arguments to create many Contributions_histories.
+     * @example
+     * // Create many Contributions_histories
+     * const contributions_history = await prisma.contributions_history.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends contributions_historyCreateManyArgs>(args?: SelectSubset<T, contributions_historyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Contributions_histories and returns the data saved in the database.
+     * @param {contributions_historyCreateManyAndReturnArgs} args - Arguments to create many Contributions_histories.
+     * @example
+     * // Create many Contributions_histories
+     * const contributions_history = await prisma.contributions_history.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Contributions_histories and only return the `id`
+     * const contributions_historyWithIdOnly = await prisma.contributions_history.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends contributions_historyCreateManyAndReturnArgs>(args?: SelectSubset<T, contributions_historyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$contributions_historyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Contributions_history.
+     * @param {contributions_historyDeleteArgs} args - Arguments to delete one Contributions_history.
+     * @example
+     * // Delete one Contributions_history
+     * const Contributions_history = await prisma.contributions_history.delete({
+     *   where: {
+     *     // ... filter to delete one Contributions_history
+     *   }
+     * })
+     * 
+     */
+    delete<T extends contributions_historyDeleteArgs>(args: SelectSubset<T, contributions_historyDeleteArgs<ExtArgs>>): Prisma__contributions_historyClient<$Result.GetResult<Prisma.$contributions_historyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Contributions_history.
+     * @param {contributions_historyUpdateArgs} args - Arguments to update one Contributions_history.
+     * @example
+     * // Update one Contributions_history
+     * const contributions_history = await prisma.contributions_history.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends contributions_historyUpdateArgs>(args: SelectSubset<T, contributions_historyUpdateArgs<ExtArgs>>): Prisma__contributions_historyClient<$Result.GetResult<Prisma.$contributions_historyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Contributions_histories.
+     * @param {contributions_historyDeleteManyArgs} args - Arguments to filter Contributions_histories to delete.
+     * @example
+     * // Delete a few Contributions_histories
+     * const { count } = await prisma.contributions_history.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends contributions_historyDeleteManyArgs>(args?: SelectSubset<T, contributions_historyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Contributions_histories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contributions_historyUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Contributions_histories
+     * const contributions_history = await prisma.contributions_history.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends contributions_historyUpdateManyArgs>(args: SelectSubset<T, contributions_historyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Contributions_histories and returns the data updated in the database.
+     * @param {contributions_historyUpdateManyAndReturnArgs} args - Arguments to update many Contributions_histories.
+     * @example
+     * // Update many Contributions_histories
+     * const contributions_history = await prisma.contributions_history.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Contributions_histories and only return the `id`
+     * const contributions_historyWithIdOnly = await prisma.contributions_history.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends contributions_historyUpdateManyAndReturnArgs>(args: SelectSubset<T, contributions_historyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$contributions_historyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Contributions_history.
+     * @param {contributions_historyUpsertArgs} args - Arguments to update or create a Contributions_history.
+     * @example
+     * // Update or create a Contributions_history
+     * const contributions_history = await prisma.contributions_history.upsert({
+     *   create: {
+     *     // ... data to create a Contributions_history
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Contributions_history we want to update
+     *   }
+     * })
+     */
+    upsert<T extends contributions_historyUpsertArgs>(args: SelectSubset<T, contributions_historyUpsertArgs<ExtArgs>>): Prisma__contributions_historyClient<$Result.GetResult<Prisma.$contributions_historyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Contributions_histories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contributions_historyCountArgs} args - Arguments to filter Contributions_histories to count.
+     * @example
+     * // Count the number of Contributions_histories
+     * const count = await prisma.contributions_history.count({
+     *   where: {
+     *     // ... the filter for the Contributions_histories we want to count
+     *   }
+     * })
+    **/
+    count<T extends contributions_historyCountArgs>(
+      args?: Subset<T, contributions_historyCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Contributions_historyCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Contributions_history.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Contributions_historyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Contributions_historyAggregateArgs>(args: Subset<T, Contributions_historyAggregateArgs>): Prisma.PrismaPromise<GetContributions_historyAggregateType<T>>
+
+    /**
+     * Group by Contributions_history.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contributions_historyGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends contributions_historyGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: contributions_historyGroupByArgs['orderBy'] }
+        : { orderBy?: contributions_historyGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, contributions_historyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContributions_historyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the contributions_history model
+   */
+  readonly fields: contributions_historyFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for contributions_history.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__contributions_historyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the contributions_history model
+   */
+  interface contributions_historyFieldRefs {
+    readonly id: FieldRef<"contributions_history", 'Int'>
+    readonly resource_id: FieldRef<"contributions_history", 'String'>
+    readonly logto_id: FieldRef<"contributions_history", 'String'>
+    readonly date: FieldRef<"contributions_history", 'DateTime'>
+    readonly type: FieldRef<"contributions_history", 'String'>
+    readonly message: FieldRef<"contributions_history", 'String'>
+    readonly url: FieldRef<"contributions_history", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * contributions_history findUnique
+   */
+  export type contributions_historyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+    /**
+     * Filter, which contributions_history to fetch.
+     */
+    where: contributions_historyWhereUniqueInput
+  }
+
+  /**
+   * contributions_history findUniqueOrThrow
+   */
+  export type contributions_historyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+    /**
+     * Filter, which contributions_history to fetch.
+     */
+    where: contributions_historyWhereUniqueInput
+  }
+
+  /**
+   * contributions_history findFirst
+   */
+  export type contributions_historyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+    /**
+     * Filter, which contributions_history to fetch.
+     */
+    where?: contributions_historyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of contributions_histories to fetch.
+     */
+    orderBy?: contributions_historyOrderByWithRelationInput | contributions_historyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for contributions_histories.
+     */
+    cursor?: contributions_historyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` contributions_histories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` contributions_histories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of contributions_histories.
+     */
+    distinct?: Contributions_historyScalarFieldEnum | Contributions_historyScalarFieldEnum[]
+  }
+
+  /**
+   * contributions_history findFirstOrThrow
+   */
+  export type contributions_historyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+    /**
+     * Filter, which contributions_history to fetch.
+     */
+    where?: contributions_historyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of contributions_histories to fetch.
+     */
+    orderBy?: contributions_historyOrderByWithRelationInput | contributions_historyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for contributions_histories.
+     */
+    cursor?: contributions_historyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` contributions_histories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` contributions_histories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of contributions_histories.
+     */
+    distinct?: Contributions_historyScalarFieldEnum | Contributions_historyScalarFieldEnum[]
+  }
+
+  /**
+   * contributions_history findMany
+   */
+  export type contributions_historyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+    /**
+     * Filter, which contributions_histories to fetch.
+     */
+    where?: contributions_historyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of contributions_histories to fetch.
+     */
+    orderBy?: contributions_historyOrderByWithRelationInput | contributions_historyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing contributions_histories.
+     */
+    cursor?: contributions_historyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` contributions_histories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` contributions_histories.
+     */
+    skip?: number
+    distinct?: Contributions_historyScalarFieldEnum | Contributions_historyScalarFieldEnum[]
+  }
+
+  /**
+   * contributions_history create
+   */
+  export type contributions_historyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+    /**
+     * The data needed to create a contributions_history.
+     */
+    data: XOR<contributions_historyCreateInput, contributions_historyUncheckedCreateInput>
+  }
+
+  /**
+   * contributions_history createMany
+   */
+  export type contributions_historyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many contributions_histories.
+     */
+    data: contributions_historyCreateManyInput | contributions_historyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * contributions_history createManyAndReturn
+   */
+  export type contributions_historyCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+    /**
+     * The data used to create many contributions_histories.
+     */
+    data: contributions_historyCreateManyInput | contributions_historyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * contributions_history update
+   */
+  export type contributions_historyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+    /**
+     * The data needed to update a contributions_history.
+     */
+    data: XOR<contributions_historyUpdateInput, contributions_historyUncheckedUpdateInput>
+    /**
+     * Choose, which contributions_history to update.
+     */
+    where: contributions_historyWhereUniqueInput
+  }
+
+  /**
+   * contributions_history updateMany
+   */
+  export type contributions_historyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update contributions_histories.
+     */
+    data: XOR<contributions_historyUpdateManyMutationInput, contributions_historyUncheckedUpdateManyInput>
+    /**
+     * Filter which contributions_histories to update
+     */
+    where?: contributions_historyWhereInput
+    /**
+     * Limit how many contributions_histories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * contributions_history updateManyAndReturn
+   */
+  export type contributions_historyUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+    /**
+     * The data used to update contributions_histories.
+     */
+    data: XOR<contributions_historyUpdateManyMutationInput, contributions_historyUncheckedUpdateManyInput>
+    /**
+     * Filter which contributions_histories to update
+     */
+    where?: contributions_historyWhereInput
+    /**
+     * Limit how many contributions_histories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * contributions_history upsert
+   */
+  export type contributions_historyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+    /**
+     * The filter to search for the contributions_history to update in case it exists.
+     */
+    where: contributions_historyWhereUniqueInput
+    /**
+     * In case the contributions_history found by the `where` argument doesn't exist, create a new contributions_history with this data.
+     */
+    create: XOR<contributions_historyCreateInput, contributions_historyUncheckedCreateInput>
+    /**
+     * In case the contributions_history was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<contributions_historyUpdateInput, contributions_historyUncheckedUpdateInput>
+  }
+
+  /**
+   * contributions_history delete
+   */
+  export type contributions_historyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+    /**
+     * Filter which contributions_history to delete.
+     */
+    where: contributions_historyWhereUniqueInput
+  }
+
+  /**
+   * contributions_history deleteMany
+   */
+  export type contributions_historyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which contributions_histories to delete
+     */
+    where?: contributions_historyWhereInput
+    /**
+     * Limit how many contributions_histories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * contributions_history without action
+   */
+  export type contributions_historyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contributions_history
+     */
+    select?: contributions_historySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contributions_history
+     */
+    omit?: contributions_historyOmit<ExtArgs> | null
+  }
+
 
   /**
    * Model bookstack_books
@@ -4370,6 +5516,19 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const Contributions_historyScalarFieldEnum: {
+    id: 'id',
+    resource_id: 'resource_id',
+    logto_id: 'logto_id',
+    date: 'date',
+    type: 'type',
+    message: 'message',
+    url: 'url'
+  };
+
+  export type Contributions_historyScalarFieldEnum = (typeof Contributions_historyScalarFieldEnum)[keyof typeof Contributions_historyScalarFieldEnum]
+
+
   export const Bookstack_booksScalarFieldEnum: {
     id: 'id',
     slug: 'slug',
@@ -4512,6 +5671,70 @@ export namespace Prisma {
    * Deep Input Types
    */
 
+
+  export type contributions_historyWhereInput = {
+    AND?: contributions_historyWhereInput | contributions_historyWhereInput[]
+    OR?: contributions_historyWhereInput[]
+    NOT?: contributions_historyWhereInput | contributions_historyWhereInput[]
+    id?: IntFilter<"contributions_history"> | number
+    resource_id?: StringFilter<"contributions_history"> | string
+    logto_id?: StringFilter<"contributions_history"> | string
+    date?: DateTimeFilter<"contributions_history"> | Date | string
+    type?: StringFilter<"contributions_history"> | string
+    message?: StringNullableFilter<"contributions_history"> | string | null
+    url?: StringNullableFilter<"contributions_history"> | string | null
+  }
+
+  export type contributions_historyOrderByWithRelationInput = {
+    id?: SortOrder
+    resource_id?: SortOrder
+    logto_id?: SortOrder
+    date?: SortOrder
+    type?: SortOrder
+    message?: SortOrderInput | SortOrder
+    url?: SortOrderInput | SortOrder
+  }
+
+  export type contributions_historyWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: contributions_historyWhereInput | contributions_historyWhereInput[]
+    OR?: contributions_historyWhereInput[]
+    NOT?: contributions_historyWhereInput | contributions_historyWhereInput[]
+    resource_id?: StringFilter<"contributions_history"> | string
+    logto_id?: StringFilter<"contributions_history"> | string
+    date?: DateTimeFilter<"contributions_history"> | Date | string
+    type?: StringFilter<"contributions_history"> | string
+    message?: StringNullableFilter<"contributions_history"> | string | null
+    url?: StringNullableFilter<"contributions_history"> | string | null
+  }, "id">
+
+  export type contributions_historyOrderByWithAggregationInput = {
+    id?: SortOrder
+    resource_id?: SortOrder
+    logto_id?: SortOrder
+    date?: SortOrder
+    type?: SortOrder
+    message?: SortOrderInput | SortOrder
+    url?: SortOrderInput | SortOrder
+    _count?: contributions_historyCountOrderByAggregateInput
+    _avg?: contributions_historyAvgOrderByAggregateInput
+    _max?: contributions_historyMaxOrderByAggregateInput
+    _min?: contributions_historyMinOrderByAggregateInput
+    _sum?: contributions_historySumOrderByAggregateInput
+  }
+
+  export type contributions_historyScalarWhereWithAggregatesInput = {
+    AND?: contributions_historyScalarWhereWithAggregatesInput | contributions_historyScalarWhereWithAggregatesInput[]
+    OR?: contributions_historyScalarWhereWithAggregatesInput[]
+    NOT?: contributions_historyScalarWhereWithAggregatesInput | contributions_historyScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"contributions_history"> | number
+    resource_id?: StringWithAggregatesFilter<"contributions_history"> | string
+    logto_id?: StringWithAggregatesFilter<"contributions_history"> | string
+    date?: DateTimeWithAggregatesFilter<"contributions_history"> | Date | string
+    type?: StringWithAggregatesFilter<"contributions_history"> | string
+    message?: StringNullableWithAggregatesFilter<"contributions_history"> | string | null
+    url?: StringNullableWithAggregatesFilter<"contributions_history"> | string | null
+  }
 
   export type bookstack_booksWhereInput = {
     AND?: bookstack_booksWhereInput | bookstack_booksWhereInput[]
@@ -4746,6 +5969,73 @@ export namespace Prisma {
     logto_id?: StringWithAggregatesFilter<"user_link"> | string
     platform?: StringNullableWithAggregatesFilter<"user_link"> | string | null
     platform_id?: StringNullableWithAggregatesFilter<"user_link"> | string | null
+  }
+
+  export type contributions_historyCreateInput = {
+    resource_id: string
+    logto_id: string
+    date: Date | string
+    type: string
+    message?: string | null
+    url?: string | null
+  }
+
+  export type contributions_historyUncheckedCreateInput = {
+    id?: number
+    resource_id: string
+    logto_id: string
+    date: Date | string
+    type: string
+    message?: string | null
+    url?: string | null
+  }
+
+  export type contributions_historyUpdateInput = {
+    resource_id?: StringFieldUpdateOperationsInput | string
+    logto_id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type contributions_historyUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    resource_id?: StringFieldUpdateOperationsInput | string
+    logto_id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type contributions_historyCreateManyInput = {
+    id?: number
+    resource_id: string
+    logto_id: string
+    date: Date | string
+    type: string
+    message?: string | null
+    url?: string | null
+  }
+
+  export type contributions_historyUpdateManyMutationInput = {
+    resource_id?: StringFieldUpdateOperationsInput | string
+    logto_id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type contributions_historyUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    resource_id?: StringFieldUpdateOperationsInput | string
+    logto_id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type bookstack_booksCreateInput = {
@@ -5032,6 +6322,32 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type StringFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -5045,6 +6361,115 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type contributions_historyCountOrderByAggregateInput = {
+    id?: SortOrder
+    resource_id?: SortOrder
+    logto_id?: SortOrder
+    date?: SortOrder
+    type?: SortOrder
+    message?: SortOrder
+    url?: SortOrder
+  }
+
+  export type contributions_historyAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type contributions_historyMaxOrderByAggregateInput = {
+    id?: SortOrder
+    resource_id?: SortOrder
+    logto_id?: SortOrder
+    date?: SortOrder
+    type?: SortOrder
+    message?: SortOrder
+    url?: SortOrder
+  }
+
+  export type contributions_historyMinOrderByAggregateInput = {
+    id?: SortOrder
+    resource_id?: SortOrder
+    logto_id?: SortOrder
+    date?: SortOrder
+    type?: SortOrder
+    message?: SortOrder
+    url?: SortOrder
+  }
+
+  export type contributions_historySumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -5067,11 +6492,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type bookstack_booksCountOrderByAggregateInput = {
@@ -5125,40 +6545,6 @@ export namespace Prisma {
     owned_by?: SortOrder
     created_by?: SortOrder
     updated_by?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -5288,21 +6674,6 @@ export namespace Prisma {
     _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
-  export type StringFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringFilter<$PrismaModel> | string
-  }
-
   export type user_linkCountOrderByAggregateInput = {
     logto_id?: SortOrder
     platform?: SortOrder
@@ -5321,22 +6692,16 @@ export namespace Prisma {
     platform_id?: SortOrder
   }
 
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -5345,10 +6710,6 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -5367,10 +6728,6 @@ export namespace Prisma {
     set?: boolean | null
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -5380,6 +6737,31 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedStringFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
@@ -5394,28 +6776,6 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -5445,6 +6805,37 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -5460,6 +6851,28 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -5514,37 +6927,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedBoolNullableFilter<$PrismaModel>
     _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-
-  export type NestedStringFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringFilter<$PrismaModel> | string
-  }
-
-  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
   }
 
 

@@ -1,22 +1,56 @@
-import { BookStack } from "../external/BookStack";
-import { Logto } from "../external/Logto";
+import {BookStack} from "../external/BookStack";
+import {Logto} from "../external/Logto";
 import prisma from "../db";
+import {appendContributions} from "@/lib/sync/contributions";
 
 const hasBook = async (bookId: number) => {
-  const count = await prisma.bookstack_books.findUnique({ where: { id: bookId } });
-  return count !== undefined;
+  const count = await prisma.bookstack_books.findFirst({where: {id: bookId}});
+  return !!count;
 }
 
 const hasPage = async (pageId: number) => {
-  const count = await prisma.bookstack_pages.findUnique({ where: { id: pageId } });
-  return count !== undefined;
+  const count = await prisma.bookstack_pages.findFirst({where: {id: pageId}});
+  return !!count;
 }
 
 const htmlFilter = (html: string) => html.replace(/<[^>]*>/g, ""); // remove all html tags
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const sync = async () => {
-  const books = await (await BookStack.booksList()).data
+  const users = await (await BookStack.userList()).data
+
+  for (const user of users) {
+    console.log(`[${new Date().toISOString()}][BookStack] Syncing user ${user.name}(${user.id}) ...`)
+
+    try {
+      const logtoUser = await Logto.getUser(user.external_auth_id);
+
+      if (logtoUser) {
+        const hasLink = await prisma.user_link.findUnique({where: {logto_id: user.external_auth_id, platform: "bookstack"}});
+
+        if (!hasLink) {
+          await prisma.user_link.create({
+            data: {
+              logto_id: user.external_auth_id,
+              platform: "bookstack",
+              platform_id: user.id.toString(),
+            }
+          })
+        } else {
+          await prisma.user_link.update({
+            where: {logto_id: user.external_auth_id, platform: "bookstack"},
+            data: {
+              platform_id: user.id.toString(),
+            }
+          })
+        }
+      }
+    } catch (e) {
+      console.error(`[${new Date().toISOString()}][BookStack] Failed to sync user ${user.name}(${user.id})`, e)
+    }
+  }
+
+  const books = (await BookStack.booksList()).data
 
   for (const book of books) {
     console.log(`[${new Date().toISOString()}][BookStack] Syncing book ${book.name}(${book.id}) ...`)
@@ -24,7 +58,7 @@ const sync = async () => {
     try {
       if (await hasBook(book.id)) {
         await prisma.bookstack_books.update({
-          where: { id: book.id },
+          where: {id: book.id},
           data: {
             name: book.name,
             slug: book.slug,
@@ -37,6 +71,22 @@ const sync = async () => {
             cover_url: book.cover?.url!,
           }
         })
+
+        const logto_id = users.find(u => u.id === book.updated_by)?.external_auth_id!
+
+        if (!logto_id) {
+          console.log(`[${new Date().toISOString()}][BookStack] WARN: User ${book.updated_by} logto_id is missing`)
+        } else {
+          await appendContributions({
+            logto_id: users.find(u => u.id === book.owned_by)?.external_auth_id!,
+            date: new Date(book.updated_at),
+            type: "edit",
+            resourceId: book.id.toString(),
+            source: "bookstack:book",
+            message: book.name,
+            url: `https://docs.vrcd.org.cn/books/${book.slug}`
+          })
+        }
       } else {
         await prisma.bookstack_books.create({
           data: {
@@ -52,26 +102,63 @@ const sync = async () => {
             cover_url: book.cover?.url!,
           }
         })
+
+        const logto_id = users.find(u => u.id === book.owned_by)?.external_auth_id!
+
+        if (!logto_id) {
+          console.log(`[${new Date().toISOString()}][BookStack] WARN: User ${book.owned_by} logto_id is missing`)
+        } else {
+          await appendContributions({
+            logto_id: users.find(u => u.id === book.owned_by)?.external_auth_id!,
+            date: new Date(book.updated_at),
+            type: "create",
+            resourceId: book.id.toString(),
+            source: "bookstack:book",
+            message: book.name,
+            url: `https://docs.vrcd.org.cn/books/${book.slug}`
+          })
+        }
       }
     } catch (e) {
       console.error(`[${new Date().toISOString()}][BookStack] Failed to sync book ${book.name}(${book.id})`, e)
     }
   }
 
-  const pages = await (await BookStack.pageList()).data.sort(() => Math.random() - 0.5); // randomize the order of pages
+  const pages = (await BookStack.pageList()).data.sort(() => Math.random() - 0.5); // randomize the order of pages
 
   for (const page of pages) {
     console.log(`[${new Date().toISOString()}][BookStack] Syncing page ${page.name}(${page.id}) ...`)
-
     try {
       await sleep(1000)
 
-      const pageItem = await BookStack.pageRead(page.id)
-      const content = htmlFilter(pageItem.raw_html)
-
       if (await hasPage(page.id)) {
+        const logto_id = users.find(u => u.id === page.updated_by)?.external_auth_id!
+
+        if (!logto_id) {
+          console.log(`[${new Date().toISOString()}][BookStack] WARN: User ${page.updated_by} logto_id is missing`)
+        } else {
+          await appendContributions({
+            logto_id: users.find(u => u.id === page.updated_by)?.external_auth_id!,
+            date: new Date(page.updated_at),
+            type: "edit",
+            resourceId: page.id.toString(),
+            source: "bookstack:page",
+            message: page.name,
+            url: `https://docs.vrcd.org.cn/books/${page.book_slug}/page/${page.slug}`
+          })
+        }
+
+        const currentTime = Date.now();
+        const update_at = new Date(page.updated_at).getTime();
+        const diff = currentTime - update_at;
+        const sevenDays = 7 * 24 * 60 * 60 * 1000;
+        if (diff < sevenDays) continue;
+
+        const pageItem = await BookStack.pageRead(page.id)
+        const content = htmlFilter(pageItem.raw_html)
+
         await prisma.bookstack_pages.update({
-          where: { id: page.id },
+          where: {id: page.id},
           data: {
             name: page.name,
             slug: page.slug,
@@ -92,6 +179,9 @@ const sync = async () => {
           }
         })
       } else {
+        const pageItem = await BookStack.pageRead(page.id)
+        const content = htmlFilter(pageItem.raw_html)
+
         await prisma.bookstack_pages.create({
           data: {
             id: page.id,
@@ -113,42 +203,25 @@ const sync = async () => {
             chars: content.length,
           }
         })
-      }
-    } catch (e) {
-      console.error(`[${new Date().toISOString()}][BookStack] Failed to sync page ${page.name}(${page.id})`, e)
-    }
-  }
 
-  const users = await (await BookStack.userList()).data
+        const logto_id = users.find(u => u.id === page.owned_by)?.external_auth_id!
 
-  for (const user of users) {
-    console.log(`[${new Date().toISOString()}][BookStack] Syncing user ${user.name}(${user.id}) ...`)
-
-    try {
-      const logtoUser = await Logto.getUser(user.external_auth_id);
-
-      if (logtoUser) {
-        const hasLink = await prisma.user_link.findUnique({ where: { logto_id: logtoUser.id, platform: "bookstack" } });
-
-        if (!hasLink) {
-          await prisma.user_link.create({
-            data: {
-              logto_id: logtoUser.id,
-              platform: "bookstack",
-              platform_id: user.id.toString(),
-            }
-          })
+        if (!logto_id) {
+          console.log(`[${new Date().toISOString()}][BookStack] WARN: User ${page.owned_by} logto_id is missing`)
         } else {
-          await prisma.user_link.update({
-            where: { logto_id: logtoUser.id, platform: "bookstack" },
-            data: {
-              platform_id: user.id.toString(),
-            }
+          await appendContributions({
+            logto_id: users.find(u => u.id === page.owned_by)?.external_auth_id!,
+            date: new Date(page.updated_at),
+            type: "create",
+            resourceId: page.id.toString(),
+            source: "bookstack:page",
+            message: page.name,
+            url: `https://docs.vrcd.org.cn/books/${page.book_slug}/page/${page.slug}`
           })
         }
       }
     } catch (e) {
-      console.error(`[${new Date().toISOString()}][BookStack] Failed to sync user ${user.name}(${user.id})`, e)
+      console.error(`[${new Date().toISOString()}][BookStack] Failed to sync page ${page.name}(${page.id})`, e)
     }
   }
 

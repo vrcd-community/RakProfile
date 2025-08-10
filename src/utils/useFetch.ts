@@ -6,14 +6,15 @@ export const useFetch = <T>(url: string, options?: RequestInit) => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const abortController = new AbortController();
-
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(url, { signal: abortController.signal, ...options });
+        const response = await fetch(url, options);
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          const err = new Error("Network response was not ok");
+          setError(err);
+          setLoading(false);
+          return;
         }
         const result = await response.json();
         setData(result);
@@ -25,10 +26,6 @@ export const useFetch = <T>(url: string, options?: RequestInit) => {
     }
 
     fetchData();
-
-    return () => {
-      abortController.abort();
-    }
   }, [])
 
   return { loading, data, error }

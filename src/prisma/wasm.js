@@ -120,6 +120,16 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.Contributions_historyScalarFieldEnum = {
+  id: 'id',
+  resource_id: 'resource_id',
+  logto_id: 'logto_id',
+  date: 'date',
+  type: 'type',
+  message: 'message',
+  url: 'url'
+};
+
 exports.Prisma.Bookstack_booksScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
@@ -176,6 +186,7 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
+  contributions_history: 'contributions_history',
   bookstack_books: 'bookstack_books',
   bookstack_pages: 'bookstack_pages',
   user_link: 'user_link'

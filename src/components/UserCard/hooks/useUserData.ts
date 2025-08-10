@@ -1,6 +1,6 @@
 'use server';
 import prisma from "@/lib/db";
-import { Logto } from "@/lib/external/Logto";
+import {Logto} from "@/lib/external/Logto";
 
 export interface UserData {
   LogtoUser: any;
@@ -57,7 +57,7 @@ export async function useUserData(id: string): Promise<UserData> {
     const userLink = await prisma.user_link.findFirst({ where: { logto_id: id, platform: "bookstack" } });
     if (userLink) BookStackUser = { id: parseInt(userLink.platform_id as string) };
   } catch (error) {
-    console.error("Failed to fetch BookStack user link from database:", error);
+    console.error("Failed to fetch Index user link from database:", error);
     bookStackUserError = error;
   }
 
@@ -84,8 +84,7 @@ export async function useUserData(id: string): Promise<UserData> {
     if (BookStackPages) {
       const bookIds = Array.from(new Set(BookStackPages?.map((page: any) => page.book_id) || []));
       editedBooks = await Promise.all(bookIds.map(async (bookId: any) => {
-        const book = await prisma.bookstack_books.findUnique({ where: { id: bookId } });
-        return book;
+        return await prisma.bookstack_books.findUnique({where: {id: bookId}});
       }));
     }
   } catch (error) {
@@ -93,7 +92,7 @@ export async function useUserData(id: string): Promise<UserData> {
     editedBooksError = error;
   }
 
-  const result = {
+  return {
     LogtoUser,
     BookStackUser,
     BookStackBooks: BookStackBooks || [],
@@ -108,6 +107,4 @@ export async function useUserData(id: string): Promise<UserData> {
       editedBooksError
     }
   };
-
-  return result;
 }
