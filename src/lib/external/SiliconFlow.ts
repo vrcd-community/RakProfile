@@ -1,5 +1,5 @@
-import { OpenAI } from "openai";
-import { z } from "zod";
+import {OpenAI} from "openai";
+import {z} from "zod";
 
 const client = new OpenAI({
   apiKey: process.env.SILICONFLOW_API_KEY,
@@ -9,7 +9,7 @@ const client = new OpenAI({
 const model = "Qwen/Qwen2.5-7B-Instruct"
 
 const types = [
-  "体积中国领导人",
+  "提及中国领导人",
   "反对国家统一",
   "颠覆国家政权",
   "政治敏感",
@@ -64,8 +64,12 @@ export const censor = async (text: string) => {
 
   try {
     const json = JSON.parse(response.choices[0].message?.content!)
-    const parsed = CensorSchema.parse(json)
-    return parsed
+    return CensorSchema.parse(json) as {
+      type: string,
+      message: string,
+      pass: boolean,
+      probability: number
+    }
   } catch (e) {
     return {
       type: "AI提示词注入",

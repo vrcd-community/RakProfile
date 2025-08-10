@@ -4,11 +4,10 @@ import { logtoConfig } from "@/lib/config";
 import { getLogtoContext } from "@logto/next/server-actions";
 import { Logto } from "@/lib/external/Logto";
 import { censor } from "@/lib/external/SiliconFlow";
-import prisma from "@/lib/db";
 
 const editUserSchema = z.object({
   uid: z.string(),
-  nickname: z.string().min(1).max(20),
+  nickname: z.string().min(1).max(20).optional(),
   bio: z.string().max(500).optional(),
   avatar: z.string().optional(),
 })
@@ -18,7 +17,7 @@ export async function POST(request: NextRequest) {
 
   // 拒绝未认证用户
   if (!isAuthenticated) {
-    return NextResponse.json({ message: "未登录" });
+    return NextResponse.json({ error: "未登录" });
   }
 
   const body = await request.json();
@@ -27,38 +26,40 @@ export async function POST(request: NextRequest) {
   let sub = claims?.sub;
 
   if (!parsedBody.success) {
-    return NextResponse.json({ message: "参数错误", error: parsedBody.error });
+    return NextResponse.json({ error: "参数错误", detail: parsedBody.error });
   }
 
   const isAdmin = claims?.roles?.includes("RakAdmin")
 
   if (isAdmin) {
     if (!parsedBody.data?.uid) {
-      return NextResponse.json({ message: "参数错误", error: "uid is required" });
+      return NextResponse.json({ error: "参数错误", detail: "uid is required" });
     } else {
       sub = parsedBody.data.uid
     }
   }
 
   if (sub !== parsedBody.data?.uid) {
-    return NextResponse.json({ message: "权限不足" });
+    return NextResponse.json({ error: "权限不足" });
   }
 
   try {
-    const bioCensorResult = (parsedBody.data.bio && !isAdmin) ? await censor(parsedBody.data.bio) : { pass: true, message: "" };
+    if (parsedBody.data.bio) {
+      const bioCensorResult = (parsedBody.data.bio && !isAdmin) ? await censor(parsedBody.data.bio) : { pass: true, message: "" };
 
-    if (parsedBody.data.bio && bioCensorResult.pass === false) {
-      return NextResponse.json({ message: "个人简介不合法" });
+      if (parsedBody.data.bio && !bioCensorResult.pass) {
+        return NextResponse.json({ error: "个人简介不合法" });
+      }
+
+      await Logto.UpdateCustomData(sub, {
+        bio: parsedBody.data.bio,
+        "censor.bio": JSON.stringify(bioCensorResult)
+      })
     }
 
     await Logto.updateUser(sub, {
       name: parsedBody.data.nickname,
       avatar: parsedBody.data.avatar
-    })
-
-    await Logto.UpdateCustomData(sub, {
-      bio: parsedBody.data.bio,
-      "censor.bio": JSON.stringify(bioCensorResult)
     })
 
     return NextResponse.json({ message: "修改成功", success: true });

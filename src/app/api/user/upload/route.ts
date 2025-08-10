@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get("file") as File;
+    const uid = formData.get("uid") as string;
 
     if (!file) {
       return NextResponse.json(
@@ -45,9 +46,10 @@ export async function POST(request: NextRequest) {
     }
 
     const ext = file.name.split(".").pop();
+    const isAdmin = claims.roles?.includes("RakAdmin");
 
     // 生成唯一的文件名
-    const fileName = `logto-avatar/${claims.sub}.${ext}`
+    const fileName = isAdmin ? `logto-avatar/${uid}.${ext}` : `logto-avatar/${claims.sub}.${ext}`
     const buffer = await file.arrayBuffer();
 
     // 配置S3上传参数
@@ -62,11 +64,12 @@ export async function POST(request: NextRequest) {
     await s3Client.send(new PutObjectCommand(params));
 
     // 返回上传成功的文件URL
-    const fileUrl = `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET}/${fileName}`;
+    const fileUrl = `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET}/${fileName}?_=${Date.now()}`;
 
-    return NextResponse.json({ 
-      success: true,
-      url: fileUrl
+    return NextResponse.json({
+      data: {
+        url: fileUrl
+      }
     });
 
   } catch (error) {

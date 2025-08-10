@@ -1,6 +1,5 @@
 import axios from 'axios'
 import Cache from '../cache'
-import prisma from '../db'
 
 const accessTokenCache = new Cache();
 const apiResponseCache = new Cache(); // 新增 API 响应缓存
@@ -156,7 +155,9 @@ export class Logto {
 
   static async updateUser(id: string, data: UpdateUserRequest): Promise<UserResponse> {
     const client = await getLogtoClient();
-    return await client.logtoClient.patch(`api/users/${id}`, data);
+    const user = await Logto.getUser(id);
+    const mergedData = Object.assign(user, data);
+    return await client.logtoClient.patch(`api/users/${id}`, mergedData);
   }
 
   static async UpdateCustomData(id: string, customData: Record<string, unknown>) {
