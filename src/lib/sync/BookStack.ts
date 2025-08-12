@@ -137,7 +137,7 @@ const sync = async () => {
         if (!logto_id) {
           console.log(`[${new Date().toISOString()}][BookStack] WARN: User ${page.updated_by} logto_id is missing`)
         } else {
-          await appendContributions({
+          const isDupe = await appendContributions({
             logto_id: users.find(u => u.id === page.updated_by)?.external_auth_id!,
             date: new Date(page.updated_at),
             type: "edit",
@@ -146,13 +146,12 @@ const sync = async () => {
             message: page.name,
             url: `https://docs.vrcd.org.cn/books/${page.book_slug}/page/${page.slug}`
           })
-        }
 
-        const currentTime = Date.now();
-        const update_at = new Date(page.updated_at).getTime();
-        const diff = currentTime - update_at;
-        const sevenDays = 7 * 24 * 60 * 60 * 1000;
-        if (diff < sevenDays) continue;
+          if (isDupe) {
+            console.log(`[${new Date().toISOString()}][BookStack] Dupe page ${page.name}(${page.id}), skiping`)
+            continue
+          }
+        }
 
         const pageItem = await BookStack.pageRead(page.id)
         const content = htmlFilter(pageItem.raw_html)

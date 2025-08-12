@@ -23,7 +23,7 @@ export const appendContributions = async (contributions: IContribution) => {
   })
 
   if (isDupe.length > 0) {
-    return;
+    return true;
   }
 
   console.log(`[${new Date().toISOString()}][Contributions] Appending contribution (${contributions.type}) ${full_id} for ${contributions.logto_id}`)
@@ -38,4 +38,6 @@ export const appendContributions = async (contributions: IContribution) => {
       url: contributions.url
     }
   });
+
+  return false;
 };

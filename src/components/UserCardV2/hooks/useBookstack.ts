@@ -59,6 +59,6 @@ export const useBookstack = (uid: string) => {
   return {
     loading,
     bookstack: data?.data ?? null,
-    error: bookStackError ?? error?.message ?? "An error occurred while fetching data"
+    error: bookStackError ?? error?.message
   }
 }
