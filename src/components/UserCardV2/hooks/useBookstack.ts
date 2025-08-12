@@ -1,4 +1,5 @@
 import { useFetch } from '@/utils/useFetch'
+import { useEffect, useState } from 'react'
 
 export interface Statistics {
   owned_books: number,
@@ -43,11 +44,21 @@ export interface BookStack {
 }
 
 export const useBookstack = (uid: string) => {
-  const { loading, data, error } = useFetch<{ data: BookStack }>(`/api/user/${uid}/bookstack`)
+  const [bookStackError, setBookStackError] = useState<string | undefined>(undefined)
+
+  const { loading, data, error } = useFetch<{ data: BookStack, error?: string }>(`/api/user/${uid}/bookstack`)
+
+  useEffect(() => {
+    if (data) {
+      if (data.error) {
+        setBookStackError(data.error)
+      }
+    }
+  }, [data])
 
   return {
     loading,
     bookstack: data?.data ?? null,
-    error
+    error: bookStackError ?? error?.message ?? "An error occurred while fetching data"
   }
 }

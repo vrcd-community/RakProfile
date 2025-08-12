@@ -16,7 +16,7 @@ export const BookStack = ({uid}: { uid: string }) => {
   }
 
   if (error) {
-    return <ErrorCard title="加载失败" message={error.message}/>
+    return <ErrorCard title="加载失败" message={error}/>
   }
 
   return (

@@ -56,15 +56,15 @@ export const ActivityItem = ({ active }: { active: ActiveItem }) => {
 
   return (
     <div className="relative pl-7 sm:pl-8 py-3 group">
-      {/* 时间线 */}
       <span className="absolute left-3 sm:left-3.5 top-0 bottom-0 w-px bg-border/70" aria-hidden />
+      <span className="absolute left-3 sm:left-3.5 top-1.5 h-px w-full bg-border/70" aria-hidden />
       <span
-        className="absolute left-2 sm:left-2.5 top-4 h-3 w-3 rounded-full bg-primary/80 ring-2 ring-background group-hover:scale-110 transition-transform"
+        className="absolute left-[7px] sm:left-[9px] top-0 h-3 w-3 rounded-full bg-primary/80 ring-2 ring-background group-hover:scale-110 transition-transform"
         aria-hidden
       />
 
       {/* 主体行：小屏允许换行，避免溢出 */}
-      <div className="rounded-lg px-2 py-2 hover:bg-muted/60 transition-colors">
+      <div className="rounded-lg px-2 py-2 mt-2.5 hover:bg-muted/60 transition-colors">
         <div className="flex items-start sm:items-center gap-3">
           <div className="mt-[2px] shrink-0 text-muted-foreground">
             <Icon className="h-4 w-4" />
@@ -124,7 +124,7 @@ export const UserContributions = ({uid}: { uid: string }) => {
       <Card className="w-full px-2 py-6 flex items-center justify-center overflow-x-auto">
         <ContributionsCalendar contributions={data?.contributions!}/>
       </Card>
-      <div className="divide-y">
+      <div>
         {data?.activities?.map((a: ActiveItem) => (
           <ActivityItem key={`${a.resource_id}-${a.date}`} active={a}/>
         ))}

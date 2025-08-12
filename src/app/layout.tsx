@@ -38,8 +38,10 @@ export default function RootLayout({
 }
 
 if (process.env.NODE_ENV === "production") {
+  const duration = 6 * 60 * 60 * 1000; // 6 hours
+
   syncBookStack()
   setInterval(() => {
     syncBookStack()
-  }, 10 * 60 * 1000)
+  }, duration)
 }

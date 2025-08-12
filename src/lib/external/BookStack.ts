@@ -41,6 +41,7 @@ interface BookStackUser {
 
 interface BookStackUserListResponse {
   data: BookStackUser[];
+  total: number;
 }
 
 interface BookStackUserReadResponse extends BookStackUser {
@@ -133,9 +134,30 @@ interface BookStackPageReadResponse {
 }
 
 export class BookStack {
-  static async userList(): Promise<BookStackUserListResponse> {
+  static async userListPage(offset: number = 0, limit: number = 100) {
     const client = await getBookStackClient();
-    return await client.cachedGet<BookStackUserListResponse>('/users');
+    return await client.cachedGet<BookStackUserListResponse>(`/users?offset=${offset}&limit=${limit}`);
+  }
+
+  static async userList(): Promise<BookStackUserListResponse> {
+    const data = [];
+
+    let offset = 0;
+    let limit = 100;
+
+    while (true) {
+      const page = await BookStack.userListPage(offset, limit);
+      data.push(...page.data);
+      if (page.total <= data.length) {
+        break;
+      }
+      offset += limit;
+    }
+
+    return {
+      data,
+      total: data.length
+    }
   }
 
   static async userRead(uid: string): Promise<BookStackUserReadResponse> {

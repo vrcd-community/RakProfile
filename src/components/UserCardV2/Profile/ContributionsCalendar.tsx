@@ -206,8 +206,10 @@ export const ContributionsCalendar: React.FC<ContributionsCalendarProps> = ({con
               const y = item.dayIdx * (CELL + GAP);
               const title = `${item.total} contribution${item.total === 1 ? "" : "s"} on ${item.date.toDateString()}`;
 
+              const key = `${item.weekIdx}-${item.dayIdx}`;
+
               return (
-                <Tooltip>
+                <Tooltip key={key}>
                   <TooltipTrigger asChild>
                     <rect
                       key={item.key}
