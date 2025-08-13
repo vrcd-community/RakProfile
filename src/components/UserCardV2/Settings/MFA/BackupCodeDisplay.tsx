@@ -7,7 +7,7 @@ import {
   CardFooter
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MFA_BACKUP_CODE } from "./MFA";
+import { MFA_BACKUP_CODE } from "./";
 import { toast } from "sonner";
 import { Download, Copy, Check } from "lucide-react";
 import { useState } from "react";
