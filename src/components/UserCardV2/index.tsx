@@ -9,7 +9,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import {Card, CardContent} from "@/components/ui/card";
+import { Settings } from "./Settings";
 
 async function UserCardV2({ uid }: { uid: string }) {
   const { isAuthenticated, claims } = await getLogtoContext(logtoConfig);
@@ -18,12 +18,10 @@ async function UserCardV2({ uid }: { uid: string }) {
   const isAdmin = isAuthenticated ? claims?.roles?.includes("RakAdmin") || false : false;
   const roles = isAuthenticated ? claims?.roles || [] : [];
 
-  const canEdit = isSelf || isAdmin;
-
-  if (canEdit) {
+  if (isSelf) {
     return (
       <Tabs defaultValue="profile">
-        <TabsList className="w-full grid grid-cols-2">
+        <TabsList className="w-full grid grid-cols-2 mb-4">
           <TabsTrigger value="profile">个人资料</TabsTrigger>
           <TabsTrigger value="settings">设置中心</TabsTrigger>
         </TabsList>
@@ -31,12 +29,7 @@ async function UserCardV2({ uid }: { uid: string }) {
           <ClientCard uid={uid} isSelf={isSelf} isAdmin={isAdmin} roles={roles}/>
         </TabsContent>
         <TabsContent value="settings">
-          <Card>
-            <CardContent className="p-4 flex flex-col gap-2 items-center justify-center">
-              <h1 className="text-2xl font-bold">还没做</h1>
-              <h1 className="text-2xl font-bold">\o/</h1>
-            </CardContent>
-          </Card>
+          <Settings />
         </TabsContent>
       </Tabs>
     )
