@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import syncBookStack from "@/lib/sync/BookStack"
 import { Bottom } from "@/components/Bottom";
 import Toast from "@/components/Toast";
+import { APMComponent } from "@/components/apm";
 
 export const metadata: Metadata = {
   title: "VRCD Profile"
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="zh-CN">
       <head>
         <meta name="referrer" content="no-referrer" />
+        <APMComponent />
       </head>
       <body className="bg-[var(--bg-1)]">
         <ThemeProvider
