@@ -7,19 +7,23 @@ const accessTokenKey = 'logto_access_token';
 const accessTokenTTLSeconds = 3600;
 const apiResponseTTLSeconds = 60; // API 响应缓存时间，例如 60 秒，可以根据需要调整
 
-const fetchAccessToken = async () => {
-  const resp = await axios.post(`${process.env.LOGTO_BASEURL}/oidc/token`, new URLSearchParams({
-    grant_type: 'client_credentials',
-    resource: "https://default.logto.app/api",
-    scope: "all"
-  }).toString(), {
+export const fetchAccessToken = async () => {
+  const resp = await fetch(`${process.env.LOGTO_BASEURL}/oidc/token`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': `Basic ${Buffer.from(`${process.env.LOGTO_APP_ID}:${process.env.LOGTO_APP_SECRET}`).toString('base64')}`
-    }
-  });
+    },
+    body: new URLSearchParams({
+      grant_type: 'client_credentials',
+      resource: "https://default.logto.app/api",
+      scope: "all"
+    })
+  })
 
-  return resp.data.access_token;
+  const json = await resp.json()
+
+  return json.access_token;
 }
 
 const getLogtoClient = async () => {

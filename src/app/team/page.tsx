@@ -1,5 +1,7 @@
+'use server';
+
 import { MemberCardWithExpanded } from "./card";
-import { Logto } from "@/lib/external/Logto";
+import { fetchAccessToken } from "@/lib/external/Logto";
 
 const members = {
   "管理社区": [
@@ -16,8 +18,9 @@ const members = {
   ]
 }
 
+export default async function Members() {
+  const access_token = await fetchAccessToken();
 
-export default function Members() {
   return (
     <>
       <div className="container mx-auto px-4 py-8">
@@ -27,8 +30,15 @@ export default function Members() {
               <h2 className="text-2xl font-bold mb-4">{group}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {uids.map(async uid => {
-                  const user = await Logto.getUser(uid);
-                  return <MemberCardWithExpanded key={uid} uid={uid} user={user}/>
+                  const resp = await fetch(`${process.env.LOGTO_BASEURL}/api/users/${uid}`, {
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${access_token}`,
+                    }
+                  });
+
+                  const user = await resp.json();
+                  return <MemberCardWithExpanded key={uid} uid={uid} user={user} />
                 })}
               </div>
             </div>
