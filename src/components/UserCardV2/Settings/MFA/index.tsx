@@ -72,37 +72,37 @@ export default function MFA() {
   }, []);
 
   return (
-    <div className="space-y-4">
-      <div>
-        <div className="flex items-center space-x-3 mb-2">
-          <Shield className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-bold">多因素认证</h1>
-        </div>
-        <p className="text-muted-foreground text-sm">
-          通过增加一层安全验证，有效保护您的账户不被未授权访问。
-        </p>
+    <div>
+      <div className="flex items-center space-x-2">
+        <Shield className="h-5 w-5" />
+        <p className="text-lg font-medium">多因素认证</p>
       </div>
+      <p className="text-sm text-muted-foreground">
+        通过增加一层安全验证，有效保护您的账户不被未授权访问。
+      </p>
 
-      <Separator />
+      <div className="mt-2 space-y-4">
+        <Separator />
 
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          {mfaOptions.length > 0 ? (
-            <MFAOptionList mfaOptions={mfaOptions} onMFADeleted={handleMFADeleted} />
-          ) : (
-            <EmptyState />
-          )}
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            {mfaOptions.length > 0 ? (
+              <MFAOptionList mfaOptions={mfaOptions} onMFADeleted={handleMFADeleted} />
+            ) : (
+              <EmptyState />
+            )}
 
-          <Separator />
+            <Separator />
 
-          <AddMFA onMFAAdded={handleMFAAdded} />
+            <AddMFA onMFAAdded={handleMFAAdded} />
 
-          {mfaTOPT && <TOTPSetup mfaTOPT={mfaTOPT} onClose={() => setMfaTOPT(null)} />}
-          {mfaBackupCode && <BackupCodeDisplay mfaBackupCode={mfaBackupCode} onClose={() => setMfaBackupCode(null)} />}
-        </>
-      )}
+            {mfaTOPT && <TOTPSetup mfaTOPT={mfaTOPT} onClose={() => setMfaTOPT(null)} />}
+            {mfaBackupCode && <BackupCodeDisplay mfaBackupCode={mfaBackupCode} onClose={() => setMfaBackupCode(null)} />}
+          </>
+        )}
+      </div>
     </div>
   );
 }

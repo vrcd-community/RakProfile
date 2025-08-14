@@ -31,7 +31,7 @@ const getLogtoClient = async () => {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     },
-    timeout: 5000,
+    timeout: 30e3,
     validateStatus: (status) => status >= 200 && status < 500
   });
 
