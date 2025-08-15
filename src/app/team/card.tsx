@@ -3,24 +3,36 @@
 import { Markdown } from "@/components/markdown";
 import { type UserResponse } from "@/lib/external/Logto";
 import { motion, AnimatePresence } from "framer-motion";
+import { User } from "lucide-react";
 import { useState } from "react";
 
 const MemberCard = ({ name, avatar, uid, onSelect }: { name: string, avatar: string, uid: string, onSelect: (uid: string) => void }) => {
   return (
     <motion.div
       className="flex cursor-pointer flex-col items-center bg-[var(--bg-2)] dark:bg-[var(--bg-3)] gap-2 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-      layoutId={`member-card-container-${uid}`} 
+      layoutId={`member-card-container-${uid}`}
       onClick={() => onSelect(uid)}
       whileHover={{ scale: 1.05 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
-      <motion.img
-        layoutId={`member-avatar-${uid}`}
-        src={avatar}
-        alt={name}
-        className="w-20 h-20 rounded-full object-cover"
-      />
-      <motion.h3 
+      {
+        avatar ? (
+          <motion.img
+            layoutId={`member-avatar-${uid}`}
+            src={avatar}
+            alt={name}
+            className="w-20 h-20 rounded-full object-cover"
+          />
+        ) : (
+          <motion.div
+            layoutId={`member-avatar-${uid}`}
+            className="w-20 h-20 rounded-full bg-gray-200 dark:bg-[#131415] flex items-center justify-center"
+          >
+            <User className="w-10 h-10 text-gray-500 dark:text-gray-400" />
+          </motion.div>
+        )
+      }
+      <motion.h3
         layoutId={`member-name-${uid}`}
         className="text-lg font-bold"
       >
@@ -49,20 +61,31 @@ const ExpandedMemberCard = ({ uid, user, onClose }: { uid: string, user: UserRes
         onClick={(e) => e.stopPropagation()}
       >
         <motion.div className="relative h-40 bg-gray-200 dark:bg-[#272727] flex items-end p-4">
-           <div className="flex items-center gap-4">
-              <motion.img
-                layoutId={`member-avatar-${uid}`}
-                src={avatar}
-                alt={name}
-                className="w-24 h-24 rounded-full object-cover"
-              />
-              <motion.h3
-                layoutId={`member-name-${uid}`}
-                className="text-2xl font-bold text-gray-800 dark:text-white"
-              >
-                {name}
-              </motion.h3>
-           </div>
+          <div className="flex items-center gap-4">
+            {
+              avatar ? (
+                <motion.img
+                  layoutId={`member-avatar-${uid}`}
+                  src={avatar}
+                  alt={name}
+                  className="w-24 h-24 rounded-full object-cover"
+                />
+              ) : (
+                <motion.div
+                  layoutId={`member-avatar-${uid}`}
+                  className="w-24 h-24 rounded-full bg-gray-200 dark:bg-[#131415] flex items-center justify-center"
+                >
+                  <User className="w-10 h-10 text-gray-500 dark:text-gray-400" />
+                </motion.div>
+              )
+            }
+            <motion.h3
+              layoutId={`member-name-${uid}`}
+              className="text-2xl font-bold text-gray-800 dark:text-white"
+            >
+              {name}
+            </motion.h3>
+          </div>
         </motion.div>
 
         <motion.div
@@ -71,7 +94,7 @@ const ExpandedMemberCard = ({ uid, user, onClose }: { uid: string, user: UserRes
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.2 }}
         >
-          <Markdown content={user.customData.bio as string || "> [无数据...]"}/>
+          <Markdown content={user.customData.bio as string || "> [无数据...]"} />
         </motion.div>
       </motion.div>
     </motion.div>
@@ -98,10 +121,10 @@ export const MemberCardWithExpanded = ({ user, uid }: { user: UserResponse, uid:
 
       <AnimatePresence>
         {selectedId === uid && (
-          <ExpandedMemberCard 
-            uid={uid} 
+          <ExpandedMemberCard
+            uid={uid}
             user={user}
-            onClose={handleClose} 
+            onClose={handleClose}
           />
         )}
       </AnimatePresence>

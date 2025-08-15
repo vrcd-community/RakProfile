@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Shield, Loader2 } from "lucide-react";
+import { Shield, Loader2, ShieldCheck } from "lucide-react";
 import { AddMFA } from "./AddMFA";
 import { MFAOptionList } from "./MFAOptionList";
 import { EmptyState } from "./EmptyState";
@@ -10,7 +10,7 @@ import { TOTPSetup } from "./TOTPSetup";
 import { BackupCodeDisplay } from "./BackupCodeDisplay";
 import { Separator } from "@/components/ui/separator";
 import { Loading } from "@/components/common/loading";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 export interface MFAitem {
   id: string;
@@ -72,37 +72,51 @@ export default function MFA() {
   }, []);
 
   return (
-    <div>
-      <div className="flex items-center space-x-2">
-        <Shield className="h-5 w-5" />
-        <p className="text-lg font-medium">多因素认证</p>
-      </div>
-      <p className="text-sm text-muted-foreground">
-        通过增加一层安全验证，有效保护您的账户不被未授权访问。
-      </p>
-
-      <div className="mt-2 space-y-4">
-        <Separator />
-
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
+    <div className="space-y-6 mt-2">
+      {/* 头部区域 */}
+      <div className="space-y-3">
+        <div className="flex items-center space-x-3">
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-200/20 dark:border-blue-800/20">
             {mfaOptions.length > 0 ? (
-              <MFAOptionList mfaOptions={mfaOptions} onMFADeleted={handleMFADeleted} />
+              <ShieldCheck className="h-5 w-5 text-green-600 dark:text-green-400" />
             ) : (
-              <EmptyState />
+              <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             )}
-
-            <Separator />
-
-            <AddMFA onMFAAdded={handleMFAAdded} />
-
-            {mfaTOPT && <TOTPSetup mfaTOPT={mfaTOPT} onClose={() => setMfaTOPT(null)} />}
-            {mfaBackupCode && <BackupCodeDisplay mfaBackupCode={mfaBackupCode} onClose={() => setMfaBackupCode(null)} />}
-          </>
-        )}
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold tracking-tight">多因素认证</h2>
+            <p className="text-sm text-muted-foreground">
+              通过增加一层安全验证，有效保护您的账户不被未授权访问
+            </p>
+          </div>
+        </div>
       </div>
+
+      <Separator className="mb-6" />
+
+      {loading ? (
+        <div className="flex items-center justify-center py-12">
+          <Loading />
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {/* MFA选项列表或空状态 */}
+          {mfaOptions.length > 0 ? (
+            <MFAOptionList mfaOptions={mfaOptions} onMFADeleted={handleMFADeleted} />
+          ) : (
+            <EmptyState />
+          )}
+
+          <Separator className="my-6" />
+
+          {/* 添加新的认证方式 */}
+          <AddMFA onMFAAdded={handleMFAAdded} />
+
+          {/* 设置对话框 */}
+          {mfaTOPT && <TOTPSetup mfaTOPT={mfaTOPT} onClose={() => setMfaTOPT(null)} />}
+          {mfaBackupCode && <BackupCodeDisplay mfaBackupCode={mfaBackupCode} onClose={() => setMfaBackupCode(null)} />}
+        </div>
+      )}
     </div>
   );
 }

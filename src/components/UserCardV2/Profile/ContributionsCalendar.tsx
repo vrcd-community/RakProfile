@@ -25,16 +25,16 @@ export const COLORS_LIGHT = [
   "#2C8E52", // 4
 ];
 
-// 网格描边（更贴合 #1C1917 的暖调）
-export const STROKE_DARK = "#2B2623";
+// 网格描边（适配 #18181B 背景的中性色调）
+export const STROKE_DARK = "#27272A";
 
-// 空格子的底色：略高于背景亮度，便于分辨
+// 空格子的底色：基于 #18181B 背景制作的渐进色阶
 export const COLORS_DARK = [
-  "#221F1D", // 0
-  "#2E4A36", // 1
-  "#3B7A4F", // 2
-  "#4FA567", // 3
-  "#7AD97F", // 4
+  "#1F1F23", // 0
+  "#0F2A1A", // 1
+  "#1A4A2E", // 2
+  "#2D6A42", // 3
+  "#4ADE80", // 4
 ];
 
 function ymd(d: Date) {
