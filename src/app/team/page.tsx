@@ -26,7 +26,7 @@ export default async function Members() {
   )
 }
 
-export async function getMembers() {
+async function getMembers() {
   const members = {
     "管理社区": [
       // SKP彭彭
