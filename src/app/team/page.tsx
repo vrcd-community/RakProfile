@@ -7,9 +7,7 @@ interface MemberData {
   user: UserResponse;
 }
 
-interface MembersData {
-  [groupName: string]: MemberData[];
-}
+type MembersData = MemberData[]; 
 
 export const dynamic = 'force-static';
 export const revalidate = 3600;
@@ -18,7 +16,7 @@ export default async function Members() {
   try {
     const members = await getMembers();
 
-    const hasMembers = Object.keys(members).length > 0 && Object.values(members).some(group => group.length > 0);
+    const hasMembers = members.length > 0;
 
     if (!hasMembers) {
       return <EmptyState />;
@@ -26,13 +24,11 @@ export default async function Members() {
 
     return (
       <div className="container mx-auto px-4 py-8">
-        {Object.entries(members).map(([group, users]) => (
-          <div key={group} className="mb-8">
-            <h2 className="text-2xl font-bold mb-6 text-foreground">{group}</h2>
+        {members.map(({ user, uid }) => (
+          <div key={uid} className="mb-8">
+            <h2 className="text-2xl font-bold mb-6 text-foreground">{user.name}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {users.map(({ user, uid }) => (
-                <MemberCardWithExpanded key={uid} uid={uid} user={user} />
-              ))}
+              <MemberCardWithExpanded key={uid} uid={uid} user={user} />
             </div>
           </div>
         ))}
@@ -105,46 +101,40 @@ function ErrorState() {
 
 async function getMembers(): Promise<MembersData> {
   // 团队成员配置
-  const memberConfig = {
-    "管理社区": [
-      // 百变奇罗
-      'uzfdtyu4p68s',
-      // 风间苏苏
-      'uttg5xhfjs4m',
-      // 可可脂
-      'm3ni5rpb8s1a',
-      // 琉燐
-      '6jnupp1zn786',
-      // 欧阳大鸽子
-      'ggyvjv3pttqs',
-      // 澎澎
-      'p0o4awi7xj32',
-      // 巧克力蛋包饭
-      'w7szj3prb71h',
-      // 瑄
-      '0wyv41xki33n',
-      // Anteness
-      'k7vte2da2mry',
-      // Flower_elf
-      'yk7em2a9yuk1',
-      // Misaka_L
-      'prk9g38gai6u',
-      // WangQAQ
-      '7gnhkb938m4q',
-    ]
-  };
+  const memberConfig = [
+    // 风间苏苏
+    'uttg5xhfjs4m',
+    // 可可脂
+    'm3ni5rpb8s1a',
+    // 琉燐
+    '6jnupp1zn786',
+    // 欧阳大鸽子
+    'ggyvjv3pttqs',
+    // 澎澎
+    'p0o4awi7xj32',
+    // 巧克力蛋包饭
+    'w7szj3prb71h',
+    // 瑄
+    '0wyv41xki33n',
+    // Anteness
+    'k7vte2da2mry',
+    // Flower_elf
+    'yk7em2a9yuk1',
+    // Misaka_L
+    'prk9g38gai6u',
+    // WangQAQ
+    '7gnhkb938m4q',
+  ]
 
   try {
     const access_token = await fetchAccessToken();
-    const users: MembersData = {};
+    const users: MembersData = [];
 
     // 创建所有用户数据获取的Promise数组
-    const userPromises: Promise<{ group: string; uid: string; user: UserResponse | null }>[] = [];
+    const userPromises: Promise<{ uid: string; user: UserResponse | null }>[] = [];
 
-    for (const [group, uids] of Object.entries(memberConfig)) {
-      for (const uid of uids) {
-        userPromises.push(fetchUserData(access_token, group, uid));
-      }
+    for (const uid of memberConfig) {
+      userPromises.push(fetchUserData(access_token, uid));
     }
 
     // 并发获取所有用户数据
@@ -153,32 +143,24 @@ async function getMembers(): Promise<MembersData> {
     // 处理结果并组织数据结构
     for (const result of results) {
       if (result.status === 'fulfilled' && result.value.user) {
-        const { group, uid, user } = result.value;
+        const { uid, user } = result.value;
 
-        if (!users[group]) {
-          users[group] = [];
-        }
-
-        users[group].push({ uid, user });
+        users.push({ uid, user });
       } else if (result.status === 'rejected') {
         console.error('Failed to fetch user data:', result.reason);
       }
     }
 
-    // 按名称排序每个组的成员
-    for (const group in users) {
-      users[group].sort((a, b) => {
-        const nameA = a.user.name || a.user.username || '';
-        const nameB = b.user.name || b.user.username || '';
-        return nameA.localeCompare(nameB);
-      });
-    }
+    users.sort((a, b) => {
+      const nameA = a.user.name || a.user.username || '';
+      const nameB = b.user.name || b.user.username || '';
+      return nameA.localeCompare(nameB);
+    });
 
     return users;
   } catch (error) {
     console.error('Failed to fetch members:', error);
-    // 返回空对象作为降级方案
-    return {};
+    return [];
   }
 }
 
@@ -186,15 +168,13 @@ async function getMembers(): Promise<MembersData> {
  * 获取单个用户数据
  * 
  * @param accessToken - API访问令牌
- * @param group - 用户所属组名
  * @param uid - 用户ID
  * @returns Promise包装的用户数据
  */
 async function fetchUserData(
   accessToken: string,
-  group: string,
   uid: string
-): Promise<{ group: string; uid: string; user: UserResponse | null }> {
+): Promise<{ uid: string; user: UserResponse | null }> {
   const maxRetries = 3;
   let lastError: Error | null = null;
 
@@ -222,7 +202,7 @@ async function fetchUserData(
         console.warn(`User ${uid} has no name or username`);
       }
 
-      return { group, uid, user };
+      return { uid, user };
     } catch (error) {
       lastError = error as Error;
       console.warn(`Attempt ${attempt}/${maxRetries} failed for user ${uid}:`, error);
@@ -235,5 +215,5 @@ async function fetchUserData(
   }
 
   console.error(`Failed to fetch user ${uid} after ${maxRetries} attempts:`, lastError);
-  return { group, uid, user: null };
+  return { uid, user: null };
 }
