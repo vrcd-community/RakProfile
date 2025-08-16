@@ -7,7 +7,7 @@ interface MemberData {
   user: UserResponse;
 }
 
-type MembersData = MemberData[]; 
+type MembersData = MemberData[];
 
 export const dynamic = 'force-static';
 export const revalidate = 3600;
@@ -23,14 +23,9 @@ export default async function Members() {
     }
 
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {members.map(({ user, uid }) => (
-          <div key={uid} className="mb-8">
-            <h2 className="text-2xl font-bold mb-6 text-foreground">{user.name}</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              <MemberCardWithExpanded key={uid} uid={uid} user={user} />
-            </div>
-          </div>
+          <MemberCardWithExpanded key={uid} uid={uid} user={user} />
         ))}
       </div>
     );
