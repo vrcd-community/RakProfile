@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/tabs"
 import MFA from "./MFA"
 import SocialIdentity from "./SocialIdentity"
+import { cn } from "@/lib/utils";
 
 export const Settings = () => {
   const [activeTab, setActiveTab] = useState("mfa");
@@ -34,22 +35,20 @@ export const Settings = () => {
         
         <div className="ml-1 relative">
           <div 
-            className={`transition-all duration-300 ease-in-out ${
-              activeTab === "mfa" 
-                ? "opacity-100 translate-y-0" 
-                : "opacity-0 translate-y-2 pointer-events-none absolute top-0 left-0 w-full"
-            }`}
+            className={cn(
+              "transition-all duration-300 ease-in-out",
+              activeTab === "mfa" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none absolute top-0 left-0 w-full"
+            )}
             aria-hidden={activeTab !== "mfa"}
           >
             <MFA />
           </div>
           
           <div 
-            className={`transition-all duration-300 ease-in-out ${
-              activeTab === "social-identity" 
-                ? "opacity-100 translate-y-0" 
-                : "opacity-0 translate-y-2 pointer-events-none absolute top-0 left-0 w-full"
-            }`}
+            className={cn(
+              "transition-all duration-300 ease-in-out",
+              activeTab === "social-identity" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none absolute top-0 left-0 w-full"
+            )}
             aria-hidden={activeTab !== "social-identity"}
           >
             <SocialIdentity />
