@@ -1,6 +1,7 @@
 import { MemberCardWithExpanded } from "./card";
 import { fetchAccessToken } from "@/lib/external/Logto";
 import { type UserResponse } from "@/lib/external/Logto";
+import { Metadata } from "next";
 
 interface MemberData {
   uid: string;
@@ -8,6 +9,16 @@ interface MemberData {
 }
 
 type MembersData = MemberData[];
+
+export const metadata: Metadata = {
+  title: "VRCD - 团队成员",
+  description: "我们是一个刚刚起步的面向玩家，初高级开发者，内容创作者的共创开源社区，在这里，您可以找到一众优秀的 VR 内容创作者与热心好学的新兴创作力量。",
+  openGraph: {
+    title: "VRCD - 团队成员",
+    description: "我们是一个刚刚起步的面向玩家，初高级开发者，内容创作者的共创开源社区，在这里，您可以找到一众优秀的 VR 内容创作者与热心好学的新兴创作力量。",
+    type: "website"
+  }
+}
 
 export const dynamic = 'force-static';
 export const revalidate = 3600;

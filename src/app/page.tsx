@@ -10,9 +10,25 @@ import img8 from "@/assets/intro-images/VRChat_2024-12-01_22-42-40.502_3840x2160
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, BookMarked, Database, FileText, BookOpen, ChevronRight, Goal } from "lucide-react";
-import Recently from "@/components/Recently";
+import Recently, { getRecently } from "@/components/Recently";
 // import LeaderboardPage from "@/components/Leaderboard";
 import { Carousel } from "@/components/carousel";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const posts = await getRecently();
+
+  return {
+    title: "VRCD - 欢迎",
+    description: "我们是一个刚刚起步的面向玩家，初高级开发者，内容创作者的共创开源社区，在这里，您可以找到一众优秀的 VR 内容创作者与热心好学的新兴创作力量。",
+    openGraph: {
+      title: "VRCD - 欢迎",
+      description: "我们是一个刚刚起步的面向玩家，初高级开发者，内容创作者的共创开源社区，在这里，您可以找到一众优秀的 VR 内容创作者与热心好学的新兴创作力量。",
+      type: "website"
+    },
+    archives: posts.map(item => item.link)
+  }
+}
 
 const AppCard = ({ title, description, icon: Icon, color, link }: any) => {
   return (

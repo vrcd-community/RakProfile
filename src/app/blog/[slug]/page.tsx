@@ -7,9 +7,32 @@ import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 
 import "@/app/markdown.css"
+import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const matter = await getPostMatter(slug);
+
+  return {
+    title: `${matter.title} - VRCD 博客`,
+    description: matter.description,
+    keywords: matter.tags,
+    openGraph: {
+      title: `${matter.title} - VRCD 博客`,
+      description: matter.description,
+      type: "article",
+      publishedTime: matter.date,
+      authors: ["VRCD Team"],
+    }
+  }
+}
 
 export default async function Page({
   params,

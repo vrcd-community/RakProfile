@@ -5,7 +5,28 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { format } from "date-fns";
-import { Separator } from "@radix-ui/react-dropdown-menu";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const files = await getMdxFiles();
+  const posts = await Promise.all(
+    files.map(async (file) => {
+      const slug = file.replace('.mdx', '');
+      const matter = await getPostMatter(slug);
+      return {
+        slug,
+        ...matter,
+      };
+    })
+  );
+
+  return {
+    title: "VRCD - 博客",
+    archives: posts.map(post => {
+      return `/blog/${post.slug}`;
+    })
+  }
+}
 
 export default async function BlogPage() {
   const files = await getMdxFiles();
