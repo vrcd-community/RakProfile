@@ -1,15 +1,15 @@
-import {ContributionsCalendar} from "./ContributionsCalendar";
-import {ActiveItem, useContributions} from "../hooks/useContributions";
-import {Loading} from "@/components/common/loading";
-import {ErrorCard} from "@/components/common/error";
-import {Card} from "@/components/ui/card";
+import { ContributionsCalendar } from "./ContributionsCalendar";
+import { ActiveItem, useContributions } from "../hooks/useContributions";
+import { Loading } from "@/components/common/loading";
+import { ErrorCard } from "@/components/common/error";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import * as React from "react";
 import Link from "next/link";
-import {Badge} from "@/components/ui/badge";
-import {cn} from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
-import {Activity as ActivityIcon, BookOpen,} from "lucide-react";
-
+import { Activity as ActivityIcon, BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
 
 const ActivityIcons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   bookstack: BookOpen
@@ -25,7 +25,7 @@ function formatRelative(input: string | Date) {
   const abs = Math.abs(diff);
   const minute = 60_000, hour = 3_600_000, day = 86_400_000, week = 604_800_000;
 
-  const rtf = new Intl.RelativeTimeFormat("zh-Hans-CN", {numeric: "auto"});
+  const rtf = new Intl.RelativeTimeFormat("zh-Hans-CN", { numeric: "auto" });
   if (abs < hour) return rtf.format(-Math.round(diff / minute), "minute");
   if (abs < day) return rtf.format(-Math.round(diff / hour), "hour");
   if (abs < week) return rtf.format(-Math.round(diff / day), "day");
@@ -35,7 +35,7 @@ function formatRelative(input: string | Date) {
   }).format(d);
 }
 
-const ActionBadge = ({type}: { type: string }) => {
+const ActionBadge = ({ type }: { type: string }) => {
   const isEdit = type === "edit";
   return (
     <Badge
@@ -63,7 +63,6 @@ export const ActivityItem = ({ active }: { active: ActiveItem }) => {
         aria-hidden
       />
 
-      {/* 主体行：小屏允许换行，避免溢出 */}
       <div className="rounded-lg px-2 py-2 mt-2.5 hover:bg-muted/60 transition-colors">
         <div className="flex items-start sm:items-center gap-3">
           <div className="mt-[2px] shrink-0 text-muted-foreground">
@@ -79,17 +78,17 @@ export const ActivityItem = ({ active }: { active: ActiveItem }) => {
                 href={active.url}
                 target="_blank"
                 rel="noreferrer"
-                className="text-sm font-medium hover:text-primary min-w-0"
+                className="text-sm font-medium hover:text-primary min-w-0 flex-1"
                 title={active.message}
               >
-                <span className="block break-all sm:break-normal sm:truncate sm:line-clamp-1">
+                <span className="block break-words sm:truncate">
                   {active.message || "（无标题）"}
                 </span>
               </Link>
             </div>
 
             <div className="mt-1 flex items-center gap-2 text-[11px]">
-              <span className="text-muted-foreground/80">
+              <span className="text-muted-foreground/80 ml-1">
                 {ResourceTypeMap[resourceType] || resourceType}
               </span>
 
@@ -106,28 +105,85 @@ export const ActivityItem = ({ active }: { active: ActiveItem }) => {
   );
 };
 
-export const UserContributions = ({uid}: { uid: string }) => {
-  const {data, loading, error} = useContributions(uid);
+const PaginationControls = ({
+  currentPage,
+  totalPages,
+  hasNext,
+  hasPrev,
+  onPageChange
+}: {
+  currentPage: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+  onPageChange: (page: number) => void;
+}) => {
+  return (
+    <div className="flex items-center justify-between mt-4">
+      <div className="text-sm text-muted-foreground">
+        第 {currentPage} 页，共 {totalPages} 页
+      </div>
+      <div className="flex items-center gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={!hasPrev}
+          className="h-8 w-8 p-0"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={!hasNext}
+          className="h-8 w-8 p-0"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export const UserContributions = ({ uid }: { uid: string }) => {
+  const {
+    data,
+    loading,
+    error,
+    currentPage,
+    refresh
+  } = useContributions(uid);
 
   if (loading) {
-    return <Loading text="加载中..."/>
+    return <Loading text="加载中..." />
   }
 
   if (error) {
-    return <ErrorCard title="加载失败" message={error.message}/>
+    return <ErrorCard title="加载失败" message={error.message} />
   }
 
   return (
     <div className="grid gap-4">
-      <h2
-        className="text-sm font-light ml-1">在过去一年中，共进行了 {data?.contributions?.reduce((prev, cur) => prev + cur.count, 0)} 次内容创作</h2>
+      <h2 className="text-sm font-light ml-1">在过去一年中，共进行了 {data?.contributions?.reduce((prev, cur) => prev + cur.count, 0)} 次内容创作</h2>
       <Card className="w-full px-2 py-6 flex items-center justify-center overflow-x-auto">
-        <ContributionsCalendar contributions={data?.contributions!}/>
+        <ContributionsCalendar contributions={data?.contributions!} />
       </Card>
       <div>
         {data?.activities?.map((a: ActiveItem) => (
-          <ActivityItem key={`${a.resource_id}-${a.date}`} active={a}/>
+          <ActivityItem key={`${a.resource_id}-${a.date}`} active={a} />
         ))}
+
+        {data?.pagination && data.pagination.total_pages > 1 && (
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={data.pagination.total_pages}
+            hasNext={data.pagination.has_next}
+            hasPrev={data.pagination.has_prev}
+            onPageChange={refresh}
+          />
+        )}
       </div>
     </div>
   )
