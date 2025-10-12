@@ -80,18 +80,17 @@ export const Books = ({bookstack, initialLimit = 6}: {
   initialLimit?: number;
 }) => {
   const books: BookItemWithType[] = React.useMemo(() => {
-    const merged: BookItemWithType[] = [
+    let merged: BookItemWithType[] = [
       ...bookstack.books.edited.map((v) => ({...v, type: "edited" as const})),
       ...bookstack.books.owned.map((v) => ({...v, type: "owned" as const})),
-    ];
+    ]
 
-    merged.forEach((item, index, arr) => {
-      if (item.type === "owned") {
-        const editedIndex = arr.findIndex((v) => v.type === "edited" && v.url === item.url);
-        if (editedIndex !== -1) {
-          arr.splice(editedIndex, 1);
-        }
+    merged = merged.filter((v, index, arr) => {
+      if (v.type === "edited" && arr.findIndex((v) => v.type === "owned" && v.url === v.url) !== -1) {
+        return false;
       }
+
+      return true;
     })
 
     return merged.sort(
