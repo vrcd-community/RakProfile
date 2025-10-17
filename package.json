@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "cross-env NODE_OPTIONS=--require=elastic-apm-node/start-next.js next start",
+    "start": "cross-env NODE_OPTIONS=--require=elastic-apm-node/start next start",
     "lint": "next lint",
     "db:diff": "prisma migrate diff --from-schema-datamodel=./prisma/schema.prisma --to-url=$DATABASE_URL --script",
     "db:dev": "prisma migrate dev --name "
