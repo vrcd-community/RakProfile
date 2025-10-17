@@ -42,9 +42,9 @@ export async function Header() {
         </div>
       </div>
 
-      <div className="w-full py-1 bg-amber-500/60 dark:text-white text-black text-center backdrop-blur">
+      {/* <div className="w-full py-1 bg-amber-500/60 dark:text-white text-black text-center backdrop-blur">
         当前所有内容均为开发版本，不代表最终效果！
-      </div>
+      </div> */}
     </header>
   )
 }

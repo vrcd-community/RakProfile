@@ -49,7 +49,7 @@ export default async function BlogPage() {
       <div className="w-full max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">博客文章</h1>
         
-        <div className="space-y-6">
+        <div className="flex flex-col gap-8">
           {posts.map((post) => (
             <Link key={post.slug} href={`/blog/${post.slug}`}>
               <Card className="p-6 hover:shadow-lg transition-shadow">
