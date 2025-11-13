@@ -93,7 +93,7 @@ export function FullScreenImageViewer({
         variant="ghost"
         size="icon"
         onClick={onClose}
-        className="absolute top-4 right-4 h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white"
+        className="absolute top-4 right-4 h-10 w-10 rounded-full text-white hover:bg-white/20 hover:text-white z-50"
         aria-label="关闭"
       >
         <X className="h-6 w-6" />
