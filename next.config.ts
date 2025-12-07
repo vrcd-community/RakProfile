@@ -1,7 +1,7 @@
 import createMDX from '@next/mdx';
-import gfm from "remark-gfm"
-import highlight from "rehype-highlight"
-import remarkFrontmatter from 'remark-frontmatter'
+// import gfm from "remark-gfm"
+// import highlight from "rehype-highlight"
+// import remarkFrontmatter from 'remark-frontmatter'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -10,8 +10,8 @@ const nextConfig = {
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [gfm, remarkFrontmatter],
-    rehypePlugins: [highlight]
+    remarkPlugins: ["remark-gfm", 'remark-frontmatter'],
+    rehypePlugins: ["rehype-highlight"]
   }
 })
 
