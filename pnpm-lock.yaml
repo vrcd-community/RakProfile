@@ -13,7 +13,7 @@ importers:
         version: 3.958.0
       '@logto/next':
         specifier: ^4.2.0
-        version: 4.2.6(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
+        version: 4.2.7(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@mdx-js/loader':
         specifier: ^3.1.0
         version: 3.1.1
@@ -518,19 +518,19 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@logto/client@3.1.4':
-    resolution: {integrity: sha512-aaz1XrLLTBii5lz3c7oHr/kqcR2iTbTehxlCn3YMnSyGUBVjoUYH4eU37wqf08nEYjtsLaSndYu63WVN8/Fpqw==}
+  '@logto/client@3.1.5':
+    resolution: {integrity: sha512-xitL6NT09HU41ebNlRfQhjeOL5Ct0nZOwQFqPaIWIvOD8QZ454xN+eSRodBP/xVGuh4znOX8Jrlz0fFQFhKqgQ==}
 
   '@logto/js@6.1.0':
     resolution: {integrity: sha512-FGFDtqZqVP0mUR7ze7Uz488TsMSWQkMiU00PefJg/MMQJeI93WejPcpPkGd4JvoKAVj99wfsY/0AR1gMADCLyQ==}
 
-  '@logto/next@4.2.6':
-    resolution: {integrity: sha512-EE+z23hiH+MqWZ2sXcB01iHyVL74Dz15IMYA+jQ1x4Oj+0nu+J2hi+w+Zwnxeq2Cu+sfxc+mT4NU6nsFARYNqQ==}
+  '@logto/next@4.2.7':
+    resolution: {integrity: sha512-VoG+tskWqtgDKurfBT9Iv0/FJd/j+D1JqqO2jbkZPJe1bTQaIDi8FrgjjzqrtoaXEvRehezplde968sgMolY2g==}
     peerDependencies:
       next: '>=12'
 
-  '@logto/node@3.1.6':
-    resolution: {integrity: sha512-X/y49goHwbsVRqZmeD0fmw2XepOGFKvJpE6ZXBg995y+zBz+W/QcrZVsg9wUH2L80Z3xLbxoTCOf02IBKGk2qg==}
+  '@logto/node@3.1.7':
+    resolution: {integrity: sha512-P75Q6lrIrHQu2M+stEA2Cykm+WIrDlKMKyLDOddPdoNBp5VeDGpP+H6b3GhY2UE8e0BpEsMqHGDp00NME3mb+g==}
 
   '@mdx-js/loader@3.1.1':
     resolution: {integrity: sha512-0TTacJyZ9mDmY+VefuthVshaNIyCGZHJG2fMnGaDttCt8HmjUF7SizlHJpaCDoGnN635nK1wpzfpx/Xx5S4WnQ==}
@@ -1677,8 +1677,8 @@ packages:
     resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
 
-  cookie@1.0.2:
-    resolution: {integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==}
+  cookie@1.1.1:
+    resolution: {integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==}
     engines: {node: '>=18'}
 
   core-util-is@1.0.3:
@@ -3549,7 +3549,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@logto/client@3.1.4':
+  '@logto/client@3.1.5':
     dependencies:
       '@logto/js': 6.1.0
       '@silverhand/essentials': 2.9.2
@@ -3561,16 +3561,16 @@ snapshots:
       '@silverhand/essentials': 2.9.2
       camelcase-keys: 9.1.3
 
-  '@logto/next@4.2.6(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
+  '@logto/next@4.2.7(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
     dependencies:
       '@edge-runtime/cookies': 5.0.2
-      '@logto/node': 3.1.6
-      cookie: 1.0.2
+      '@logto/node': 3.1.7
+      cookie: 1.1.1
       next: 16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
 
-  '@logto/node@3.1.6':
+  '@logto/node@3.1.7':
     dependencies:
-      '@logto/client': 3.1.4
+      '@logto/client': 3.1.5
       '@silverhand/essentials': 2.9.2
       js-base64: 3.7.8
 
@@ -4793,7 +4793,7 @@ snapshots:
 
   cookie@0.7.2: {}
 
-  cookie@1.0.2: {}
+  cookie@1.1.1: {}
 
   core-util-is@1.0.3: {}
 
