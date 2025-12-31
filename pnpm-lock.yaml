@@ -13,7 +13,7 @@ importers:
         version: 3.958.0
       '@logto/next':
         specifier: ^4.2.0
-        version: 4.2.7(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
+        version: 4.2.8(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@mdx-js/loader':
         specifier: ^3.1.0
         version: 3.1.1
@@ -518,19 +518,19 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@logto/client@3.1.5':
-    resolution: {integrity: sha512-xitL6NT09HU41ebNlRfQhjeOL5Ct0nZOwQFqPaIWIvOD8QZ454xN+eSRodBP/xVGuh4znOX8Jrlz0fFQFhKqgQ==}
+  '@logto/client@3.1.6':
+    resolution: {integrity: sha512-xQ/DIjm9hPT0Ditn1kbzSY1p7x4eu3cY081ST8VhrjuMulzw+Zcq0q0I9QSKsPo3GX/FU+bFuxb4kSDovYUmQQ==}
 
   '@logto/js@6.1.0':
     resolution: {integrity: sha512-FGFDtqZqVP0mUR7ze7Uz488TsMSWQkMiU00PefJg/MMQJeI93WejPcpPkGd4JvoKAVj99wfsY/0AR1gMADCLyQ==}
 
-  '@logto/next@4.2.7':
-    resolution: {integrity: sha512-VoG+tskWqtgDKurfBT9Iv0/FJd/j+D1JqqO2jbkZPJe1bTQaIDi8FrgjjzqrtoaXEvRehezplde968sgMolY2g==}
+  '@logto/next@4.2.8':
+    resolution: {integrity: sha512-CBfkYx9LBTRJqakd+Jp6IxucmgxDrh0AR65/2q93zKkf7R2YhTgPqOwcZlBoyaAd5zri0wK4VvQvY2uglwBoRw==}
     peerDependencies:
       next: '>=12'
 
-  '@logto/node@3.1.7':
-    resolution: {integrity: sha512-P75Q6lrIrHQu2M+stEA2Cykm+WIrDlKMKyLDOddPdoNBp5VeDGpP+H6b3GhY2UE8e0BpEsMqHGDp00NME3mb+g==}
+  '@logto/node@3.1.8':
+    resolution: {integrity: sha512-pWYQMftqPolJdV4kOJ6ZYWXDvEMdrY92F26A67lnJleHkM1ykJoOIuG36lsPf66fy/x1b8mNNolmDh7Y08NGRg==}
 
   '@mdx-js/loader@3.1.1':
     resolution: {integrity: sha512-0TTacJyZ9mDmY+VefuthVshaNIyCGZHJG2fMnGaDttCt8HmjUF7SizlHJpaCDoGnN635nK1wpzfpx/Xx5S4WnQ==}
@@ -3549,7 +3549,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@logto/client@3.1.5':
+  '@logto/client@3.1.6':
     dependencies:
       '@logto/js': 6.1.0
       '@silverhand/essentials': 2.9.2
@@ -3561,16 +3561,16 @@ snapshots:
       '@silverhand/essentials': 2.9.2
       camelcase-keys: 9.1.3
 
-  '@logto/next@4.2.7(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
+  '@logto/next@4.2.8(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
     dependencies:
       '@edge-runtime/cookies': 5.0.2
-      '@logto/node': 3.1.7
+      '@logto/node': 3.1.8
       cookie: 1.1.1
       next: 16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
 
-  '@logto/node@3.1.7':
+  '@logto/node@3.1.8':
     dependencies:
-      '@logto/client': 3.1.5
+      '@logto/client': 3.1.6
       '@silverhand/essentials': 2.9.2
       js-base64: 3.7.8
 
