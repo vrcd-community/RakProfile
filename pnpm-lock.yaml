@@ -91,7 +91,7 @@ importers:
         version: 4.15.0
       framer-motion:
         specifier: ^12.23.0
-        version: 12.27.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 12.27.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
@@ -1903,8 +1903,8 @@ packages:
   forwarded-parse@2.1.2:
     resolution: {integrity: sha512-alTFZZQDKMporBH77856pXgzhEzaUVmLCDk+egLgIgHst3Tpndzz8MnKe+GzRJRfvVdn69HhpW7cmXzvtLvJAw==}
 
-  framer-motion@12.27.2:
-    resolution: {integrity: sha512-a6MRrna8mQLdSoNtDr6VwVHujVB9Bzkbm+lmlejgGOFtqAPlEpeZHN8IHhrk9LxE4E0+5jRO77tXdvWl4+lfQg==}
+  framer-motion@12.27.5:
+    resolution: {integrity: sha512-yUFof7Y2Y2qDJxLKeA91qMazuA6QBOoLOZ0No2J5VIQuhJLWMmGwT/5qyCfpa9mNNS3C7lOR6NhlC3mLZjLw4g==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0 || ^19.0.0
@@ -2361,8 +2361,8 @@ packages:
   monitor-event-loop-delay@1.0.0:
     resolution: {integrity: sha512-YRIr1exCIfBDLZle8WHOfSo7Xg3M+phcZfq9Fx1L6Abo+atGp7cge5pM7PjyBn4s1oZI/BRD4EMrzQBbPpVb5Q==}
 
-  motion-dom@12.27.2:
-    resolution: {integrity: sha512-NJQNr+S6CthEx4AyLWKvM+vPfIBCJjTGMWRjO0n3mele1WueJLV+WRw4GYnOUzfZ58za9oHrIFEHy+fg4uaLqA==}
+  motion-dom@12.27.5:
+    resolution: {integrity: sha512-UwBv2AUOkA7/TCHr67NGjg3aRT7nbsanmmenRoR7T6IJXZp34OZB+pooGnKjMd8CqqCsF/+qwT657EkukjgmiQ==}
 
   motion-utils@12.27.2:
     resolution: {integrity: sha512-B55gcoL85Mcdt2IEStY5EEAsrMSVE2sI14xQ/uAdPL+mfQxhKKFaEag9JmfxedJOR4vZpBGoPeC/Gm13I/4g5Q==}
@@ -5040,9 +5040,9 @@ snapshots:
 
   forwarded-parse@2.1.2: {}
 
-  framer-motion@12.27.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+  framer-motion@12.27.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
-      motion-dom: 12.27.2
+      motion-dom: 12.27.5
       motion-utils: 12.27.2
       tslib: 2.8.1
     optionalDependencies:
@@ -5823,7 +5823,7 @@ snapshots:
 
   monitor-event-loop-delay@1.0.0: {}
 
-  motion-dom@12.27.2:
+  motion-dom@12.27.5:
     dependencies:
       motion-utils: 12.27.2
 
